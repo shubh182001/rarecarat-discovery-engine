@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import ringImage from "@/assets/ring-placeholder.jpg";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -105,6 +106,32 @@ function priorityIcon(p: string) {
 
 function GemologistPage() {
   const [draft, setDraft] = useState(defaultDraft);
+  const [sentMessages, setSentMessages] = useState<string[]>([]);
+
+  const handleSend = () => {
+    const text = draft.trim();
+    if (!text) {
+      toast("Draft is empty", { description: "Write or regenerate a response first." });
+      return;
+    }
+    setSentMessages((m) => [...m, text]);
+    setDraft("");
+    toast.success("Sent to Sarah K.", { description: "Reply delivered in chat." });
+  };
+
+  const handleRegenerate = () => {
+    setDraft(defaultDraft);
+    toast("Draft regenerated");
+  };
+
+  const handleClear = () => {
+    setDraft("");
+  };
+
+  const handleInsertPick = (name: string) => {
+    setDraft((d) => `${d}${d.trim().length ? "\n\n" : ""}Suggested pick: ${name}.`);
+    toast(`Inserted ${name}`);
+  };
 
   return (
     <div className="flex flex-col">
@@ -177,18 +204,29 @@ function GemologistPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 py-2 text-[11px] uppercase tracking-wider text-muted-foreground">
-              <span className="h-px flex-1 bg-border" />
-              Awaiting your reply
-              <span className="h-px flex-1 bg-border" />
-            </div>
-
-            <div className="flex justify-start">
-              <div className="flex max-w-[85%] items-center gap-2 rounded-2xl rounded-tl-sm border border-dashed border-border bg-background/50 px-4 py-3 text-sm text-muted-foreground">
-                <PenLine className="h-3.5 w-3.5 text-gold" />
-                Thea's response will appear here…
-              </div>
-            </div>
+            {sentMessages.length === 0 ? (
+              <>
+                <div className="flex items-center gap-2 py-2 text-[11px] uppercase tracking-wider text-muted-foreground">
+                  <span className="h-px flex-1 bg-border" />
+                  Awaiting your reply
+                  <span className="h-px flex-1 bg-border" />
+                </div>
+                <div className="flex justify-start">
+                  <div className="flex max-w-[85%] items-center gap-2 rounded-2xl rounded-tl-sm border border-dashed border-border bg-background/50 px-4 py-3 text-sm text-muted-foreground">
+                    <PenLine className="h-3.5 w-3.5 text-gold" />
+                    Thea's response will appear here…
+                  </div>
+                </div>
+              </>
+            ) : (
+              sentMessages.map((m, i) => (
+                <div key={`sent-${i}`} className="flex justify-start animate-fade-in">
+                  <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-primary shadow-sm">
+                    {m}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
 
           <div className="border-t border-border bg-background/50 px-5 py-3">
@@ -258,6 +296,7 @@ function GemologistPage() {
                   </div>
                   <button
                     type="button"
+                    onClick={() => handleInsertPick(p.name)}
                     className="relative z-10 flex flex-shrink-0 items-center gap-1 rounded-full border border-gold/40 bg-background px-2 py-1 text-[10px] font-medium text-primary transition-colors hover:bg-gold hover:text-gold-foreground"
                   >
                     <Plus className="h-3 w-3" />
@@ -284,16 +323,17 @@ function GemologistPage() {
             <div className="mt-3 flex flex-wrap gap-2">
               <Button
                 size="sm"
+                onClick={handleSend}
                 className="rounded-full bg-gold text-gold-foreground hover:bg-gold/90"
               >
                 <Send className="h-3.5 w-3.5" />
                 Approve & Send
               </Button>
-              <Button size="sm" variant="outline" className="rounded-full">
+              <Button size="sm" variant="outline" onClick={handleRegenerate} className="rounded-full">
                 <RefreshCw className="h-3.5 w-3.5" />
                 Regenerate
               </Button>
-              <Button size="sm" variant="ghost" className="rounded-full">
+              <Button size="sm" variant="ghost" onClick={handleClear} className="rounded-full">
                 <PenLine className="h-3.5 w-3.5" />
                 Write my own
               </Button>
