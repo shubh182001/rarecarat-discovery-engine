@@ -114,6 +114,30 @@
   --ring: oklch(0.745 0.108 84);
 }
 
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-edge {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    color-mix(in oklab, var(--gold) 22%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
