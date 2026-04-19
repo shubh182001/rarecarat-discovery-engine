@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   MessageCircle,
   Megaphone,
@@ -8,6 +8,7 @@ import {
   Route as RouteIcon,
   ArrowRight,
   Sparkles,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -66,68 +67,63 @@ const dimensions = [
   "Retention",
 ];
 
-const accents: Record<
-  AccentKey,
-  {
-    bg: string;
-    border: string;
-    iconBg: string;
-    iconText: string;
-    bar: string;
-    pill: string;
-    chip: string;
-    glow: string;
-  }
-> = {
+type AccentConfig = {
+  /** Solid color css value for the accent (used in gradients, borders, shadows) */
+  solid: string;
+  /** Soft tinted bg css value */
+  soft: string;
+  iconBg: string;
+  iconText: string;
+  bar: string;
+  pill: string;
+  chip: string;
+};
+
+const accents: Record<AccentKey, AccentConfig> = {
   blue: {
-    bg: "bg-[oklch(0.96_0.03_250)]",
-    border: "border-[oklch(0.7_0.12_250)]/30",
+    solid: "oklch(0.45 0.13 250)",
+    soft: "oklch(0.96 0.03 250)",
     iconBg: "bg-[oklch(0.92_0.05_250)]",
     iconText: "text-[oklch(0.4_0.13_250)]",
     bar: "bg-[oklch(0.45_0.13_250)]",
     pill: "bg-[oklch(0.92_0.05_250)] text-[oklch(0.35_0.12_250)]",
     chip: "bg-[oklch(0.45_0.13_250)] text-[oklch(0.98_0_0)]",
-    glow: "hover:shadow-[0_18px_45px_-15px_oklch(0.45_0.13_250/0.45)]",
   },
   amber: {
-    bg: "bg-[oklch(0.97_0.04_85)]",
-    border: "border-gold/40",
+    solid: "oklch(0.745 0.108 84)",
+    soft: "oklch(0.97 0.04 85)",
     iconBg: "bg-gold/15",
     iconText: "text-[oklch(0.5_0.13_84)]",
     bar: "bg-gold",
     pill: "bg-gold/15 text-[oklch(0.45_0.12_84)]",
     chip: "bg-gold text-gold-foreground",
-    glow: "hover:shadow-[0_18px_45px_-15px_oklch(0.745_0.108_84/0.5)]",
   },
   sage: {
-    bg: "bg-[oklch(0.96_0.04_155)]",
-    border: "border-[oklch(0.65_0.1_155)]/35",
+    solid: "oklch(0.5 0.11 155)",
+    soft: "oklch(0.96 0.04 155)",
     iconBg: "bg-[oklch(0.92_0.06_155)]",
     iconText: "text-[oklch(0.4_0.1_155)]",
     bar: "bg-[oklch(0.5_0.11_155)]",
     pill: "bg-[oklch(0.92_0.06_155)] text-[oklch(0.38_0.1_155)]",
     chip: "bg-[oklch(0.5_0.11_155)] text-[oklch(0.98_0_0)]",
-    glow: "hover:shadow-[0_18px_45px_-15px_oklch(0.5_0.11_155/0.45)]",
   },
   crimson: {
-    bg: "bg-[oklch(0.96_0.04_25)]",
-    border: "border-[oklch(0.6_0.18_25)]/35",
+    solid: "oklch(0.5 0.18 25)",
+    soft: "oklch(0.96 0.04 25)",
     iconBg: "bg-[oklch(0.93_0.06_25)]",
     iconText: "text-[oklch(0.45_0.16_25)]",
     bar: "bg-[oklch(0.5_0.18_25)]",
     pill: "bg-[oklch(0.93_0.06_25)] text-[oklch(0.42_0.16_25)]",
     chip: "bg-[oklch(0.5_0.18_25)] text-[oklch(0.98_0_0)]",
-    glow: "hover:shadow-[0_18px_45px_-15px_oklch(0.5_0.18_25/0.45)]",
   },
   plum: {
-    bg: "bg-[oklch(0.96_0.04_320)]",
-    border: "border-[oklch(0.55_0.15_320)]/35",
+    solid: "oklch(0.45 0.15 320)",
+    soft: "oklch(0.96 0.04 320)",
     iconBg: "bg-[oklch(0.93_0.06_320)]",
     iconText: "text-[oklch(0.42_0.14_320)]",
     bar: "bg-[oklch(0.45_0.15_320)]",
     pill: "bg-[oklch(0.93_0.06_320)] text-[oklch(0.4_0.14_320)]",
     chip: "bg-[oklch(0.45_0.15_320)] text-[oklch(0.98_0_0)]",
-    glow: "hover:shadow-[0_18px_45px_-15px_oklch(0.45_0.15_320/0.45)]",
   },
 };
 
@@ -169,7 +165,7 @@ const opportunities: Opportunity[] = [
     headline: "Turn every chat into a performance ad",
     oneLine:
       "The Copilot becomes the centerpiece of a new ad stack, converting top-funnel intent into first-party data at 10x the rate of static display.",
-    tags: ["Advertising", "Acquisition"],
+    tags: ["Advertising"],
     description: [
       "Display ads send shoppers to a static landing page; the Copilot-Powered Advertising Engine sends them straight into a conversation. A Meta ad reading 'Vintage feel, modern silhouette, under $3k?' opens a pre-seeded chat already shaped by the ad creative.",
       "That single tap captures qualified intent — style, budget, urgency — as first-party data the moment the user arrives, not after they've completed a 40-field signup.",
@@ -183,7 +179,7 @@ const opportunities: Opportunity[] = [
       { label: "Phase 2", duration: "4 months" },
       { label: "Phase 3", duration: "8 months" },
     ],
-    impact: ["−40% CAC", "+60% ad CTR", "+3x first-party data capture"],
+    impact: ["−40% CAC", "+60% ad CTR", "+300% first-party data capture"],
   },
   {
     id: "content",
@@ -193,7 +189,7 @@ const opportunities: Opportunity[] = [
     headline: "Every customer question becomes a landing page",
     oneLine:
       "Anonymized chat archives become a permanent SEO moat and authority-building content library.",
-    tags: ["Marketing", "Trust"],
+    tags: ["Discovery", "Trust"],
     description: [
       "Every Copilot conversation contains a real shopper question that thousands of other shoppers also Google. The Ask Rare Carat Content Engine anonymizes those questions, clusters them, and publishes the gemologist-vetted answers as evergreen pages.",
       "The result: a long-tail SEO library that grows by hundreds of pages a month without a content team writing them from scratch. Each page links back into the relevant Copilot flow, closing the loop from search to chat to purchase.",
@@ -207,10 +203,7 @@ const opportunities: Opportunity[] = [
       { label: "Phase 2", duration: "3 months" },
       { label: "Phase 3", duration: "9 months" },
     ],
-    impact: [
-      "+150% organic search traffic",
-      "+40% first-page Google rankings",
-    ],
+    impact: ["+150% organic search traffic", "+40% first-page Google rankings"],
   },
   {
     id: "trust",
@@ -237,7 +230,7 @@ const opportunities: Opportunity[] = [
     impact: [
       "−30% chat volume on pricing",
       "+50% Compare conversion",
-      "Major reduction in 1–3 star review rate",
+      "−45% 1–3 star review rate",
     ],
   },
   {
@@ -248,7 +241,7 @@ const opportunities: Opportunity[] = [
     headline: "Turn one-time buyers into lifetime customers",
     oneLine:
       "Persistent profile + gamified Diamond IQ + milestone lifecycle + visual UGC community, all powered by the preference graph.",
-    tags: ["Retention", "Community"],
+    tags: ["Retention", "Personalization"],
     description: [
       "An engagement ring is most retailers' last sale to a customer. The Rare Carat Journey treats it as the first. The same preference graph that powered discovery now powers a multi-year relationship — anniversaries, weddings, push presents, milestone gifts.",
       "Diamond IQ turns the buyer's growing knowledge into a gamified profile they want to share. Milestone lifecycle automation triggers the right nudge at the right moment, not generic 'we miss you' email blasts. The UGC community converts 3,600+ Trustpilot reviewers into a visible flywheel of real photos, real stories, and real proof.",
@@ -263,15 +256,75 @@ const opportunities: Opportunity[] = [
       { label: "Phase 3", duration: "10 months" },
     ],
     impact: [
-      "+40% repeat visit rate within 30 days",
-      "+25% second-purchase rate within 24 months",
-      "+10–15% net new customer acquisition via referral",
+      "+40% repeat visit within 30 days",
+      "+25% second-purchase rate",
+      "+15% net new customers via referral",
     ],
   },
 ];
 
+/** Animate the first numeric token of a string from 0 to its value */
+function useCountUp(target: string, duration = 1100, delay = 0, run = true) {
+  const [display, setDisplay] = useState(target);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!run) {
+      setDisplay(target);
+      return;
+    }
+    const match = target.match(/^([^\d−-]*[−-]?)(\d+(?:[.,]\d+)?)(.*)$/);
+    if (!match) {
+      setDisplay(target);
+      return;
+    }
+    const [, prefix, numStr, suffix] = match;
+    const finalNum = parseFloat(numStr.replace(/,/g, ""));
+    if (!isFinite(finalNum)) {
+      setDisplay(target);
+      return;
+    }
+    const decimals = numStr.includes(".") ? numStr.split(".")[1].length : 0;
+    const format = (n: number) =>
+      `${prefix}${n.toFixed(decimals)}${suffix}`;
+
+    setDisplay(format(0));
+    let startTime: number | null = null;
+    const begin = performance.now() + delay;
+
+    const tick = (now: number) => {
+      if (now < begin) {
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+      if (startTime === null) startTime = now;
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(format(finalNum * eased));
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, [target, duration, delay, run]);
+
+  return display;
+}
+
 function OpportunitiesPage() {
   const [open, setOpen] = useState<Opportunity | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+
+  const filtered = useMemo(
+    () =>
+      activeFilter
+        ? opportunities.filter((o) => o.tags.includes(activeFilter))
+        : opportunities,
+    [activeFilter],
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
@@ -289,37 +342,66 @@ function OpportunitiesPage() {
           surface gets smarter in real time.
         </p>
 
-        {/* Dimensions legend */}
+        {/* Dimensions filter */}
         <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-2">
           <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-            Dimensions:
+            Filter by dimension:
           </span>
-          {dimensions.map((d) => (
-            <span
-              key={d}
-              className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-primary"
+          {dimensions.map((d) => {
+            const active = activeFilter === d;
+            return (
+              <button
+                key={d}
+                type="button"
+                onClick={() => setActiveFilter(active ? null : d)}
+                className={`rounded-full border px-3 py-1 text-xs font-medium transition-all ${
+                  active
+                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                    : "border-border bg-surface text-primary hover:border-primary/40"
+                }`}
+              >
+                {d}
+              </button>
+            );
+          })}
+          {activeFilter && (
+            <button
+              type="button"
+              onClick={() => setActiveFilter(null)}
+              className="ml-1 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:text-primary"
             >
-              {d}
-            </span>
-          ))}
+              <X className="h-3 w-3" />
+              Clear
+            </button>
+          )}
         </div>
       </header>
 
-      {/* Tile grid: feature tile (#1) takes 2 rows, others fill */}
-      <div className="grid gap-5 lg:grid-cols-6">
-        {opportunities.map((o, i) => {
+      {/* Tile grid */}
+      <div
+        className="grid gap-5 lg:grid-cols-6"
+        style={{ perspective: "1200px" }}
+      >
+        {filtered.map((o, i) => {
           const span =
-            i === 0 ? "lg:col-span-3 lg:row-span-2" : "lg:col-span-3";
+            !activeFilter && i === 0
+              ? "lg:col-span-3 lg:row-span-2"
+              : "lg:col-span-3";
           return (
             <OpportunityTile
               key={o.id}
               opportunity={o}
               spanClass={span}
-              feature={i === 0}
+              feature={!activeFilter && i === 0}
               onOpen={() => setOpen(o)}
             />
           );
         })}
+        {filtered.length === 0 && (
+          <div className="col-span-full rounded-2xl border border-dashed border-border bg-surface p-10 text-center text-sm text-muted-foreground">
+            No transformations match that dimension. Try clearing the filter.
+          </div>
+        )}
       </div>
 
       {/* Summary */}
@@ -364,61 +446,175 @@ function OpportunityTile({
 }) {
   const a = accents[opportunity.accent];
   const Icon = opportunity.icon;
+  const tiltRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const el = tiltRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    // Max ~5deg tilt
+    el.style.transform = `translateY(-6px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 5).toFixed(2)}deg)`;
+  };
+  const handleLeave = () => {
+    const el = tiltRef.current;
+    if (el) el.style.transform = "";
+  };
+
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border ${a.border} ${a.bg} p-6 text-left shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 ${a.glow} md:p-7 ${spanClass}`}
+    <div
+      className={`group relative ${spanClass}`}
+      style={{ transformStyle: "preserve-3d" }}
     >
-      {/* Top stripe */}
-      <span
-        className={`absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${a.bar}`}
+      {/* Gradient border wrapper */}
+      <div
+        className="absolute inset-0 rounded-2xl opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `linear-gradient(135deg, ${a.solid}, color-mix(in oklab, ${a.solid} 25%, transparent) 55%, ${a.solid})`,
+          padding: "1.5px",
+          WebkitMask:
+            "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+        aria-hidden
       />
 
-      <div className="flex items-start justify-between gap-3">
-        <div
-          className={`flex h-12 w-12 items-center justify-center rounded-xl ${a.iconBg} ${a.iconText}`}
-        >
-          <Icon className="h-6 w-6" />
-        </div>
+      <button
+        ref={tiltRef}
+        type="button"
+        onClick={onOpen}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl p-6 text-left shadow-sm transition-[transform,box-shadow] duration-200 ease-out will-change-transform hover:shadow-[0_22px_55px_-18px_color-mix(in_oklab,var(--primary)_30%,transparent)] md:p-7"
+        style={{
+          background: `linear-gradient(140deg, ${a.soft}, color-mix(in oklab, ${a.soft} 60%, white) 100%)`,
+          transformStyle: "preserve-3d",
+        }}
+      >
+        {/* Subtle accent glow on hover */}
         <span
-          className={`rounded-full px-2.5 py-1 font-serif text-xs font-semibold ${a.chip}`}
-        >
-          {opportunity.number}
-        </span>
-      </div>
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: `radial-gradient(600px circle at 50% -20%, color-mix(in oklab, ${a.solid} 20%, transparent), transparent 60%)`,
+          }}
+          aria-hidden
+        />
 
-      <h3
-        className={`mt-5 font-serif font-semibold leading-tight text-primary ${
-          feature ? "text-3xl md:text-4xl mt-8" : "text-xl md:text-2xl"
-        }`}
-      >
-        {opportunity.headline}
-      </h3>
-      <p
-        className={`mt-3 leading-relaxed text-muted-foreground ${
-          feature ? "text-base" : "text-sm"
-        }`}
-      >
-        {opportunity.oneLine}
-      </p>
-
-      <div className="mt-auto pt-5">
-        <div className="flex flex-wrap gap-1.5">
-          {opportunity.tags.map((t) => (
-            <span
-              key={t}
-              className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider ${a.pill}`}
-            >
-              {t}
-            </span>
-          ))}
+        <div className="relative flex items-start justify-between gap-3">
+          <div
+            className={`flex h-12 w-12 items-center justify-center rounded-xl ${a.iconBg} ${a.iconText}`}
+          >
+            <Icon className="h-6 w-6" />
+          </div>
+          <span
+            className={`rounded-full px-2.5 py-1 font-serif text-xs font-semibold ${a.chip}`}
+          >
+            {opportunity.number}
+          </span>
         </div>
-        <p className="mt-4 inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.16em] text-primary/70 transition-colors group-hover:text-primary">
-          Click to explore <ArrowRight className="h-3 w-3" />
+
+        <h3
+          className={`relative mt-5 font-serif font-semibold leading-tight text-primary ${
+            feature ? "mt-8 text-3xl md:text-4xl" : "text-xl md:text-2xl"
+          }`}
+        >
+          {opportunity.headline}
+        </h3>
+        <p
+          className={`relative mt-3 leading-relaxed text-muted-foreground ${
+            feature ? "text-base" : "text-sm"
+          }`}
+        >
+          {opportunity.oneLine}
         </p>
+
+        <div className="relative mt-auto pt-5">
+          <div className="flex flex-wrap gap-1.5">
+            {opportunity.tags.map((t) => (
+              <span
+                key={t}
+                className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider ${a.pill}`}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+          <p className="mt-4 inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.16em] text-primary/70 transition-colors group-hover:text-primary">
+            Click to explore <ArrowRight className="h-3 w-3" />
+          </p>
+        </div>
+      </button>
+    </div>
+  );
+}
+
+function PhasingBar({ phasing, accent }: { phasing: Phase[]; accent: AccentKey }) {
+  const a = accents[accent];
+  return (
+    <div className="relative">
+      {/* Continuous bar with gradient segments */}
+      <div className="flex h-3 overflow-hidden rounded-full">
+        <div
+          className={`flex-1 ${a.bar}`}
+          style={{ opacity: 1 }}
+        />
+        <div className={`flex-1 ${a.bar}`} style={{ opacity: 0.65 }} />
+        <div className={`flex-1 ${a.bar}`} style={{ opacity: 0.35 }} />
       </div>
-    </button>
+
+      {/* Markers + labels */}
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        {phasing.map((p, i) => (
+          <div key={p.label} className="text-left">
+            <div className="flex items-center gap-2">
+              <span
+                className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${a.chip}`}
+                style={{ opacity: 1 - i * 0.18 }}
+              >
+                {i + 1}
+              </span>
+              <p className="font-serif text-sm font-semibold text-primary">
+                {p.label}
+              </p>
+            </div>
+            <p className="mt-1 pl-7 text-xs text-muted-foreground">{p.duration}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ImpactMetric({
+  text,
+  accent,
+  delay,
+  run,
+}: {
+  text: string;
+  accent: AccentKey;
+  delay: number;
+  run: boolean;
+}) {
+  const a = accents[accent];
+  // Split "+30% session-to-purchase conversion" into stat + label
+  const match = text.match(/^([+−-]?\d+(?:[.,]\d+)?[%x]?)\s*(.*)$/);
+  const stat = match?.[1] ?? text;
+  const label = match?.[2] ?? "";
+  const animated = useCountUp(stat, 1200, delay, run);
+  return (
+    <li className="flex items-baseline gap-3 rounded-lg bg-surface px-3 py-2.5">
+      <span
+        className={`font-serif text-lg font-bold tabular-nums ${a.iconText}`}
+      >
+        {animated}
+      </span>
+      {label && (
+        <span className="text-sm leading-snug text-primary">{label}</span>
+      )}
+    </li>
   );
 }
 
@@ -455,7 +651,6 @@ function OpportunityModal({
               </DialogDescription>
             </DialogHeader>
 
-            {/* Description */}
             <div className="space-y-3">
               {open.description.map((p, i) => (
                 <p key={i} className="text-sm leading-relaxed text-muted-foreground">
@@ -464,7 +659,6 @@ function OpportunityModal({
               ))}
             </div>
 
-            {/* Quote */}
             <blockquote
               className={`rounded-xl border-l-4 bg-surface p-4 ${accents[open.accent].iconText}`}
               style={{ borderLeftColor: "currentColor" }}
@@ -477,60 +671,26 @@ function OpportunityModal({
               </p>
             </blockquote>
 
-            {/* Phasing */}
             <div>
               <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Implementation phasing
               </h4>
-              <div className="grid grid-cols-3 gap-2">
-                {open.phasing.map((p, i) => (
-                  <div
-                    key={p.label}
-                    className="rounded-lg border border-border bg-surface p-3"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${accents[open.accent].chip}`}
-                      >
-                        {i + 1}
-                      </span>
-                      <p className="font-serif text-sm font-semibold text-primary">
-                        {p.label}
-                      </p>
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {p.duration}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-2 flex h-1.5 overflow-hidden rounded-full bg-border">
-                <span className={`h-full w-1/3 ${accents[open.accent].bar}`} />
-                <span
-                  className={`h-full w-1/3 ${accents[open.accent].bar} opacity-60`}
-                />
-                <span
-                  className={`h-full w-1/3 ${accents[open.accent].bar} opacity-30`}
-                />
-              </div>
+              <PhasingBar phasing={open.phasing} accent={open.accent} />
             </div>
 
-            {/* Impact */}
             <div>
               <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Expected impact
               </h4>
               <ul className="space-y-2">
-                {open.impact.map((m) => (
-                  <li
+                {open.impact.map((m, i) => (
+                  <ImpactMetric
                     key={m}
-                    className="flex items-start gap-2 rounded-lg bg-surface px-3 py-2 text-sm text-primary"
-                  >
-                    <span
-                      className={`mt-1.5 h-2 w-2 flex-shrink-0 rounded-full ${accents[open.accent].bar}`}
-                    />
-                    {m}
-                  </li>
+                    text={m}
+                    accent={open.accent}
+                    delay={150 + i * 150}
+                    run={!!open}
+                  />
                 ))}
               </ul>
             </div>
