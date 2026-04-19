@@ -170,6 +170,7 @@ const opportunities: Opportunity[] = [
       "Display ads send shoppers to a static landing page; the Copilot-Powered Advertising Engine sends them straight into a conversation. A Meta ad reading 'Vintage feel, modern silhouette, under $3k?' opens a pre-seeded chat already shaped by the ad creative.",
       "That single tap captures qualified intent — style, budget, urgency — as first-party data the moment the user arrives, not after they've completed a 40-field signup.",
       "The same Copilot interface plugs into Google's AI Overviews, Pinterest shopping, and emerging agentic browsers. Wherever buyers ask, Rare Carat answers, and every answer is an attributed acquisition event.",
+      "Voice-first ad surfaces multiply the reach. TikTok, Instagram Reels, and smart speaker platforms are increasingly voice-driven. A Rare Carat ad where the user hears a warm, confident voice ask 'Tell me what you're looking for in an engagement ring' and responds verbally through their phone mic would be category-defining. ElevenLabs-grade voice synthesis lets every gemologist's expertise scale across audio channels while maintaining the personal, named brand relationship customers love.",
     ],
     quote:
       "AI-referred traffic to US retail sites grew 4,700% year over year, and visitors spent 32% longer on site.",
@@ -179,7 +180,7 @@ const opportunities: Opportunity[] = [
       { label: "Phase 2", duration: "4 months" },
       { label: "Phase 3", duration: "8 months" },
     ],
-    impact: ["−40% CAC", "+60% ad CTR", "+300% first-party data capture"],
+    impact: ["−40% CAC", "+60% ad CTR", "+300% first-party data capture", "Voice-shoppable across 49.6% of US voice-search-using consumers"],
   },
   {
     id: "content",
