@@ -114,7 +114,7 @@ const rings: Ring[] = [
   },
 ];
 
-const followupRings = [rings[0], rings[3]];
+
 
 type ProfileRow = { label: string; value: string; confidence: number };
 
@@ -124,7 +124,77 @@ const initialProfile: ProfileRow[] = [
   { label: "Proportions", value: "Petite / Small Fingers", confidence: 90 },
   { label: "Setting", value: "Open", confidence: 30 },
   { label: "Metal", value: "Open", confidence: 0 },
+  { label: "Quality Tier", value: "Open", confidence: 20 },
+  { label: "Lab vs Natural", value: "Open", confidence: 0 },
 ];
+
+type ReplyKey = "cut" | "metal" | "size" | "lab" | "vintage" | "default";
+
+const REPLIES: Record<ReplyKey, { text: string; rings: Ring[] }> = {
+  cut: {
+    text: "Great question on cut quality. Of the 5 picks, the Mila and Hayden have the highest cut grades — both are Excellent rated. Cut affects how the diamond handles light more than any other factor. The Madison three-stone has a slightly softer cut grade because pear shapes show variation. Want me to filter to only Excellent-cut diamonds?",
+    rings: [rings[0], rings[3]],
+  },
+  metal: {
+    text: "Good thought on metal. All these are shown in white gold but each can be configured in 14k or 18k yellow gold, rose gold, or platinum. Yellow gold is having a moment with vintage-modern styles. Want me to re-render the Mila in yellow gold so you can see the difference?",
+    rings: [rings[0], rings[4]],
+  },
+  size: {
+    text: "Good instinct. Given small fingers, we could go down to 0.85ct without losing presence. The Hayden in 0.85ct lab oval would still read substantial because of the proportions. Here are 2 sub-1ct picks I'd consider:",
+    rings: [rings[3], rings[1]],
+  },
+  lab: {
+    text: "Lab vs natural is one of the biggest decisions in this category. Of these 5, four are lab-grown and one (Carmel) is natural. Lab gives you more carat for the same budget; natural retains slightly better long-term resale value. For a $3k budget, lab is usually the sharper choice. Here are the most popular lab picks:",
+    rings: [rings[0], rings[3]],
+  },
+  vintage: {
+    text: "If you want to push more vintage, the Carmel cushion-cut is the most overtly traditional. The Mila gets you partway there with milgrain detail. Want me to surface a few more vintage-leaning options?",
+    rings: [rings[4], rings[0]],
+  },
+  default: {
+    text: GENERIC_REPLY,
+    rings: [rings[0], rings[3]],
+  },
+};
+
+function classifyMessage(text: string): ReplyKey {
+  const t = text.toLowerCase();
+  if (/\b(cut|cutting|sparkle)\b/.test(t)) return "cut";
+  if (/\b(yellow|gold|rose|metal)\b/.test(t)) return "metal";
+  if (/\b(smaller|tiny|petite|size)\b/.test(t)) return "size";
+  if (/\b(lab|natural|real)\b/.test(t)) return "lab";
+  if (/\b(vintage|old)\b/.test(t)) return "vintage";
+  return "default";
+}
+
+function applyProfileForReply(
+  key: ReplyKey,
+  profile: ProfileRow[],
+): { next: ProfileRow[]; updated: boolean } {
+  const next = profile.map((r) => ({ ...r }));
+  const bump = (label: string, value: string, conf: number) => {
+    const row = next.find((r) => r.label === label);
+    if (!row) return false;
+    if (row.confidence >= conf && row.value === value) return false;
+    row.value = value;
+    row.confidence = Math.max(row.confidence, conf);
+    return true;
+  };
+  switch (key) {
+    case "cut":
+      return { next, updated: bump("Quality Tier", "Excellent Cut", 80) };
+    case "metal":
+      return { next, updated: bump("Metal", "Yellow Gold", 60) };
+    case "size":
+      return { next, updated: bump("Proportions", "Petite / Small Fingers", 100) };
+    case "lab":
+      return { next, updated: bump("Lab vs Natural", "Lab-grown", 80) };
+    case "vintage":
+      return { next, updated: bump("Style", "Vintage-Modern-Artsy", 100) };
+    default:
+      return { next, updated: false };
+  }
+}
 
 type Message =
   | { id: string; role: "user"; text: string }
@@ -133,42 +203,8 @@ type Message =
 const initialMessages: Message[] = [
   { id: "u1", role: "user", text: VINTAGE_QUERY },
   { id: "a1", role: "ai", text: THEA_INTRO, audioSrc: "/thea_response.mp3", rings },
-  { id: "a2", role: "ai", text: THEA_FOLLOWUP },
+  { id: "a2", role: "ai", text: THEA_FOLLOWUP, audioSrc: "/thea_response.mp3" },
 ];
-
-function detectProfileUpdate(
-  text: string,
-  profile: ProfileRow[],
-): { next: ProfileRow[]; updated: boolean } {
-  const lower = text.toLowerCase();
-  const next = profile.map((r) => ({ ...r }));
-  let updated = false;
-
-  const metalKeywords = /(gold|platinum|silver|rose gold|yellow gold|white gold)/;
-  const settingKeywords = /(solitaire|halo|three[- ]stone|pavé|pave|bezel|vintage|setting|band)/;
-
-  const metalMatch = lower.match(metalKeywords);
-  if (metalMatch) {
-    const metalRow = next.find((r) => r.label === "Metal");
-    if (metalRow && metalRow.confidence < 60) {
-      const matched = metalMatch[0].replace(/\b\w/g, (c) => c.toUpperCase());
-      metalRow.value = matched;
-      metalRow.confidence = Math.min(100, Math.max(metalRow.confidence + 30, 30));
-      updated = true;
-    }
-  }
-
-  if (settingKeywords.test(lower)) {
-    const settingRow = next.find((r) => r.label === "Setting");
-    if (settingRow && settingRow.confidence < 80) {
-      settingRow.confidence = Math.min(100, settingRow.confidence + 20);
-      if (settingRow.value === "Open") settingRow.value = "Refining…";
-      updated = true;
-    }
-  }
-
-  return { next, updated };
-}
 
 function CopilotPage() {
   const [input, setInput] = useState("");
@@ -202,7 +238,8 @@ function CopilotPage() {
     setInput("");
     setIsReplying(true);
 
-    const { next, updated } = detectProfileUpdate(text, profile);
+    const key = classifyMessage(text);
+    const { next, updated } = applyProfileForReply(key, profile);
     if (updated) {
       setProfile(next);
       toast.success("Profile updated", { description: "New preference signals detected." });
@@ -210,14 +247,16 @@ function CopilotPage() {
       toast("Profile updated");
     }
 
+    const reply = REPLIES[key];
     setTimeout(() => {
       setMessages((m) => [
         ...m,
         {
           id: `a-${Date.now()}`,
           role: "ai",
-          text: GENERIC_REPLY,
-          rings: followupRings,
+          text: reply.text,
+          audioSrc: "/thea_response.mp3",
+          rings: reply.rings,
         },
       ]);
       setIsReplying(false);
