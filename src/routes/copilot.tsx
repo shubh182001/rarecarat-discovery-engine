@@ -120,6 +120,16 @@ const profileRows = [
 
 function CopilotPage() {
   const [input, setInput] = useState("");
+  const [listening, setListening] = useState(false);
+
+  const startListening = () => {
+    if (listening) return;
+    setListening(true);
+    setTimeout(() => {
+      setInput(VINTAGE_QUERY);
+      setListening(false);
+    }, 2000);
+  };
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-12">
@@ -134,13 +144,18 @@ function CopilotPage() {
         {/* LEFT: Chat */}
         <div className="flex flex-col rounded-2xl border border-border bg-surface shadow-[var(--shadow-soft)]">
           {/* Header */}
-          <div className="flex items-center gap-2 border-b border-border px-6 py-4">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-gold">
-              <Sparkles className="h-4 w-4" />
-            </span>
-            <h2 className="font-serif text-lg font-semibold text-primary">
-              Your Rare Carat Copilot
-            </h2>
+          <div className="flex flex-col gap-1 border-b border-border px-6 py-4">
+            <div className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-gold">
+                <Sparkles className="h-4 w-4" />
+              </span>
+              <h2 className="font-serif text-lg font-semibold text-primary">
+                Your Rare Carat Copilot
+              </h2>
+            </div>
+            <p className="ml-10 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              <span aria-hidden>🎙</span> Voice-enabled · Try speaking your query
+            </p>
           </div>
 
           {/* Messages */}
