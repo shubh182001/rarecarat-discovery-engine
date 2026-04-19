@@ -2,6 +2,7 @@ import { createRootRoute, HeadContent, Link, Scripts } from "@tanstack/react-rou
 
 import appCss from "../styles.css?url";
 import { SiteLayout } from "@/components/SiteLayout";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
