@@ -417,7 +417,11 @@ function CopilotPage() {
                     <div className="relative max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 pr-10 text-sm text-primary shadow-sm">
                       {msg.text}
                       <div className="absolute right-1.5 top-1.5">
-                        <VoicePlayButton text={msg.text} audioSrc={msg.audioSrc} />
+                        <VoicePlayButton
+                          text={msg.text}
+                          audioSrc={msg.audioSrc}
+                          autoPlay={msg.id === lastAiId}
+                        />
                       </div>
                     </div>
                   </div>
