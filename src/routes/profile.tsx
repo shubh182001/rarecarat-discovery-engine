@@ -1,35 +1,310 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
+} from "recharts";
+import {
+  Pencil,
+  Home as HomeIcon,
+  GitCompare,
+  Mail,
+  MessageSquare,
+  Heart,
+  Search,
+  Sparkles,
+} from "lucide-react";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Your Profile · Rare Carat Discoverability Engine" },
+      { title: "Your Diamond Profile · Rare Carat Discoverability Engine" },
       {
         name: "description",
-        content: "A Copilot-powered profile that remembers your preferences and saved diamonds.",
+        content:
+          "What the Rare Carat Copilot has learned about you, across every interaction.",
       },
-      { property: "og:title", content: "Your Profile · Rare Carat Discoverability" },
+      {
+        property: "og:title",
+        content: "Your Diamond Profile · Rare Carat Discoverability",
+      },
       {
         property: "og:description",
-        content: "Copilot-powered profile with preferences and saved diamonds.",
+        content: "Copilot-powered preference profile, evolving with every interaction.",
       },
     ],
   }),
   component: ProfilePage,
 });
 
+const radarData = [
+  { axis: "Style", current: 85, prev1: 60, prev2: 40, prev3: 20 },
+  { axis: "Budget Fit", current: 100, prev1: 90, prev2: 50, prev3: 25 },
+  { axis: "Proportions", current: 90, prev1: 70, prev2: 35, prev3: 15 },
+  { axis: "Quality Tier", current: 70, prev1: 55, prev2: 40, prev3: 20 },
+  { axis: "Setting Style", current: 30, prev1: 25, prev2: 15, prev3: 10 },
+];
+
+const preferences = [
+  { label: "Style", value: "Vintage-Modern-Artsy" },
+  { label: "Budget", value: "$2,000 – $3,000" },
+  { label: "Proportions", value: "Petite / Small Fingers" },
+  { label: "Quality Tier", value: "Balanced (VS2+, F+ color)" },
+  { label: "Setting Style", value: "Open to suggestions" },
+  { label: "Metal", value: "Open to suggestions" },
+  { label: "Shape Preference", value: "Oval, Round" },
+  { label: "Lab vs Natural", value: "Either, leans Lab for budget" },
+];
+
+const activity = [
+  {
+    when: "2 mins ago",
+    text: "Style preference updated to 'vintage-modern-artsy' from Copilot chat",
+    icon: MessageSquare,
+  },
+  {
+    when: "2 mins ago",
+    text: "Budget set to under $3,000 from Copilot chat",
+    icon: MessageSquare,
+  },
+  {
+    when: "2 mins ago",
+    text: "Proportions set to 'petite' from Copilot chat",
+    icon: MessageSquare,
+  },
+  { when: "Yesterday", text: "Liked 3 halo settings in browse", icon: Heart },
+  { when: "Yesterday", text: "Saved 'Mila Vintage' to wishlist", icon: Heart },
+  {
+    when: "3 days ago",
+    text: "Paste-a-diamond check on GIA 2187654321",
+    icon: Search,
+  },
+];
+
+const personalizations = [
+  {
+    title: "Homepage",
+    icon: HomeIcon,
+    text: "Your top picks now reflect your vintage-modern taste.",
+  },
+  {
+    title: "Compare View",
+    icon: GitCompare,
+    text: "Diamonds show match scores against your profile.",
+  },
+  {
+    title: "Email",
+    icon: Mail,
+    text: "Only vintage-modern arrivals under $3k trigger alerts.",
+  },
+];
+
+function LegendDot({ className, label }: { className: string; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span className={`h-2 w-2 rounded-full ${className}`} />
+      {label}
+    </span>
+  );
+}
+
 function ProfilePage() {
   return (
-    <section className="mx-auto max-w-5xl px-6 py-20">
-      <p className="text-xs font-medium uppercase tracking-[0.24em] text-gold">Buyer view</p>
-      <h1 className="mt-3 font-serif text-4xl font-semibold text-primary md:text-5xl">
-        Your Profile
-      </h1>
-      <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-        Your preferences, saved stones, and Copilot-curated recommendations — all in one place.
-      </p>
-      <div className="mt-10 rounded-2xl border border-border bg-surface p-8 shadow-[var(--shadow-soft)]">
-        <p className="text-sm text-muted-foreground">Profile widgets to come.</p>
+    <section className="mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-14">
+      {/* Header */}
+      <div className="mb-10">
+        <p className="text-xs font-medium uppercase tracking-[0.24em] text-gold">
+          Copilot Profile
+        </p>
+        <h1 className="mt-2 font-serif text-4xl font-semibold text-primary md:text-5xl">
+          Your Diamond Profile
+        </h1>
+        <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+          What the Copilot has learned about you, across every interaction.
+        </p>
+      </div>
+
+      {/* Radar chart */}
+      <div className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-soft)] md:p-8">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-serif text-xl font-semibold text-primary">
+              Preference signal over time
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              Current profile vs. three prior snapshots
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+            <LegendDot className="bg-gold" label="Now" />
+            <LegendDot className="bg-primary/60" label="1 wk ago" />
+            <LegendDot className="bg-primary/35" label="1 mo ago" />
+            <LegendDot className="bg-primary/15" label="First visit" />
+          </div>
+        </div>
+        <div className="h-[360px] w-full md:h-[420px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <RadarChart data={radarData} outerRadius="78%">
+              <PolarGrid stroke="var(--border)" />
+              <PolarAngleAxis
+                dataKey="axis"
+                tick={{ fill: "var(--primary)", fontSize: 12, fontWeight: 500 }}
+              />
+              <PolarRadiusAxis
+                angle={90}
+                domain={[0, 100]}
+                tick={false}
+                axisLine={false}
+              />
+              <Radar
+                name="First visit"
+                dataKey="prev3"
+                stroke="var(--primary)"
+                fill="var(--primary)"
+                fillOpacity={0.05}
+                strokeOpacity={0.25}
+                strokeWidth={1}
+              />
+              <Radar
+                name="1 mo ago"
+                dataKey="prev2"
+                stroke="var(--primary)"
+                fill="var(--primary)"
+                fillOpacity={0.07}
+                strokeOpacity={0.4}
+                strokeWidth={1}
+              />
+              <Radar
+                name="1 wk ago"
+                dataKey="prev1"
+                stroke="var(--primary)"
+                fill="var(--primary)"
+                fillOpacity={0.1}
+                strokeOpacity={0.6}
+                strokeWidth={1.25}
+              />
+              <Radar
+                name="Now"
+                dataKey="current"
+                stroke="var(--gold)"
+                fill="var(--gold)"
+                fillOpacity={0.28}
+                strokeWidth={2}
+              />
+            </RadarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Two columns */}
+      <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        {/* Preferences */}
+        <div>
+          <h2 className="mb-4 font-serif text-xl font-semibold text-primary">
+            Your Preferences
+          </h2>
+          <div className="space-y-3">
+            {preferences.map((p, i) => (
+              <div
+                key={p.label}
+                className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-surface px-4 py-3 shadow-sm transition-colors hover:border-gold/60 animate-fade-in"
+                style={{ animationDelay: `${i * 60}ms`, animationFillMode: "both" }}
+              >
+                <div className="min-w-0">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                    {p.label}
+                  </p>
+                  <p className="mt-0.5 truncate text-sm font-medium text-primary">
+                    {p.value}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background hover:text-gold"
+                  aria-label={`Edit ${p.label}`}
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Activity */}
+        <div>
+          <h2 className="mb-4 font-serif text-xl font-semibold text-primary">
+            Learned from your activity
+          </h2>
+          <div className="rounded-xl border border-border bg-surface p-2 shadow-sm">
+            <ol className="relative">
+              {activity.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <li
+                    key={i}
+                    className="flex gap-3 rounded-lg px-3 py-3 transition-colors hover:bg-background animate-fade-in"
+                    style={{ animationDelay: `${i * 70}ms`, animationFillMode: "both" }}
+                  >
+                    <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-background text-gold">
+                      <Icon className="h-3.5 w-3.5" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                        {item.when}
+                      </p>
+                      <p className="mt-0.5 text-sm leading-snug text-primary">
+                        {item.text}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      {/* Personalization */}
+      <div className="mt-12">
+        <div className="mb-5 flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-gold" />
+          <h2 className="font-serif text-xl font-semibold text-primary">
+            How this personalizes your experience
+          </h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {personalizations.map((card) => {
+            const Icon = card.icon;
+            return (
+              <div
+                key={card.title}
+                className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-soft)] transition-all duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[var(--shadow-elegant)]"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-gold">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <h3 className="mt-4 font-serif text-lg font-semibold text-primary">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {card.text}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <Link
+            to="/copilot"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+          >
+            Continue chatting with Copilot
+          </Link>
+        </div>
       </div>
     </section>
   );
