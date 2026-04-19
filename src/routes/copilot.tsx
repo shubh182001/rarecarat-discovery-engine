@@ -114,7 +114,7 @@ const rings: Ring[] = [
   },
 ];
 
-const followupRings = [rings[0], rings[3]];
+
 
 type ProfileRow = { label: string; value: string; confidence: number };
 
