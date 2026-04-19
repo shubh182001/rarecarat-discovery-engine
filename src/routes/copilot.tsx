@@ -1,9 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Sparkles, Send, ArrowRight, Network, Headset } from "lucide-react";
+import { Sparkles, Send, ArrowRight, Network, Headset, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { VoicePlayButton } from "@/components/VoicePlayButton";
 import ringImage from "@/assets/ring-placeholder.jpg";
+
+const VINTAGE_QUERY =
+  "I want something vintage-looking but modern, under $3k, my girlfriend has small fingers and an artsy style";
+const THEA_INTRO =
+  "Great brief. I've pulled 5 picks that balance your style, budget, and proportion cues. Here's what I'm thinking:";
+const THEA_FOLLOWUP =
+  "Want to refine further, or should I escalate to Thea, one of our GIA gemologists, for a second opinion?";
 
 export const Route = createFileRoute("/copilot")({
   head: () => ({
