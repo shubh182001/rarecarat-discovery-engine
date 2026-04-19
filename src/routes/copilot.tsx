@@ -203,7 +203,7 @@ type Message =
 const initialMessages: Message[] = [
   { id: "u1", role: "user", text: VINTAGE_QUERY },
   { id: "a1", role: "ai", text: THEA_INTRO, audioSrc: "/thea_response.mp3", rings },
-  { id: "a2", role: "ai", text: THEA_FOLLOWUP },
+  { id: "a2", role: "ai", text: THEA_FOLLOWUP, audioSrc: "/thea_response.mp3" },
 ];
 
 function detectProfileUpdate(
