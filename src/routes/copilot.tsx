@@ -216,6 +216,7 @@ function CopilotPage() {
   const recognitionRef = useRef<any>(null);
   const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const finalTranscriptRef = useRef<string>("");
+  const lastAiId = [...messages].reverse().find((m) => m.role === "ai")?.id;
 
   useEffect(() => {
     const el = scrollRef.current;
