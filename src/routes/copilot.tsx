@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Sparkles, Send, ArrowRight } from "lucide-react";
+import { Sparkles, Send, ArrowRight, Network, Headset } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ringImage from "@/assets/ring-placeholder.jpg";
@@ -302,6 +302,40 @@ function CopilotPage() {
             </Link>
           </div>
         </aside>
+      </div>
+
+      {/* Cross-links to related demo surfaces */}
+      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        <Link
+          to="/profile"
+          className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-gold hover:shadow-[0_8px_30px_-8px_color-mix(in_oklab,var(--gold)_40%,transparent)]"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Network className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">Under the hood</p>
+              <p className="font-serif text-base font-semibold text-primary">See the underlying preference graph</p>
+            </div>
+          </div>
+          <ArrowRight className="h-5 w-5 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-gold" />
+        </Link>
+        <Link
+          to="/gemologist"
+          className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-gold hover:shadow-[0_8px_30px_-8px_color-mix(in_oklab,var(--gold)_40%,transparent)]"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Headset className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">Behind the curtain</p>
+              <p className="font-serif text-base font-semibold text-primary">See the gemologist-side copilot</p>
+            </div>
+          </div>
+          <ArrowRight className="h-5 w-5 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-gold" />
+        </Link>
       </div>
     </section>
   );
