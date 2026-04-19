@@ -1,9 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Sparkles, Send, ArrowRight, Network, Headset } from "lucide-react";
+import { Sparkles, Send, ArrowRight, Network, Headset, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { VoicePlayButton } from "@/components/VoicePlayButton";
 import ringImage from "@/assets/ring-placeholder.jpg";
+
+const VINTAGE_QUERY =
+  "I want something vintage-looking but modern, under $3k, my girlfriend has small fingers and an artsy style";
+const THEA_INTRO =
+  "Great brief. I've pulled 5 picks that balance your style, budget, and proportion cues. Here's what I'm thinking:";
+const THEA_FOLLOWUP =
+  "Want to refine further, or should I escalate to Thea, one of our GIA gemologists, for a second opinion?";
 
 export const Route = createFileRoute("/copilot")({
   head: () => ({
@@ -112,6 +120,16 @@ const profileRows = [
 
 function CopilotPage() {
   const [input, setInput] = useState("");
+  const [listening, setListening] = useState(false);
+
+  const startListening = () => {
+    if (listening) return;
+    setListening(true);
+    setTimeout(() => {
+      setInput(VINTAGE_QUERY);
+      setListening(false);
+    }, 2000);
+  };
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-12">
@@ -126,13 +144,18 @@ function CopilotPage() {
         {/* LEFT: Chat */}
         <div className="flex flex-col rounded-2xl border border-border bg-surface shadow-[var(--shadow-soft)]">
           {/* Header */}
-          <div className="flex items-center gap-2 border-b border-border px-6 py-4">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-gold">
-              <Sparkles className="h-4 w-4" />
-            </span>
-            <h2 className="font-serif text-lg font-semibold text-primary">
-              Your Rare Carat Copilot
-            </h2>
+          <div className="flex flex-col gap-1 border-b border-border px-6 py-4">
+            <div className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-gold">
+                <Sparkles className="h-4 w-4" />
+              </span>
+              <h2 className="font-serif text-lg font-semibold text-primary">
+                Your Rare Carat Copilot
+              </h2>
+            </div>
+            <p className="ml-10 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              <span aria-hidden>🎙</span> Voice-enabled · Try speaking your query
+            </p>
           </div>
 
           {/* Messages */}
@@ -147,9 +170,11 @@ function CopilotPage() {
 
             {/* AI message */}
             <div className="flex justify-start animate-fade-in">
-              <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-primary shadow-sm">
-                Great brief. I've pulled 5 picks that balance your style, budget, and
-                proportion cues. Here's what I'm thinking:
+              <div className="relative max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 pr-10 text-sm text-primary shadow-sm">
+                {THEA_INTRO}
+                <div className="absolute right-1.5 top-1.5">
+                  <VoicePlayButton text={THEA_INTRO} audioSrc="/thea_response.mp3" />
+                </div>
               </div>
             </div>
 
@@ -201,9 +226,11 @@ function CopilotPage() {
               className="flex justify-start animate-fade-in"
               style={{ animationDelay: "800ms", animationFillMode: "both" }}
             >
-              <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-primary shadow-sm">
-                Want to refine further, or should I escalate to Thea, one of our GIA
-                gemologists, for a second opinion?
+              <div className="relative max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 pr-10 text-sm text-primary shadow-sm">
+                {THEA_FOLLOWUP}
+                <div className="absolute right-1.5 top-1.5">
+                  <VoicePlayButton text={THEA_FOLLOWUP} />
+                </div>
               </div>
             </div>
 
@@ -233,10 +260,25 @@ function CopilotPage() {
               }}
               className="flex items-center gap-2"
             >
+              <button
+                type="button"
+                onClick={startListening}
+                aria-label={listening ? "Listening" : "Start voice input"}
+                className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-gold ${
+                  listening ? "border-gold text-gold" : "text-muted-foreground"
+                }`}
+              >
+                <Mic className={`h-4 w-4 ${listening ? "animate-pulse text-gold" : ""}`} />
+              </button>
+              {listening && (
+                <span className="text-xs font-medium uppercase tracking-wider text-gold animate-pulse">
+                  Listening…
+                </span>
+              )}
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about cut, carat, or refine your picks…"
+                placeholder={listening ? "Listening for your voice…" : "Ask about cut, carat, or refine your picks…"}
                 className="flex-1 rounded-full bg-surface"
               />
               <Button
