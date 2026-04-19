@@ -1,17 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sparkles, Send, ArrowRight, Network, Headset, Mic } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VoicePlayButton } from "@/components/VoicePlayButton";
 import ringImage from "@/assets/ring-placeholder.jpg";
 
 const VINTAGE_QUERY =
-  "I want something vintage-looking but modern, under $3k, my girlfriend has small fingers and an artsy style";
+  "I want something vintage-looking but modern, under $3k, my girlfriend has small fingers and an artsy style.";
+const MIC_QUERY = "Show me something with a yellow gold band";
 const THEA_INTRO =
   "Great brief. I've pulled 5 picks that balance your style, budget, and proportion cues. Here's what I'm thinking:";
 const THEA_FOLLOWUP =
   "Want to refine further, or should I escalate to Thea, one of our GIA gemologists, for a second opinion?";
+const GENERIC_REPLY =
+  "Great question — let me think about that. In the full version, I'd refine your picks based on this. For this demo, here's what I'd surface next…";
 
 export const Route = createFileRoute("/copilot")({
   head: () => ({
@@ -110,7 +114,11 @@ const rings: Ring[] = [
   },
 ];
 
-const profileRows = [
+const followupRings = [rings[0], rings[3]];
+
+type ProfileRow = { label: string; value: string; confidence: number };
+
+const initialProfile: ProfileRow[] = [
   { label: "Style", value: "Vintage-Modern-Artsy", confidence: 85 },
   { label: "Budget", value: "Under $3,000", confidence: 100 },
   { label: "Proportions", value: "Petite / Small Fingers", confidence: 90 },
@@ -118,17 +126,102 @@ const profileRows = [
   { label: "Metal", value: "Open", confidence: 0 },
 ];
 
+type Message =
+  | { id: string; role: "user"; text: string }
+  | { id: string; role: "ai"; text: string; audioSrc?: string; rings?: Ring[] };
+
+const initialMessages: Message[] = [
+  { id: "u1", role: "user", text: VINTAGE_QUERY },
+  { id: "a1", role: "ai", text: THEA_INTRO, audioSrc: "/thea_response.mp3", rings },
+  { id: "a2", role: "ai", text: THEA_FOLLOWUP },
+];
+
+function detectProfileUpdate(
+  text: string,
+  profile: ProfileRow[],
+): { next: ProfileRow[]; updated: boolean } {
+  const lower = text.toLowerCase();
+  const next = profile.map((r) => ({ ...r }));
+  let updated = false;
+
+  const metalKeywords = /(gold|platinum|silver|rose gold|yellow gold|white gold)/;
+  const settingKeywords = /(solitaire|halo|three[- ]stone|pavé|pave|bezel|vintage|setting|band)/;
+
+  const metalMatch = lower.match(metalKeywords);
+  if (metalMatch) {
+    const metalRow = next.find((r) => r.label === "Metal");
+    if (metalRow && metalRow.confidence < 60) {
+      const matched = metalMatch[0].replace(/\b\w/g, (c) => c.toUpperCase());
+      metalRow.value = matched;
+      metalRow.confidence = Math.min(100, Math.max(metalRow.confidence + 30, 30));
+      updated = true;
+    }
+  }
+
+  if (settingKeywords.test(lower)) {
+    const settingRow = next.find((r) => r.label === "Setting");
+    if (settingRow && settingRow.confidence < 80) {
+      settingRow.confidence = Math.min(100, settingRow.confidence + 20);
+      if (settingRow.value === "Open") settingRow.value = "Refining…";
+      updated = true;
+    }
+  }
+
+  return { next, updated };
+}
+
 function CopilotPage() {
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [profile, setProfile] = useState<ProfileRow[]>(initialProfile);
+  const [isReplying, setIsReplying] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [messages, isReplying]);
 
   const startListening = () => {
     if (listening) return;
     setListening(true);
     setTimeout(() => {
-      setInput(VINTAGE_QUERY);
+      setInput(MIC_QUERY);
       setListening(false);
-    }, 2000);
+    }, 1500);
+  };
+
+  const handleSend = (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = input.trim();
+    if (!text || isReplying) return;
+
+    const userMsg: Message = { id: `u-${Date.now()}`, role: "user", text };
+    setMessages((m) => [...m, userMsg]);
+    setInput("");
+    setIsReplying(true);
+
+    const { next, updated } = detectProfileUpdate(text, profile);
+    if (updated) {
+      setProfile(next);
+      toast.success("Profile updated", { description: "New preference signals detected." });
+    } else {
+      toast("Profile updated");
+    }
+
+    setTimeout(() => {
+      setMessages((m) => [
+        ...m,
+        {
+          id: `a-${Date.now()}`,
+          role: "ai",
+          text: GENERIC_REPLY,
+          rings: followupRings,
+        },
+      ]);
+      setIsReplying(false);
+    }, 1500);
   };
 
   return (
@@ -159,85 +252,88 @@ function CopilotPage() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 space-y-6 overflow-y-auto px-4 py-6 md:px-6">
-            {/* User message */}
-            <div className="flex justify-end animate-fade-in">
-              <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-primary px-4 py-3 text-sm text-primary-foreground shadow-sm">
-                I want something vintage-looking but modern, under $3k, my girlfriend has
-                small fingers and an artsy style.
-              </div>
-            </div>
+          <div
+            ref={scrollRef}
+            className="flex-1 space-y-6 overflow-y-auto px-4 py-6 md:px-6 max-h-[70vh]"
+          >
+            {messages.map((msg) =>
+              msg.role === "user" ? (
+                <div key={msg.id} className="flex justify-end animate-fade-in">
+                  <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-primary px-4 py-3 text-sm text-primary-foreground shadow-sm">
+                    {msg.text}
+                  </div>
+                </div>
+              ) : (
+                <div key={msg.id} className="space-y-4 animate-fade-in">
+                  <div className="flex justify-start">
+                    <div className="relative max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 pr-10 text-sm text-primary shadow-sm">
+                      {msg.text}
+                      <div className="absolute right-1.5 top-1.5">
+                        <VoicePlayButton text={msg.text} audioSrc={msg.audioSrc} />
+                      </div>
+                    </div>
+                  </div>
 
-            {/* AI message */}
-            <div className="flex justify-start animate-fade-in">
-              <div className="relative max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 pr-10 text-sm text-primary shadow-sm">
-                {THEA_INTRO}
-                <div className="absolute right-1.5 top-1.5">
-                  <VoicePlayButton text={THEA_INTRO} audioSrc="/thea_response.mp3" />
+                  {msg.rings && msg.rings.length > 0 && (
+                    <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 xl:grid-cols-3">
+                      {msg.rings.map((ring, i) => (
+                        <article
+                          key={`${msg.id}-${ring.name}`}
+                          className="group min-w-[280px] flex-shrink-0 animate-fade-in rounded-xl border border-border bg-background p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-[0_8px_30px_-8px_color-mix(in_oklab,var(--gold)_40%,transparent)] md:min-w-0"
+                          style={{ animationDelay: `${150 + i * 100}ms`, animationFillMode: "both" }}
+                        >
+                          <div className="mb-3 aspect-square overflow-hidden rounded-lg bg-surface">
+                            <img
+                              src={ringImage}
+                              alt={ring.name}
+                              loading="lazy"
+                              width={768}
+                              height={768}
+                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          </div>
+                          <h3 className="font-serif text-base font-semibold text-primary">
+                            {ring.name}
+                          </h3>
+                          <p className="mt-1 text-xs text-muted-foreground">{ring.specs}</p>
+                          <p className="mt-2 font-serif text-xl font-semibold text-primary">
+                            {ring.price}
+                          </p>
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {ring.chips.map((chip) => (
+                              <span
+                                key={chip.label}
+                                className="inline-flex items-center gap-1 rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-primary"
+                              >
+                                <span className={`h-1.5 w-1.5 rounded-full ${chip.color}`} />
+                                {chip.label} {chip.value}%
+                              </span>
+                            ))}
+                          </div>
+                          <p className="mt-3 text-xs italic leading-relaxed text-muted-foreground">
+                            {ring.reasoning}
+                          </p>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ),
+            )}
+
+            {isReplying && (
+              <div className="flex justify-start animate-fade-in">
+                <div className="rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-muted-foreground shadow-sm">
+                  <span className="inline-flex gap-1">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" />
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold [animation-delay:150ms]" />
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold [animation-delay:300ms]" />
+                  </span>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Product cards */}
-            <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 xl:grid-cols-3">
-              {rings.map((ring, i) => (
-                <article
-                  key={ring.name}
-                  className="group min-w-[280px] flex-shrink-0 animate-fade-in rounded-xl border border-border bg-background p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-[0_8px_30px_-8px_color-mix(in_oklab,var(--gold)_40%,transparent)] md:min-w-0"
-                  style={{ animationDelay: `${150 + i * 100}ms`, animationFillMode: "both" }}
-                >
-                  <div className="mb-3 aspect-square overflow-hidden rounded-lg bg-surface">
-                    <img
-                      src={ringImage}
-                      alt={ring.name}
-                      loading="lazy"
-                      width={768}
-                      height={768}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <h3 className="font-serif text-base font-semibold text-primary">
-                    {ring.name}
-                  </h3>
-                  <p className="mt-1 text-xs text-muted-foreground">{ring.specs}</p>
-                  <p className="mt-2 font-serif text-xl font-semibold text-primary">
-                    {ring.price}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {ring.chips.map((chip) => (
-                      <span
-                        key={chip.label}
-                        className="inline-flex items-center gap-1 rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-primary"
-                      >
-                        <span className={`h-1.5 w-1.5 rounded-full ${chip.color}`} />
-                        {chip.label} {chip.value}%
-                      </span>
-                    ))}
-                  </div>
-                  <p className="mt-3 text-xs italic leading-relaxed text-muted-foreground">
-                    {ring.reasoning}
-                  </p>
-                </article>
-              ))}
-            </div>
-
-            {/* Follow-up AI message */}
-            <div
-              className="flex justify-start animate-fade-in"
-              style={{ animationDelay: "800ms", animationFillMode: "both" }}
-            >
-              <div className="relative max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 pr-10 text-sm text-primary shadow-sm">
-                {THEA_FOLLOWUP}
-                <div className="absolute right-1.5 top-1.5">
-                  <VoicePlayButton text={THEA_FOLLOWUP} />
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="flex flex-wrap gap-2 animate-fade-in"
-              style={{ animationDelay: "900ms", animationFillMode: "both" }}
-            >
+            <div className="flex flex-wrap gap-2 animate-fade-in">
               <Button variant="outline" size="sm" className="rounded-full">
                 Refine: smaller size
               </Button>
@@ -253,13 +349,7 @@ function CopilotPage() {
 
           {/* Input */}
           <div className="border-t border-border bg-background/50 px-4 py-3 md:px-6">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setInput("");
-              }}
-              className="flex items-center gap-2"
-            >
+            <form onSubmit={handleSend} className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={startListening}
@@ -278,12 +368,15 @@ function CopilotPage() {
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={listening ? "Listening for your voice…" : "Ask about cut, carat, or refine your picks…"}
+                placeholder={
+                  listening ? "Listening for your voice…" : "Ask about cut, carat, or refine your picks…"
+                }
                 className="flex-1 rounded-full bg-surface"
               />
               <Button
                 type="submit"
                 size="icon"
+                disabled={!input.trim() || isReplying}
                 className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 <Send className="h-4 w-4" />
@@ -306,7 +399,7 @@ function CopilotPage() {
             </h2>
 
             <div className="mt-6 space-y-5">
-              {profileRows.map((row, i) => (
+              {profile.map((row, i) => (
                 <div
                   key={row.label}
                   className="animate-fade-in"
@@ -346,7 +439,7 @@ function CopilotPage() {
         </aside>
       </div>
 
-      {/* Cross-links to related demo surfaces */}
+      {/* Cross-links */}
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         <Link
           to="/profile"
