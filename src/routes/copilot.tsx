@@ -213,19 +213,128 @@ function CopilotPage() {
   const [profile, setProfile] = useState<ProfileRow[]>(initialProfile);
   const [isReplying, setIsReplying] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
+  const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const finalTranscriptRef = useRef<string>("");
 
   useEffect(() => {
     const el = scrollRef.current;
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, isReplying]);
 
-  const startListening = () => {
-    if (listening) return;
+  useEffect(() => {
+    return () => {
+      if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+      try {
+        recognitionRef.current?.stop();
+      } catch {}
+    };
+  }, []);
+
+  const simulatedFallback = () => {
     setListening(true);
     setTimeout(() => {
       setInput(MIC_QUERY);
       setListening(false);
     }, 1500);
+  };
+
+  const stopListening = () => {
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+    try {
+      recognitionRef.current?.stop();
+    } catch {}
+  };
+
+  const startListening = () => {
+    if (listening) {
+      stopListening();
+      return;
+    }
+
+    const SR =
+      typeof window !== "undefined" &&
+      ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
+
+    if (!SR) {
+      toast("Voice not supported in this browser", {
+        description: "Showing simulated query instead.",
+      });
+      simulatedFallback();
+      return;
+    }
+
+    try {
+      const recognition = new SR();
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+      recognition.maxAlternatives = 1;
+      recognitionRef.current = recognition;
+      finalTranscriptRef.current = "";
+
+      const resetSilenceTimer = () => {
+        if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+        silenceTimerRef.current = setTimeout(() => {
+          try {
+            recognition.stop();
+          } catch {}
+        }, 2000);
+      };
+
+      recognition.onstart = () => {
+        setListening(true);
+        resetSilenceTimer();
+      };
+
+      recognition.onresult = (event: any) => {
+        let interim = "";
+        let finalText = finalTranscriptRef.current;
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const result = event.results[i];
+          const transcript = result[0]?.transcript ?? "";
+          if (result.isFinal) {
+            finalText += transcript;
+          } else {
+            interim += transcript;
+          }
+        }
+        finalTranscriptRef.current = finalText;
+        setInput((finalText + interim).trimStart());
+        resetSilenceTimer();
+      };
+
+      recognition.onerror = (event: any) => {
+        if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+        setListening(false);
+        if (event?.error === "not-allowed" || event?.error === "service-not-allowed") {
+          toast("Microphone access required", {
+            description: "Showing simulated query instead.",
+          });
+          simulatedFallback();
+        } else if (event?.error === "no-speech" || event?.error === "aborted") {
+          // silent — user just didn't speak
+        } else {
+          toast("Couldn't catch that, try again or type");
+        }
+      };
+
+      recognition.onend = () => {
+        if (silenceTimerRef.current) {
+          clearTimeout(silenceTimerRef.current);
+          silenceTimerRef.current = null;
+        }
+        setListening(false);
+      };
+
+      recognition.start();
+    } catch {
+      setListening(false);
+      simulatedFallback();
+    }
   };
 
   const handleSend = (e: React.FormEvent) => {
