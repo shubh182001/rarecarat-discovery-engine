@@ -56,7 +56,7 @@ const strengths: Tile[] = [
   {
     icon: Star,
     stat: "5.0 / 5.0",
-    title: "Trustpilot's #1 Rated Jeweler (2024–2026)",
+    title: "Trustpilot's #1 Rated Jeweler (2024, 2026)",
     description:
       "Rare Carat holds a perfect 5-star rating across 3,600+ verified reviews, with 98% at 5 stars. Customers consistently name specific staff (Matthew H., Cait, CEO Ajay Anand) as the reason to choose Rare Carat over Blue Nile or James Allen.",
     quote:
@@ -80,7 +80,7 @@ const strengths: Tile[] = [
     description:
       "100+ GIA-trained gemologists available 24/7 via chat, free and unbiased. Named gemologists appear repeatedly in 5-star reviews.",
     quote:
-      "Shoppers who chat convert at 12.3% versus 3.1% for non-chatters — a 4x higher conversion rate.",
+      "Shoppers who chat convert at 12.3% versus 3.1% for non-chatters, a 4x higher conversion rate.",
     citation: "Makebot.ai Ecommerce Conversion Report 2026",
   },
   {
@@ -88,9 +88,9 @@ const strengths: Tile[] = [
     stat: "Up to 40% Below Retail",
     title: "Marketplace Pricing Advantage",
     description:
-      "Aggregating across vetted wholesalers and operating without brick-and-mortar overhead, Rare Carat delivers prices 20–40% below traditional jewelers on comparable specs.",
+      "Aggregating across vetted wholesalers and operating without brick-and-mortar overhead, Rare Carat delivers prices 20, 40% below traditional jewelers on comparable specs.",
     quote:
-      "Natural diamond producers slashed prices 10–15% in 2024 to compete with lab-grown's massive success.",
+      "Natural diamond producers slashed prices 10, 15% in 2024 to compete with lab-grown's massive success.",
     citation: "McKinsey & Co. Diamond Industry Report 2025",
   },
   {
@@ -111,7 +111,7 @@ const gaps: Tile[] = [
     stat: "40x Zoom, Standardized",
     title: "James Allen's 360° HD Video Consistency",
     description:
-      "James Allen pioneered 40x Super Zoom for every diamond with in-house standardized imaging. Rare Carat's video quality varies by supplier — a trust gap.",
+      "James Allen pioneered 40x Super Zoom for every diamond with in-house standardized imaging. Rare Carat's video quality varies by supplier, a trust gap.",
     quote:
       "James Allen pioneered virtual loupe technology, providing comprehensive 360HD videos for detailed inspection.",
     citation: "PriceScope Industry Review 2024",
@@ -131,7 +131,7 @@ const gaps: Tile[] = [
     stat: "Free Replica in 48 Hours",
     title: "With Clarity's Home Try-On",
     description:
-      "With Clarity ships a free non-precious replica of any setting for home try-on before buyers commit. Rare Carat has no equivalent, despite 2–3 week build waits cited as 'nerve-racking' in reviews.",
+      "With Clarity ships a free non-precious replica of any setting for home try-on before buyers commit. Rare Carat has no equivalent, despite 2, 3 week build waits cited as 'nerve-racking' in reviews.",
     quote:
       "Only 34% of consumers believe retailers are good at personalization, while 71% of retailers think they excel at it.",
     citation: "Sailthru Personalization Study, Rep AI 2025",
@@ -233,7 +233,7 @@ function HomePage() {
           Rare Carat Today
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-          A snapshot of where the brand stands — and where it can go next.
+          A snapshot of where the brand stands, and where it can go next.
         </p>
 
         <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs text-muted-foreground md:text-sm">

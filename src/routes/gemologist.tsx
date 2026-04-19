@@ -30,7 +30,7 @@ export const Route = createFileRoute("/gemologist")({
       { property: "og:title", content: "Gemologist View · Rare Carat Discoverability" },
       {
         property: "og:description",
-        content: "Staff-side AI Assist console — Copilot-augmented gemologist workflow.",
+        content: "Staff-side AI Assist console, Copilot-augmented gemologist workflow.",
       },
     ],
   }),
@@ -48,7 +48,7 @@ const queue = [
   },
   {
     name: "Marcus R.",
-    preview: "Looking at a 2ct oval lab — is the SI1 clarity going to show inclusions?",
+    preview: "Looking at a 2ct oval lab, is the SI1 clarity going to show inclusions?",
     wait: "1 min",
     priority: "normal",
   },
@@ -66,7 +66,7 @@ const queue = [
   },
   {
     name: "Emma L.",
-    preview: "Following up — did the appraisal come back on the cushion I saved?",
+    preview: "Following up, did the appraisal come back on the cushion I saved?",
     wait: "8 min",
     priority: "warm",
   },
@@ -96,7 +96,7 @@ const flags = [
 ];
 
 const defaultDraft =
-  "Hi Sarah! Great brief. I've pulled 5 picks that I think balance vintage character with modern silhouettes, all under your $3k budget, and sized right for petite fingers. My top pick would be the Mila Vintage-Inspired Solitaire at $2,050 — the milgrain detailing gives it classic character while the clean solitaire reads modern. Want me to walk you through the alternatives, or does this direction feel right?";
+  "Hi Sarah! Great brief. I've pulled 5 picks that I think balance vintage character with modern silhouettes, all under your $3k budget, and sized right for petite fingers. My top pick would be the Mila Vintage-Inspired Solitaire at $2,050, the milgrain detailing gives it classic character while the clean solitaire reads modern. Want me to walk you through the alternatives, or does this direction feel right?";
 
 function priorityIcon(p: string) {
   if (p === "hot") return <Flame className="h-3 w-3 text-destructive" />;
@@ -139,7 +139,7 @@ function GemologistPage() {
       <div className="border-b border-gold/30 bg-gold/15">
         <div className="mx-auto flex max-w-7xl items-center gap-2 px-6 py-2.5 text-xs font-medium text-primary">
           <Sparkles className="h-3.5 w-3.5 text-gold" />
-          Demo: Gemologist-Side Copilot — what Thea sees when a customer chats
+          Demo: Gemologist-Side Copilot, what Thea sees when a customer chats
         </div>
       </div>
 

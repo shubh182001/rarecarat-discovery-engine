@@ -15,7 +15,7 @@ const THEA_INTRO =
 const THEA_FOLLOWUP =
   "Want to refine further, or should I escalate to Thea, one of our GIA gemologists, for a second opinion?";
 const GENERIC_REPLY =
-  "Great question — let me think about that. In the full version, I'd refine your picks based on this. For this demo, here's what I'd surface next…";
+  "Great question, let me think about that. In the full version, I'd refine your picks based on this. For this demo, here's what I'd surface next…";
 
 export const Route = createFileRoute("/copilot")({
   head: () => ({
@@ -132,7 +132,7 @@ type ReplyKey = "cut" | "metal" | "size" | "lab" | "vintage" | "default";
 
 const REPLIES: Record<ReplyKey, { text: string; rings: Ring[] }> = {
   cut: {
-    text: "Great question on cut quality. Of the 5 picks, the Mila and Hayden have the highest cut grades — both are Excellent rated. Cut affects how the diamond handles light more than any other factor. The Madison three-stone has a slightly softer cut grade because pear shapes show variation. Want me to filter to only Excellent-cut diamonds?",
+    text: "Great question on cut quality. Of the 5 picks, the Mila and Hayden have the highest cut grades, both are Excellent rated. Cut affects how the diamond handles light more than any other factor. The Madison three-stone has a slightly softer cut grade because pear shapes show variation. Want me to filter to only Excellent-cut diamonds?",
     rings: [rings[0], rings[3]],
   },
   metal: {
@@ -317,7 +317,7 @@ function CopilotPage() {
           });
           simulatedFallback();
         } else if (event?.error === "no-speech" || event?.error === "aborted") {
-          // silent — user just didn't speak
+          // silent, user just didn't speak
         } else {
           toast("Couldn't catch that, try again or type");
         }

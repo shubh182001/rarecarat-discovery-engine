@@ -51,7 +51,7 @@ const radarData = [
 
 const preferences = [
   { label: "Style", value: "Vintage-Modern-Artsy" },
-  { label: "Budget", value: "$2,000 – $3,000" },
+  { label: "Budget", value: "$2,000, $3,000" },
   { label: "Proportions", value: "Petite / Small Fingers" },
   { label: "Quality Tier", value: "Balanced (VS2+, F+ color)" },
   { label: "Setting Style", value: "Open to suggestions" },
