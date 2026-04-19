@@ -1,4 +1,7 @@
 import { Link, Outlet } from "@tanstack/react-router";
+import { PhaseIndicator } from "@/components/PhaseIndicator";
+import { PageTransition } from "@/components/PageTransition";
+import { AboutDemoButton } from "@/components/AboutDemoButton";
 
 const navItems = [
   { to: "/", label: "Current State" },
@@ -32,7 +35,7 @@ export function SiteLayout() {
                 key={item.to}
                 to={item.to}
                 activeOptions={{ exact: item.to === "/" }}
-                className="rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
+                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
               >
                 {item.label}
               </Link>
@@ -45,7 +48,7 @@ export function SiteLayout() {
               key={item.to}
               to={item.to}
               activeOptions={{ exact: item.to === "/" }}
-              className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
+              className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
             >
               {item.label}
             </Link>
@@ -53,8 +56,12 @@ export function SiteLayout() {
         </nav>
       </header>
 
+      <PhaseIndicator />
+
       <main className="flex-1">
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </main>
 
       <footer className="border-t border-border/60 bg-surface/40">
@@ -62,6 +69,8 @@ export function SiteLayout() {
           Built by Shubh Dhar for Rare Carat · Concept demo · April 2026
         </div>
       </footer>
+
+      <AboutDemoButton />
     </div>
   );
 }
