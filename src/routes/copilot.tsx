@@ -206,40 +206,6 @@ const initialMessages: Message[] = [
   { id: "a2", role: "ai", text: THEA_FOLLOWUP, audioSrc: "/thea_response.mp3" },
 ];
 
-function detectProfileUpdate(
-  text: string,
-  profile: ProfileRow[],
-): { next: ProfileRow[]; updated: boolean } {
-  const lower = text.toLowerCase();
-  const next = profile.map((r) => ({ ...r }));
-  let updated = false;
-
-  const metalKeywords = /(gold|platinum|silver|rose gold|yellow gold|white gold)/;
-  const settingKeywords = /(solitaire|halo|three[- ]stone|pavé|pave|bezel|vintage|setting|band)/;
-
-  const metalMatch = lower.match(metalKeywords);
-  if (metalMatch) {
-    const metalRow = next.find((r) => r.label === "Metal");
-    if (metalRow && metalRow.confidence < 60) {
-      const matched = metalMatch[0].replace(/\b\w/g, (c) => c.toUpperCase());
-      metalRow.value = matched;
-      metalRow.confidence = Math.min(100, Math.max(metalRow.confidence + 30, 30));
-      updated = true;
-    }
-  }
-
-  if (settingKeywords.test(lower)) {
-    const settingRow = next.find((r) => r.label === "Setting");
-    if (settingRow && settingRow.confidence < 80) {
-      settingRow.confidence = Math.min(100, settingRow.confidence + 20);
-      if (settingRow.value === "Open") settingRow.value = "Refining…";
-      updated = true;
-    }
-  }
-
-  return { next, updated };
-}
-
 function CopilotPage() {
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
