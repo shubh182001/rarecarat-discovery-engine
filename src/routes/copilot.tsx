@@ -170,9 +170,11 @@ function CopilotPage() {
 
             {/* AI message */}
             <div className="flex justify-start animate-fade-in">
-              <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-primary shadow-sm">
-                Great brief. I've pulled 5 picks that balance your style, budget, and
-                proportion cues. Here's what I'm thinking:
+              <div className="relative max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 pr-10 text-sm text-primary shadow-sm">
+                {THEA_INTRO}
+                <div className="absolute right-1.5 top-1.5">
+                  <VoicePlayButton text={THEA_INTRO} audioSrc="/thea_response.mp3" />
+                </div>
               </div>
             </div>
 
@@ -224,9 +226,11 @@ function CopilotPage() {
               className="flex justify-start animate-fade-in"
               style={{ animationDelay: "800ms", animationFillMode: "both" }}
             >
-              <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-primary shadow-sm">
-                Want to refine further, or should I escalate to Thea, one of our GIA
-                gemologists, for a second opinion?
+              <div className="relative max-w-[85%] rounded-2xl rounded-tl-sm bg-muted px-4 py-3 pr-10 text-sm text-primary shadow-sm">
+                {THEA_FOLLOWUP}
+                <div className="absolute right-1.5 top-1.5">
+                  <VoicePlayButton text={THEA_FOLLOWUP} />
+                </div>
               </div>
             </div>
 
@@ -256,10 +260,25 @@ function CopilotPage() {
               }}
               className="flex items-center gap-2"
             >
+              <button
+                type="button"
+                onClick={startListening}
+                aria-label={listening ? "Listening" : "Start voice input"}
+                className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-gold ${
+                  listening ? "border-gold text-gold" : "text-muted-foreground"
+                }`}
+              >
+                <Mic className={`h-4 w-4 ${listening ? "animate-pulse text-gold" : ""}`} />
+              </button>
+              {listening && (
+                <span className="text-xs font-medium uppercase tracking-wider text-gold animate-pulse">
+                  Listening…
+                </span>
+              )}
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about cut, carat, or refine your picks…"
+                placeholder={listening ? "Listening for your voice…" : "Ask about cut, carat, or refine your picks…"}
                 className="flex-1 rounded-full bg-surface"
               />
               <Button

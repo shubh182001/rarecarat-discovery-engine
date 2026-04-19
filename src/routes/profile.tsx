@@ -16,6 +16,7 @@ import {
   Heart,
   Search,
   Sparkles,
+  Mic,
 } from "lucide-react";
 
 export const Route = createFileRoute("/profile")({
@@ -99,6 +100,11 @@ const personalizations = [
     title: "Email",
     icon: Mail,
     text: "Only vintage-modern arrivals under $3k trigger alerts.",
+  },
+  {
+    title: "Voice",
+    icon: Mic,
+    text: "Conversations via voice (on-site, in-ad, or smart speaker) extract preferences just like text. Your profile grows across every channel.",
   },
 ];
 
@@ -275,7 +281,7 @@ function ProfilePage() {
             How this personalizes your experience
           </h2>
         </div>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {personalizations.map((card) => {
             const Icon = card.icon;
             return (
