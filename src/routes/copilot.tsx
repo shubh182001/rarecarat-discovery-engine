@@ -272,7 +272,8 @@ function CopilotPage() {
     setInput("");
     setIsReplying(true);
 
-    const { next, updated } = detectProfileUpdate(text, profile);
+    const key = classifyMessage(text);
+    const { next, updated } = applyProfileForReply(key, profile);
     if (updated) {
       setProfile(next);
       toast.success("Profile updated", { description: "New preference signals detected." });
@@ -280,14 +281,16 @@ function CopilotPage() {
       toast("Profile updated");
     }
 
+    const reply = REPLIES[key];
     setTimeout(() => {
       setMessages((m) => [
         ...m,
         {
           id: `a-${Date.now()}`,
           role: "ai",
-          text: GENERIC_REPLY,
-          rings: followupRings,
+          text: reply.text,
+          audioSrc: "/thea_response.mp3",
+          rings: reply.rings,
         },
       ]);
       setIsReplying(false);
