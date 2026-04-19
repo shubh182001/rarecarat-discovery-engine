@@ -45,6 +45,12 @@ export const Route = createRootRoute({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Rare Carat · Discoverability Engine" },
+      { name: "description", content: "Rare Carat: Discoverability Engine is a multi-page demo web app for luxury e-commerce." },
+      { property: "og:description", content: "Rare Carat: Discoverability Engine is a multi-page demo web app for luxury e-commerce." },
+      { name: "twitter:description", content: "Rare Carat: Discoverability Engine is a multi-page demo web app for luxury e-commerce." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/46f5d273-9156-428d-a824-3f48e7ccd78e/id-preview-f207e531--545e0e21-9834-4371-8e7b-5fd9f9f43872.lovable.app-1776595838413.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/46f5d273-9156-428d-a824-3f48e7ccd78e/id-preview-f207e531--545e0e21-9834-4371-8e7b-5fd9f9f43872.lovable.app-1776595838413.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
