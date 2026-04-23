@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 import {
   Radar,
   RadarChart,
@@ -9,6 +10,8 @@ import {
 } from "recharts";
 import {
   Pencil,
+  Check,
+  X,
   Home as HomeIcon,
   GitCompare,
   Mail,
