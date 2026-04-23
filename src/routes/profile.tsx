@@ -52,7 +52,7 @@ const radarData = [
   { axis: "Setting Style", current: 30, prev1: 25, prev2: 15, prev3: 10 },
 ];
 
-const preferences = [
+const initialPreferences = [
   { label: "Style", value: "Vintage-Modern-Artsy" },
   { label: "Budget", value: "$2,000, $3,000" },
   { label: "Proportions", value: "Petite / Small Fingers" },
