@@ -441,9 +441,9 @@ function TileCard({
         </h3>
 
         {/* Slide-down expandable section */}
-        <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] group-focus-within:grid-rows-[1fr]">
+        <div className={`grid transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] group-focus-within:grid-rows-[1fr] ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
           <div className="overflow-hidden">
-            <div className="pt-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+            <div className={`pt-4 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100 ${isOpen ? "opacity-100" : "opacity-0"}`}>
               <p className="text-xs leading-relaxed text-muted-foreground">
                 {tile.description}
               </p>
