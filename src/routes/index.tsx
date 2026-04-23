@@ -392,6 +392,7 @@ function TileCard({
 }) {
   const Icon = tile.icon;
   const animatedStat = useCountUp(tile.stat, 1600, delay);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Warm gold accents for strengths, cool navy/crimson for gaps.
   const tone =
@@ -416,11 +417,13 @@ function TileCard({
 
   return (
     <article
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 ${tone.hoverBorder} ${tone.hoverShadow} ${className}`}
+      onClick={() => setIsOpen((v) => !v)}
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 cursor-pointer ${isOpen ? "is-open -translate-y-1.5" : ""} ${tone.hoverBorder} ${tone.hoverShadow} ${className}`}
+      aria-expanded={isOpen}
     >
       {/* Top accent stripe */}
       <div
-        className={`h-[3px] w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${tone.topStripe}`}
+        className={`h-[3px] w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${isOpen ? "!scale-x-100" : ""} ${tone.topStripe}`}
       />
 
       <div className="flex flex-1 flex-col p-5">
@@ -438,9 +441,9 @@ function TileCard({
         </h3>
 
         {/* Slide-down expandable section */}
-        <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] group-focus-within:grid-rows-[1fr]">
+        <div className={`grid transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] group-focus-within:grid-rows-[1fr] ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
           <div className="overflow-hidden">
-            <div className="pt-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+            <div className={`pt-4 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100 ${isOpen ? "opacity-100" : "opacity-0"}`}>
               <p className="text-xs leading-relaxed text-muted-foreground">
                 {tile.description}
               </p>
@@ -469,8 +472,9 @@ function TileCard({
           </div>
         </div>
 
-        <p className="mt-3 text-[10px] uppercase tracking-wider text-muted-foreground transition-opacity duration-200 group-hover:opacity-0">
-          Hover for research →
+        <p className={`mt-3 text-[10px] uppercase tracking-wider text-muted-foreground transition-opacity duration-200 group-hover:opacity-0 ${isOpen ? "opacity-0" : ""}`}>
+          <span className="hidden md:inline">Hover for research →</span>
+          <span className="md:hidden">Tap for research →</span>
         </p>
       </div>
     </article>
