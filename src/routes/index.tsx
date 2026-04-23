@@ -417,11 +417,13 @@ function TileCard({
 
   return (
     <article
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 ${tone.hoverBorder} ${tone.hoverShadow} ${className}`}
+      onClick={() => setIsOpen((v) => !v)}
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 cursor-pointer ${isOpen ? "is-open -translate-y-1.5" : ""} ${tone.hoverBorder} ${tone.hoverShadow} ${className}`}
+      aria-expanded={isOpen}
     >
       {/* Top accent stripe */}
       <div
-        className={`h-[3px] w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${tone.topStripe}`}
+        className={`h-[3px] w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${isOpen ? "!scale-x-100" : ""} ${tone.topStripe}`}
       />
 
       <div className="flex flex-1 flex-col p-5">
