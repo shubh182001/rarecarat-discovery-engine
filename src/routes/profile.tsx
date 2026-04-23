@@ -244,29 +244,67 @@ function ProfilePage() {
             Your Preferences
           </h2>
           <div className="space-y-3">
-            {preferences.map((p, i) => (
-              <div
-                key={p.label}
-                className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-surface px-4 py-3 shadow-sm transition-colors hover:border-gold/60 animate-fade-in"
-                style={{ animationDelay: `${i * 60}ms`, animationFillMode: "both" }}
-              >
-                <div className="min-w-0">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                    {p.label}
-                  </p>
-                  <p className="mt-0.5 truncate text-sm font-medium text-primary">
-                    {p.value}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background hover:text-gold"
-                  aria-label={`Edit ${p.label}`}
+            {preferences.map((p, i) => {
+              const isEditing = editingIndex === i;
+              return (
+                <div
+                  key={p.label}
+                  className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-surface px-4 py-3 shadow-sm transition-colors hover:border-gold/60 animate-fade-in"
+                  style={{ animationDelay: `${i * 60}ms`, animationFillMode: "both" }}
                 >
-                  <Pencil className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            ))}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                      {p.label}
+                    </p>
+                    {isEditing ? (
+                      <input
+                        ref={inputRef}
+                        value={draft}
+                        onChange={(e) => setDraft(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") saveEdit();
+                          if (e.key === "Escape") cancelEdit();
+                        }}
+                        className="mt-0.5 w-full rounded-md border border-gold/60 bg-background px-2 py-1 text-sm font-medium text-primary outline-none focus:ring-2 focus:ring-gold/40"
+                      />
+                    ) : (
+                      <p className="mt-0.5 truncate text-sm font-medium text-primary">
+                        {p.value}
+                      </p>
+                    )}
+                  </div>
+                  {isEditing ? (
+                    <div className="flex flex-shrink-0 items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={saveEdit}
+                        className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background hover:text-gold"
+                        aria-label="Save"
+                      >
+                        <Check className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={cancelEdit}
+                        className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background hover:text-destructive"
+                        aria-label="Cancel"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => startEdit(i)}
+                      className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background hover:text-gold"
+                      aria-label={`Edit ${p.label}`}
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
