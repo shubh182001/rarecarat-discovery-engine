@@ -392,6 +392,7 @@ function TileCard({
 }) {
   const Icon = tile.icon;
   const animatedStat = useCountUp(tile.stat, 1600, delay);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Warm gold accents for strengths, cool navy/crimson for gaps.
   const tone =
