@@ -472,8 +472,9 @@ function TileCard({
           </div>
         </div>
 
-        <p className="mt-3 text-[10px] uppercase tracking-wider text-muted-foreground transition-opacity duration-200 group-hover:opacity-0">
-          Hover for research →
+        <p className={`mt-3 text-[10px] uppercase tracking-wider text-muted-foreground transition-opacity duration-200 group-hover:opacity-0 ${isOpen ? "opacity-0" : ""}`}>
+          <span className="hidden md:inline">Hover for research →</span>
+          <span className="md:hidden">Tap for research →</span>
         </p>
       </div>
     </article>
