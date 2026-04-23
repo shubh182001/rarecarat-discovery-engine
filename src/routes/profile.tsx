@@ -121,6 +121,34 @@ function LegendDot({ className, label }: { className: string; label: string }) {
 }
 
 function ProfilePage() {
+  const [preferences, setPreferences] = useState(initialPreferences);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [draft, setDraft] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (editingIndex !== null) {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+    }
+  }, [editingIndex]);
+
+  const startEdit = (i: number) => {
+    setDraft(preferences[i].value);
+    setEditingIndex(i);
+  };
+  const cancelEdit = () => setEditingIndex(null);
+  const saveEdit = () => {
+    if (editingIndex === null) return;
+    const trimmed = draft.trim();
+    if (trimmed.length > 0) {
+      setPreferences((prev) =>
+        prev.map((p, idx) => (idx === editingIndex ? { ...p, value: trimmed } : p)),
+      );
+    }
+    setEditingIndex(null);
+  };
+
   return (
     <section className="mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-14">
       {/* Header */}
