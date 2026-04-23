@@ -56,51 +56,51 @@ const strengths: Tile[] = [
   {
     icon: Star,
     stat: "5.0 / 5.0",
-    title: "Trustpilot's #1 Rated Jeweler (2024, 2026)",
+    title: "Customers trust it more than any competitor",
     description:
-      "Rare Carat holds a perfect 5-star rating across 3,600+ verified reviews, with 98% at 5 stars. Customers consistently name specific staff (Matthew H., Cait, CEO Ajay Anand) as the reason to choose Rare Carat over Blue Nile or James Allen.",
+      "5.0 on Trustpilot across 3,600+ verified reviews — highest of any jewelry brand on the platform, two years running",
     quote:
-      "Rare Carat has been ranked as Trustpilot's #1 rated jewelry brand for two consecutive years.",
+      "Reviews name specific staff by first name. That's not a support team score. That's a relationship score.",
     citation: "Trustpilot 2026 verified data",
   },
   {
     icon: Database,
     stat: "1,000,000+",
-    title: "Diamonds Analyzed by AI Price Engine",
+    title: "No other site shows you if you're overpaying",
     description:
-      "The Rare Carat Report analyzes price fairness and quality flags across 1M+ diamonds using 50 data points per stone. Forbes called it 'Revolutionary.'",
+      "The Rare Carat Report checks every diamond against the full market, flagging price and quality issues before you buy",
     quote:
-      "AI personalization delivers conversion rate lifts up to 23% with 40% revenue increases.",
+      "Over 1 million diamonds analyzed. 50 data points per stone. Forbes called it revolutionary.",
     citation: "Envive AI Ecommerce Statistics 2026",
   },
   {
     icon: Headset,
     stat: "100+ GIA Gemologists · 24/7",
-    title: "Only Diamond Retailer with Round-the-Clock Human Expertise",
+    title: "Round-the-clock human expertise, free",
     description:
-      "100+ GIA-trained gemologists available 24/7 via chat, free and unbiased. Named gemologists appear repeatedly in 5-star reviews.",
+      "Real GIA-certified gemologists available 24/7 via chat, at no cost, with no sales pressure",
     quote:
-      "Shoppers who chat convert at 12.3% versus 3.1% for non-chatters, a 4x higher conversion rate.",
+      "Every other online retailer either charges for expert access or doesn't offer it. Rare Carat makes it the default.",
     citation: "Makebot.ai Ecommerce Conversion Report 2026",
   },
   {
     icon: TrendingDown,
     stat: "Up to 40% Below Retail",
-    title: "Marketplace Pricing Advantage",
+    title: "Wholesale pricing, consumer experience",
     description:
-      "Aggregating across vetted wholesalers and operating without brick-and-mortar overhead, Rare Carat delivers prices 20, 40% below traditional jewelers on comparable specs.",
+      "No showrooms, no middlemen. Rare Carat sources directly from vetted wholesalers, so the savings pass to the buyer",
     quote:
-      "Natural diamond producers slashed prices 10, 15% in 2024 to compete with lab-grown's massive success.",
+      "Comparable diamonds routinely run 20-40% cheaper than traditional jewelry stores on equivalent specs.",
     citation: "McKinsey & Co. Diamond Industry Report 2025",
   },
   {
     icon: Newspaper,
     stat: "NYT · Forbes · CNBC · HBS",
-    title: "Earned Editorial Credibility",
+    title: "Editorial credibility that money can't buy",
     description:
-      "The NYT called Rare Carat 'The Secret to Buying the Perfect Diamond.' CEO Ajay Anand serves on Forbes 30 Under 30 judging panels.",
+      "The New York Times, Forbes, CNBC, NPR, and Harvard Business School have all covered Rare Carat independently",
     quote:
-      "RareCarat.com powers over $100 million in annual sales by creating transparency in a historically opaque industry.",
+      "CEO Ajay Anand sits on Forbes 30 Under 30 judging panels. That's not a press hit — that's category authority.",
     citation: "Rare Carat LinkedIn",
   },
 ];
@@ -109,51 +109,51 @@ const gaps: Tile[] = [
   {
     icon: Video,
     stat: "40x Zoom, Standardized",
-    title: "James Allen's 360° HD Video Consistency",
+    title: "Shoppers can't inspect the stone before buying",
     description:
-      "James Allen pioneered 40x Super Zoom for every diamond with in-house standardized imaging. Rare Carat's video quality varies by supplier, a trust gap.",
+      "James Allen shows every diamond in high-resolution 360° video with 40x zoom. Rare Carat's video quality varies by supplier",
     quote:
-      "James Allen pioneered virtual loupe technology, providing comprehensive 360HD videos for detailed inspection.",
+      "When you're spending $5,000 on something you can't touch, inconsistent visuals create doubt at the worst possible moment.",
     citation: "PriceScope Industry Review 2024",
   },
   {
     icon: Sparkles,
     stat: "ASET + IdealScope + H&A",
-    title: "Whiteflash's Light Performance Proof",
+    title: "Can't prove how much a diamond will sparkle",
     description:
-      "Whiteflash shows ASET, IdealScope, and Hearts & Arrows imaging for every A CUT ABOVE diamond. Rare Carat shows none. For premium shoppers, this is the reason to choose Whiteflash.",
+      "Whiteflash shows visual light performance images that prove cut quality beyond what a grading report can describe",
     quote:
-      "Their technology is, hands down, the best way to simulate an in-person inspection when shopping online.",
+      "A diamond's cut determines how it handles light — and therefore how much it sparkles. The cert grade tells you part of the story. A light performance image shows you the rest.",
     citation: "Moissanite by Aurelia, 2026 Industry Comparison",
   },
   {
     icon: Package,
     stat: "Free Replica in 48 Hours",
-    title: "With Clarity's Home Try-On",
+    title: "No way to try before a $5,000 commitment",
     description:
-      "With Clarity ships a free non-precious replica of any setting for home try-on before buyers commit. Rare Carat has no equivalent, despite 2, 3 week build waits cited as 'nerve-racking' in reviews.",
+      "With Clarity ships a free physical replica of any ring so buyers can see how it looks on their hand before ordering",
     quote:
-      "Only 34% of consumers believe retailers are good at personalization, while 71% of retailers think they excel at it.",
+      "Rare Carat's build time is 2-3 weeks. Without a try-on option, buyers are committing blind. That's a real anxiety for a purchase this size.",
     citation: "Sailthru Personalization Study, Rep AI 2025",
   },
   {
     icon: Smartphone,
     stat: "Any Ring, On Your Hand",
-    title: "AR Virtual Try-On (Blue Nile, Brilliant Earth)",
+    title: "No way to visualize the ring on your hand",
     description:
-      "Blue Nile, Brilliant Earth, and James Allen all have mobile AR try-on. Rare Carat has none. In 2026, this is table stakes, not a differentiator.",
+      "Blue Nile, Brilliant Earth, and James Allen all let you point your phone at your hand and see any ring on your finger",
     quote:
-      "86% of brides say the overall design of the ring matters the most. It needs to match her fashion sense and lifestyle.",
+      "In 2026 this is expected, not a differentiator. Its absence creates friction at the exact moment buyers need reassurance.",
     citation: "CreditDonkey Online Diamond Retailer Analysis, 2025",
   },
   {
     icon: BookOpen,
     stat: "20+ Awards · 40+ Showrooms",
-    title: "Brilliant Earth's Content + Community Flywheel",
+    title: "3,600 five-star reviews that aren't doing marketing work",
     description:
-      "Brilliant Earth publishes extensive editorial content, showcases customer photos, and operates 40+ showrooms. Rare Carat has a thin blog and no UGC loop, leaving 3,600+ reviews unharnessed.",
+      "Brilliant Earth converts customer stories and editorial content into a constant top-of-funnel engine. Rare Carat's reviews sit on Trustpilot and stop there",
     quote:
-      "Brilliant Earth has earned 10,000+ five-star reviews. Customers highlight personalized service and confidence from visualizing their design before purchase.",
+      "20+ design awards, 40+ showrooms, content ranking for thousands of search terms. Customer love that isn't amplified doesn't compound.",
     citation: "Honest Brand Reviews, 2026",
   },
 ];
@@ -256,7 +256,7 @@ function HomePage() {
         />
         <SectionColumn
           eyebrow="Gaps"
-          title="What Competitors Do Better"
+          title="Where Competitors Have the Edge"
           accent="navy"
           tiles={gaps}
           onOpenSource={setModalTile}
