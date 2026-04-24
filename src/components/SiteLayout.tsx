@@ -54,7 +54,7 @@ export function SiteLayout() {
                 <Link
                   key={`${item.to}-${i}`}
                   to={item.to}
-                  activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+                  activeOptions={{ exact: item.to === "/current-state" }}
                   className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
                 >
                   {item.label}
@@ -83,7 +83,7 @@ export function SiteLayout() {
             <Link
               key={`m-${item.to}-${i}`}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+              activeOptions={{ exact: item.to === "/current-state" }}
               className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
             >
               {item.label}
