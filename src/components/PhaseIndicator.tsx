@@ -1,9 +1,9 @@
 import { useLocation, Link } from "@tanstack/react-router";
 
 const phases = [
-  { phase: "Phase 1", label: "Current State", paths: ["/"] },
+  { phase: "Phase 1", label: "Current State", paths: ["/current-state"] },
   { phase: "Phase 2", label: "Opportunities", paths: ["/opportunities"] },
-  { phase: "Phase 3", label: "Live Demo", paths: ["/copilot", "/profile", "/gemologist"] },
+  { phase: "Phase 3", label: "Live Demo", paths: ["/", "/copilot", "/couples", "/profile", "/gemologist"] },
 ] as const;
 
 export function PhaseIndicator() {
