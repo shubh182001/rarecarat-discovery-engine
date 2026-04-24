@@ -2,12 +2,12 @@ import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { PhaseIndicator } from "@/components/PhaseIndicator";
 import { PageTransition } from "@/components/PageTransition";
 import { AboutDemoButton } from "@/components/AboutDemoButton";
+import { NavSearch } from "@/components/NavSearch";
 import { Button } from "@/components/ui/button";
 import { Headset } from "lucide-react";
 
 const mainNav = [
   { to: "/", label: "Home" },
-  { to: "/copilot", label: "Browse" },
   { to: "/couples", label: "Couples" },
   { to: "/copilot", label: "Try Copilot" },
   { to: "/current-state", label: "Current State" },
@@ -51,6 +51,7 @@ export function SiteLayout() {
                   {item.label}
                 </Link>
               ))}
+              <NavSearch />
             </nav>
             <Button asChild variant="outline" size="sm" className="border-gold text-primary hover:bg-gold/10">
               <Link to="/gemologist">
