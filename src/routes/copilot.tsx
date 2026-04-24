@@ -113,6 +113,45 @@ const rings: Ring[] = [
     reasoning:
       "Most overtly vintage. Slightly pushes budget but delivers strongest style match.",
   },
+  {
+    name: "Helena Grand Solitaire",
+    specs: "3.02ct · G · VS1 · Round Lab",
+    price: "$8,900",
+    chips: [
+      { label: "Style", value: 85, color: "bg-emerald-500" },
+      { label: "Budget", value: 60, color: "bg-amber-500" },
+      { label: "Proportions", value: 95, color: "bg-emerald-500" },
+      { label: "Uniqueness", value: 82, color: "bg-emerald-500" },
+    ],
+    reasoning:
+      "Statement solitaire with maximum presence. Premium budget pick when size matters most.",
+  },
+  {
+    name: "Aria Three-Stone Oval",
+    specs: "2.8ct tw · F · VS2 · Oval Lab",
+    price: "$6,400",
+    chips: [
+      { label: "Style", value: 88, color: "bg-emerald-500" },
+      { label: "Budget", value: 65, color: "bg-amber-500" },
+      { label: "Proportions", value: 92, color: "bg-emerald-500" },
+      { label: "Uniqueness", value: 90, color: "bg-emerald-500" },
+    ],
+    reasoning:
+      "Bold modern three-stone with substantial presence. Side stones amplify the center oval.",
+  },
+  {
+    name: "Celeste Halo Round",
+    specs: "3.1ct tw · H · SI1 · Round Lab",
+    price: "$5,200",
+    chips: [
+      { label: "Style", value: 84, color: "bg-emerald-500" },
+      { label: "Budget", value: 70, color: "bg-amber-500" },
+      { label: "Proportions", value: 90, color: "bg-emerald-500" },
+      { label: "Uniqueness", value: 78, color: "bg-amber-500" },
+    ],
+    reasoning:
+      "Halo setting maximizes apparent size and sparkle. Best value per visual carat in this tier.",
+  },
 ];
 
 
