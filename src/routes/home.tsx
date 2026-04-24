@@ -21,7 +21,7 @@ const ringImages: Record<string, string> = {
   couples: couplesImg,
 };
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/home")({
   head: () => ({
     meta: [
       { title: "Rare Carat · Find the diamond that finds you back" },
