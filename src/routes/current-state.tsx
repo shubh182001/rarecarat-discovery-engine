@@ -23,7 +23,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/current-state")({
   head: () => ({
     meta: [
       { title: "Rare Carat Today · Discoverability Engine" },
