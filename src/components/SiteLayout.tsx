@@ -36,40 +36,61 @@ export function SiteLayout() {
             </span>
           </Link>
 
-          <div className="hidden items-center gap-3 md:flex">
+          {isAnalysis ? (
             <nav className="flex items-center gap-1">
-              {mainNav.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
-                  className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            <Button asChild variant="outline" size="sm" className="border-gold text-primary hover:bg-gold/10">
-              <Link to="/gemologist">
-                <Headset className="h-3.5 w-3.5" /> Talk to a Gemologist
+              <Link
+                to="/current-state"
+                activeOptions={{ exact: true }}
+                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
+              >
+                Current State
               </Link>
-            </Button>
-          </div>
+              <Link
+                to="/opportunities"
+                activeOptions={{ exact: true }}
+                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
+              >
+                Opportunities
+              </Link>
+            </nav>
+          ) : (
+            <div className="hidden items-center gap-3 md:flex">
+              <nav className="flex items-center gap-1">
+                {mainNav.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+                    className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+
+              <Button asChild variant="outline" size="sm" className="border-gold text-primary hover:bg-gold/10">
+                <Link to="/gemologist">
+                  <Headset className="h-3.5 w-3.5" /> Talk to a Gemologist
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
 
-        <nav className="flex gap-1 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
-          {mainNav.map((item) => (
-            <Link
-              key={`m-${item.to}`}
-              to={item.to}
-              activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
-              className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        {!isAnalysis && (
+          <nav className="flex gap-1 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
+            {mainNav.map((item) => (
+              <Link
+                key={`m-${item.to}`}
+                to={item.to}
+                activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+                className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        )}
       </header>
 
       {isAnalysis && <PhaseIndicator />}
