@@ -297,7 +297,19 @@ function HomePage() {
                   {modalTile.title}
                 </DialogTitle>
                 <DialogDescription className="text-xs uppercase tracking-wider">
-                  Source · {modalTile.citation}
+                  Source ·{" "}
+                  {modalTile.sourceUrl ? (
+                    <a
+                      href={modalTile.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 hover:text-gold"
+                    >
+                      {modalTile.citation}
+                    </a>
+                  ) : (
+                    modalTile.citation
+                  )}
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
