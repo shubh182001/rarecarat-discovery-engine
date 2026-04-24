@@ -12,8 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as GemologistRouteImport } from './routes/gemologist'
+import { Route as CurrentStateRouteImport } from './routes/current-state'
 import { Route as CopilotRouteImport } from './routes/copilot'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiTtsRouteImport } from './routes/api.tts'
 
 const ProfileRoute = ProfileRouteImport.update({
@@ -31,14 +31,14 @@ const GemologistRoute = GemologistRouteImport.update({
   path: '/gemologist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CurrentStateRoute = CurrentStateRouteImport.update({
+  id: '/current-state',
+  path: '/current-state',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CopilotRoute = CopilotRouteImport.update({
   id: '/copilot',
   path: '/copilot',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTtsRoute = ApiTtsRouteImport.update({
@@ -48,16 +48,16 @@ const ApiTtsRoute = ApiTtsRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/copilot': typeof CopilotRoute
+  '/current-state': typeof CurrentStateRoute
   '/gemologist': typeof GemologistRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
   '/api/tts': typeof ApiTtsRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/copilot': typeof CopilotRoute
+  '/current-state': typeof CurrentStateRoute
   '/gemologist': typeof GemologistRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
@@ -65,8 +65,8 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/copilot': typeof CopilotRoute
+  '/current-state': typeof CurrentStateRoute
   '/gemologist': typeof GemologistRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
@@ -75,24 +75,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/copilot'
+    | '/current-state'
     | '/gemologist'
     | '/opportunities'
     | '/profile'
     | '/api/tts'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/copilot'
+    | '/current-state'
     | '/gemologist'
     | '/opportunities'
     | '/profile'
     | '/api/tts'
   id:
     | '__root__'
-    | '/'
     | '/copilot'
+    | '/current-state'
     | '/gemologist'
     | '/opportunities'
     | '/profile'
@@ -100,8 +100,8 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   CopilotRoute: typeof CopilotRoute
+  CurrentStateRoute: typeof CurrentStateRoute
   GemologistRoute: typeof GemologistRoute
   OpportunitiesRoute: typeof OpportunitiesRoute
   ProfileRoute: typeof ProfileRoute
@@ -131,18 +131,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GemologistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/current-state': {
+      id: '/current-state'
+      path: '/current-state'
+      fullPath: '/current-state'
+      preLoaderRoute: typeof CurrentStateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/copilot': {
       id: '/copilot'
       path: '/copilot'
       fullPath: '/copilot'
       preLoaderRoute: typeof CopilotRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/tts': {
@@ -156,8 +156,8 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   CopilotRoute: CopilotRoute,
+  CurrentStateRoute: CurrentStateRoute,
   GemologistRoute: GemologistRoute,
   OpportunitiesRoute: OpportunitiesRoute,
   ProfileRoute: ProfileRoute,
