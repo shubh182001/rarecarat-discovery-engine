@@ -310,7 +310,7 @@ function HomePage() {
       {!chatOpen && (
         <button
           onClick={() => setChatOpen(true)}
-          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-gold-foreground shadow-[var(--shadow-elegant)] transition-transform hover:-translate-y-0.5"
+          className="fixed bottom-20 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-gold-foreground shadow-[var(--shadow-elegant)] transition-transform hover:-translate-y-0.5 md:bottom-24"
         >
           <MessageCircle className="h-4 w-4" /> Open Copilot
         </button>
