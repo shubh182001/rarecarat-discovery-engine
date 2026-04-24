@@ -430,13 +430,9 @@ function ProductCard({
             src={ringImage}
             alt={p.name}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-500"
-            style={{
-              transform: hovered
-                ? "rotateY(7deg) rotateX(-3deg) scale(1.04)"
-                : "rotateY(0) rotateX(0) scale(1)",
-              transformStyle: "preserve-3d",
-            }}
+            className={`h-full w-full object-cover transition-transform duration-300 ease-in-out ${
+              hovered ? "scale-110 animate-float-bob" : "scale-100"
+            }`}
           />
           {/* Match chip */}
           <span className="absolute left-3 top-3 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-primary backdrop-blur">
