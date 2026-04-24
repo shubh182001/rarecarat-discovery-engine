@@ -103,10 +103,16 @@ function LegendDot({ className, label }: { className: string; label: string }) {
 }
 
 function ProfilePage() {
-  const [preferences, setPreferences] = useState(initialPreferences);
+  const { preferences, activity, confidence } = useProfileStore();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const radarData = RADAR_AXES.map((axis) => ({
+    axis,
+    current: confidence[axis] ?? 0,
+    ...radarHistory[axis],
+  }));
 
   useEffect(() => {
     if (editingIndex !== null) {
@@ -124,9 +130,7 @@ function ProfilePage() {
     if (editingIndex === null) return;
     const trimmed = draft.trim();
     if (trimmed.length > 0) {
-      setPreferences((prev) =>
-        prev.map((p, idx) => (idx === editingIndex ? { ...p, value: trimmed } : p)),
-      );
+      setPreference(preferences[editingIndex].label, trimmed);
     }
     setEditingIndex(null);
   };
@@ -298,10 +302,10 @@ function ProfilePage() {
           <div className="rounded-xl border border-border bg-surface p-2 shadow-sm">
             <ol className="relative">
               {activity.map((item, i) => {
-                const Icon = item.icon;
+                const Icon = activityIcon(item.text);
                 return (
                   <li
-                    key={i}
+                    key={`${item.ts}-${i}`}
                     className="flex gap-3 rounded-lg px-3 py-3 transition-colors hover:bg-background animate-fade-in"
                     style={{ animationDelay: `${i * 70}ms`, animationFillMode: "both" }}
                   >
@@ -310,7 +314,7 @@ function ProfilePage() {
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                        {item.when}
+                        {formatRelativeTime(item.ts)}
                       </p>
                       <p className="mt-0.5 text-sm leading-snug text-primary">
                         {item.text}
