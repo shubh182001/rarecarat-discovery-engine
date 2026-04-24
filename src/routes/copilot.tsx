@@ -364,18 +364,40 @@ function CopilotPage() {
     setMessages((m) => [...m, userMsg]);
     setInput("");
     setIsReplying(true);
+    setThinkingStep(0);
 
     const key = classifyMessage(text);
     const { next, updated } = applyProfileForReply(key, profile);
-    if (updated) {
-      setProfile(next);
-      toast.success("Profile updated", { description: "New preference signals detected." });
-    } else {
-      toast("Profile updated");
-    }
 
-    const reply = REPLIES[key];
+    const pushLog = (entry: string) =>
+      setLogEntries((l) => [...l, { time: ts(), text: entry }]);
+
+    pushLog(`Received query: "${text}"`);
+    pushLog(`Parsing intent: classifier=${key}`);
+
+    // Sequential thinking steps
+    let elapsed = 0;
+    THINKING_STEPS.forEach((step, i) => {
+      setTimeout(() => {
+        setThinkingStep(i);
+        if (i === 1) pushLog("Running match algorithm across 847,293 listings...");
+        if (i === 2) pushLog("Applied filters: lab-grown, oval/round, E-F color, VS2+");
+        if (i === 3) pushLog("Ranked 5 results by weighted match score");
+      }, elapsed);
+      elapsed += step.duration;
+    });
+
     setTimeout(() => {
+      if (updated) {
+        setProfile(next);
+        pushLog("Updating preference graph: new signals detected");
+        toast.success("Profile updated", { description: "New preference signals detected." });
+      } else {
+        toast("Profile updated");
+      }
+
+      const reply = REPLIES[key];
+      pushLog("Response ready");
       setMessages((m) => [
         ...m,
         {
@@ -387,7 +409,8 @@ function CopilotPage() {
         },
       ]);
       setIsReplying(false);
-    }, 1500);
+      setThinkingStep(0);
+    }, elapsed);
   };
 
   return (
