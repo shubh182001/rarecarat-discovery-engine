@@ -57,53 +57,63 @@ type Tile = {
 const strengths: Tile[] = [
   {
     icon: Star,
-    stat: "5.0 / 5.0",
-    title: "Customers trust it more than any competitor",
+    stat: "",
+    label: "Customer trust",
+    title: "More trusted than any other jeweler online",
     description:
-      "5.0 on Trustpilot across 3,600+ verified reviews — highest of any jewelry brand on the platform, two years running",
+      "A perfect 5.0 on Trustpilot across 3,600 verified reviews. Two years running as the top-rated jewelry brand on the platform.",
     quote:
-      "Reviews name specific staff by first name. That's not a support team score. That's a relationship score.",
-    citation: "Trustpilot 2026 verified data",
+      "Customers name specific staff by first name in reviews. Matthew, Cait, and CEO Ajay Anand appear repeatedly. That is not a support score. That is a relationship score.",
+    citation: "Trustpilot Verified Reviews, 2026",
+    sourceUrl: "https://www.trustpilot.com/review/www.rarecarat.com",
   },
   {
     icon: Database,
-    stat: "1,000,000+",
-    title: "No other site shows you if you're overpaying",
+    stat: "",
+    label: "Price transparency",
+    title: "The only site that tells you if you are overpaying",
     description:
-      "The Rare Carat Report checks every diamond against the full market, flagging price and quality issues before you buy",
+      "The Rare Carat Report checks every diamond against the full market before you buy. Over a million diamonds analyzed.",
     quote:
-      "Over 1 million diamonds analyzed. 50 data points per stone. Forbes called it revolutionary.",
-    citation: "Envive AI Ecommerce Statistics 2026",
+      "Most jewelry sites have an incentive to obscure pricing. Rare Carat built its reputation on exposing it. The Report uses 50 data points per stone to flag quality and pricing issues before purchase.",
+    citation: "Rare Carat Mission Page",
+    sourceUrl: "https://www.rarecarat.com/mission",
   },
   {
     icon: Headset,
-    stat: "100+ GIA Gemologists · 24/7",
-    title: "Round-the-clock human expertise, free",
+    stat: "",
+    label: "Human expertise",
+    title: "Real gemologists, available around the clock, for free",
     description:
-      "Real GIA-certified gemologists available 24/7 via chat, at no cost, with no sales pressure",
+      "Over 100 GIA-certified gemologists on chat 24/7. No sales pressure. No upsell. Just expert guidance.",
     quote:
-      "Every other online retailer either charges for expert access or doesn't offer it. Rare Carat makes it the default.",
-    citation: "Makebot.ai Ecommerce Conversion Report 2026",
+      "Every other major online diamond retailer either charges for expert access or does not offer it at all. Rare Carat makes it the default experience for every customer.",
+    citation: "Rare Carat Mission Page",
+    sourceUrl: "https://www.rarecarat.com/mission",
   },
   {
     icon: TrendingDown,
-    stat: "Up to 40% Below Retail",
-    title: "Wholesale pricing, consumer experience",
+    stat: "",
+    label: "Pricing advantage",
+    title: "Wholesale prices without the wholesale experience",
     description:
-      "No showrooms, no middlemen. Rare Carat sources directly from vetted wholesalers, so the savings pass to the buyer",
+      "No showrooms, no middlemen. Rare Carat routes orders through vetted wholesalers so savings go to the buyer, not the storefront.",
     quote:
-      "Comparable diamonds routinely run 20-40% cheaper than traditional jewelry stores on equivalent specs.",
-    citation: "McKinsey & Co. Diamond Industry Report 2025",
+      "Comparable diamonds typically run 20 to 40% cheaper on Rare Carat than at traditional jewelry stores on equivalent specs. The model removes the retail markup without removing the service layer.",
+    citation: "McKinsey Diamond Industry Report, 2025",
+    sourceUrl: "https://www.mckinsey.com/industries/retail/our-insights",
   },
   {
     icon: Newspaper,
-    stat: "NYT · Forbes · CNBC · HBS",
-    title: "Editorial credibility that money can't buy",
+    stat: "",
+    label: "Editorial credibility",
+    title: "Covered independently by the outlets that matter",
     description:
-      "The New York Times, Forbes, CNBC, NPR, and Harvard Business School have all covered Rare Carat independently",
+      "The New York Times, Forbes, CNBC, NPR, and Harvard Business School have all written about Rare Carat without being paid to do so.",
     quote:
-      "CEO Ajay Anand sits on Forbes 30 Under 30 judging panels. That's not a press hit — that's category authority.",
-    citation: "Rare Carat LinkedIn",
+      "The New York Times called it the secret to buying the perfect diamond. CEO Ajay Anand sits on Forbes 30 Under 30 judging panels. Harvard Business School published a case study on the company. That kind of coverage cannot be bought.",
+    citation: "Rare Carat LinkedIn, 2025",
+    sourceUrl: "https://www.linkedin.com/company/rare-carat",
   },
 ];
 
@@ -116,7 +126,7 @@ const gaps: Tile[] = [
     description:
       "Shopping for a $5,000 stone from a photo alone creates real doubt. Video quality across the site varies by supplier.",
     quote:
-      "Rare Carat's video quality varies by supplier — a direct observation from professional diamond buyers. When a customer is spending $5,000 on something they can't touch, inconsistent visuals create doubt at the worst possible moment.",
+      "Rare Carat's video quality varies by supplier, a direct observation from professional diamond buyers. When a customer is spending $5,000 on something they can't touch, inconsistent visuals create doubt at the worst possible moment.",
     citation: "Lab Diamonds Review, 2025",
     sourceUrl: "https://labdiamondsreview.com/reviews/rare-carat-reviews/",
   },
@@ -153,7 +163,7 @@ const gaps: Tile[] = [
     description:
       "After purchase, there's no milestone engine, no anniversary triggers, no reason for a happy customer to come back. The relationship stops at checkout.",
     quote:
-      "The average couple buys an engagement ring, then a wedding band, then anniversary pieces over decades. Research shows post-purchase follow-up and relationship continuity are key loyalty drivers in jewelry — yet Rare Carat has no milestone engine, no anniversary triggers, no structured reason for a happy customer to return.",
+      "The average couple buys an engagement ring, then a wedding band, then anniversary pieces over decades. Research shows post-purchase follow-up and relationship continuity are key loyalty drivers in jewelry. Rare Carat has no milestone engine, no anniversary triggers, no structured reason for a happy customer to return.",
     citation: "Jewel360 Jewelry Retail Trends, 2026",
     sourceUrl: "https://jewel360.com/blog/trends-in-jewelry-retail",
   },
@@ -165,7 +175,7 @@ const gaps: Tile[] = [
     description:
       "There's no persistent profile. Return visitors see the same generic experience as first-timers, even after expressing clear preferences in a previous chat.",
     quote:
-      "84% of shoppers say personalization matters when deciding where to buy. Return visitors to Rare Carat see the same generic experience as first-timers — no memory of previous chats, preferences, or searches. Every restart is a conversion risk.",
+      "84% of shoppers say personalization matters when deciding where to buy. Return visitors to Rare Carat see the same generic experience as first-timers, with no memory of previous chats, preferences, or searches. Every restart is a conversion risk.",
     citation: "ResultFirst Jewelry E-Commerce Trends, 2025",
     sourceUrl: "https://www.resultfirst.com/blog/ecommerce-seo/jewelry-ecommerce-trends/",
   },

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Heart, Send, Sparkles, X, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { applyChatMessage } from "@/lib/profileStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import milaImg from "@/assets/rings/mila.jpeg";
@@ -34,7 +35,7 @@ export const Route = createFileRoute("/home")({
       {
         property: "og:description",
         content:
-          "An AI-native diamond browsing experience. Tell the Copilot what you want; watch the collection respond.",
+          "An AI-native diamond browsing experience. Tell the Copilot what you want, and watch the collection respond.",
       },
     ],
   }),
@@ -130,7 +131,7 @@ const initialMsgs: Msg[] = [
   {
     id: "i1",
     role: "ai",
-    text: "Hi, I'm Clara. Tell me what you're looking for — a vibe, a budget, a partner's style — and I'll narrow the collection in real time.",
+    text: "Hi, I'm Clara. Tell me what you're looking for. A vibe, a budget, a partner's style. I'll narrow the collection in real time.",
   },
 ];
 
@@ -187,6 +188,8 @@ function HomePage() {
     setChatInput("");
     setIsReplying(true);
     runQuery(text);
+    // Sync shared profile (read by /profile)
+    applyChatMessage(text);
 
     const steps = [
       { t: "Reading your brief...", d: 500 },
@@ -487,7 +490,7 @@ function ProductCard({
         </div>
       </div>
 
-      {/* Price breakdown tooltip — flips to left side for rightmost column to avoid overflow */}
+      {/* Price breakdown tooltip, flips to left side for rightmost column to avoid overflow */}
       <div
         className={`pointer-events-none absolute top-4 z-20 hidden w-72 rounded-xl border border-gold/40 bg-primary p-4 text-primary-foreground shadow-xl transition-all duration-200 lg:block ${
           index % 3 === 2

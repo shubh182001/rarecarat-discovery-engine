@@ -26,7 +26,7 @@ export const Route = createFileRoute("/opportunities")({
       {
         name: "description",
         content:
-          "Five transformations powered by one unified preference graph. The Copilot is the entry point; every surface gets smarter in real time.",
+          "Five transformations powered by one unified preference graph. The Copilot is the entry point, and every surface gets smarter in real time.",
       },
       { property: "og:title", content: "The Discoverability Engine · Rare Carat" },
       {
@@ -139,7 +139,7 @@ const opportunities: Opportunity[] = [
     tags: ["Discovery", "Personalization"],
     description: [
       "Most diamond shoppers don't know carat from clarity, but they know what feels like 'her.' The Conversational Discovery Copilot replaces multi-step quizzes and rigid filter trees with a single chat that translates intent, vintage, artsy, petite hands, under $3k, into ranked recommendations with reasoning.",
-      "Every message refines a unified preference graph that follows the shopper across sessions, devices, and surfaces. Returning users skip the discovery work; new picks already reflect their style.",
+      "Every message refines a unified preference graph that follows the shopper across sessions, devices, and surfaces. Returning users skip the discovery work, and new picks already reflect their style.",
       "Rare Carat's existing 100+ GIA gemologists become the escalation tier, not the front door, handling only the chats where human judgment moves the deal. The Copilot handles 80% of discovery on its own and routes the rest with full context attached.",
     ],
     quote:
@@ -167,7 +167,7 @@ const opportunities: Opportunity[] = [
       "The Copilot becomes the centerpiece of a new ad stack, converting top-funnel intent into first-party data at 10x the rate of static display.",
     tags: ["Advertising"],
     description: [
-      "Display ads send shoppers to a static landing page; the Copilot-Powered Advertising Engine sends them straight into a conversation. A Meta ad reading 'Vintage feel, modern silhouette, under $3k?' opens a pre-seeded chat already shaped by the ad creative.",
+      "Display ads send shoppers to a static landing page. The Copilot-Powered Advertising Engine sends them straight into a conversation. A Meta ad reading 'Vintage feel, modern silhouette, under $3k?' opens a pre-seeded chat already shaped by the ad creative.",
       "That single tap captures qualified intent, style, budget, urgency, as first-party data the moment the user arrives, not after they've completed a 40-field signup.",
       "The same Copilot interface plugs into Google's AI Overviews, Pinterest shopping, and emerging agentic browsers. Wherever buyers ask, Rare Carat answers, and every answer is an attributed acquisition event.",
       "Voice-first ad surfaces multiply the reach. TikTok, Instagram Reels, and smart speaker platforms are increasingly voice-driven. A Rare Carat ad where the user hears a warm, confident voice ask 'Tell me what you're looking for in an engagement ring' and responds verbally through their phone mic would be category-defining. ElevenLabs-grade voice synthesis lets every gemologist's expertise scale across audio channels while maintaining the personal, named brand relationship customers love.",
@@ -194,7 +194,7 @@ const opportunities: Opportunity[] = [
     description: [
       "Every Copilot conversation contains a real shopper question that thousands of other shoppers also Google. The Ask Rare Carat Content Engine anonymizes those questions, clusters them, and publishes the gemologist-vetted answers as evergreen pages.",
       "The result: a long-tail SEO library that grows by hundreds of pages a month without a content team writing them from scratch. Each page links back into the relevant Copilot flow, closing the loop from search to chat to purchase.",
-      "Over time, this becomes the diamond category's Stack Overflow, the place AI overviews, Reddit threads, and journalists cite when they need an answer. Authority compounds; competitors can't catch up with paid content alone.",
+      "Over time, this becomes the diamond category's Stack Overflow, the place AI overviews, Reddit threads, and journalists cite when they need an answer. Authority compounds, and competitors can't catch up with paid content alone.",
     ],
     quote:
       "Products with 11, 30 reviews show approximately 68% higher conversion rates. Site search users convert 2, 3x higher than non-searchers.",
@@ -217,7 +217,7 @@ const opportunities: Opportunity[] = [
     tags: ["Trust", "Discovery"],
     description: [
       "Diamond pricing is opaque by tradition, and that opacity is the #1 driver of bounced sessions and 'thinking it over' chats. The Dynamic Price + Trust Transparency Layer surfaces, on every product page, the live market range for that exact spec set, where this stone sits in the percentile, and what's driving the premium or discount.",
-      "Every diamond gets a plain-English Trust Card: cut performance, fluorescence note, supplier track record, and a one-line gemologist take. Savvy buyers get the data they'd otherwise hunt for on PriceScope; casual buyers get a clean recommendation they can trust.",
+      "Every diamond gets a plain-English Trust Card: cut performance, fluorescence note, supplier track record, and a one-line gemologist take. Savvy buyers get the data they'd otherwise hunt for on PriceScope. Casual buyers get a clean recommendation they can trust.",
       "The result is fewer 'are you sure this is a fair price?' chats, higher Compare-tool conversion, and a measurable drop in the 1, 3 star reviews that mention pricing surprise or supplier quality.",
     ],
     quote:
@@ -246,7 +246,7 @@ const opportunities: Opportunity[] = [
     description: [
       "An engagement ring is most retailers' last sale to a customer. The Rare Carat Journey treats it as the first. The same preference graph that powered discovery now powers a multi-year relationship, anniversaries, weddings, push presents, milestone gifts.",
       "Diamond IQ turns the buyer's growing knowledge into a gamified profile they want to share. Milestone lifecycle automation triggers the right nudge at the right moment, not generic 'we miss you' email blasts. The UGC community converts 3,600+ Trustpilot reviewers into a visible flywheel of real photos, real stories, and real proof.",
-      "Together, these pieces unlock the long tail of jewelry spend that today flows to local jewelers and Tiffany. Retention isn't a discount code; it's the fact that Rare Carat already knows what she'll love next.",
+      "Together, these pieces open up the long tail of jewelry spend that today flows to local jewelers and Tiffany. Retention isn't a discount code, it's the fact that Rare Carat already knows what she'll love next.",
     ],
     quote:
       "Loyalty program members generate 12, 18% incremental revenue. Emotionally connected customers demonstrate 306% higher lifetime value.",
@@ -431,7 +431,7 @@ function OpportunitiesPage() {
           See what this looks like as a product.
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-gold md:text-lg">
-          A working demo of the Discoverability Engine — homepage, Copilot,
+          A working demo of the Discoverability Engine. Homepage, Copilot,
           couples experience, and gemologist view.
         </p>
         <Link
