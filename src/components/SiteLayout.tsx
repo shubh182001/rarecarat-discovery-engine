@@ -2,19 +2,16 @@ import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { PhaseIndicator } from "@/components/PhaseIndicator";
 import { PageTransition } from "@/components/PageTransition";
 import { AboutDemoButton } from "@/components/AboutDemoButton";
+import { Button } from "@/components/ui/button";
+import { Headset } from "lucide-react";
 
-const analysisNav = [
-  { to: "/current-state", label: "Current State" },
-  { to: "/opportunities", label: "Opportunities" },
-] as const;
-
-const productNav = [
+const mainNav = [
   { to: "/", label: "Home" },
   { to: "/copilot", label: "Browse" },
   { to: "/couples", label: "Couples" },
   { to: "/copilot", label: "Try Copilot" },
-  { to: "/profile", label: "Profile" },
-  { to: "/gemologist", label: "Gemologist View" },
+  { to: "/current-state", label: "Current State" },
+  { to: "/opportunities", label: "Opportunities" },
 ] as const;
 
 const analysisPaths = new Set(["/current-state", "/opportunities"]);
@@ -22,8 +19,8 @@ const analysisPaths = new Set(["/current-state", "/opportunities"]);
 export function SiteLayout() {
   const { pathname } = useLocation();
   const isAnalysis = analysisPaths.has(pathname);
-  const navItems = isAnalysis ? analysisNav : productNav;
-  const logoTo = isAnalysis ? "/current-state" : "/";
+  const navItems = mainNav;
+  const logoTo = "/" as const;
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
@@ -38,24 +35,29 @@ export function SiteLayout() {
             <span className="font-serif text-lg font-semibold tracking-tight text-primary">
               Rare Carat
             </span>
-            {isAnalysis && (
-              <span className="hidden text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground sm:inline">
-                · Discoverability Engine
-              </span>
-            )}
+            <span className="hidden text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground sm:inline">
+              · Discoverability Engine
+            </span>
           </Link>
-          <nav className="hidden items-center gap-1 md:flex">
-            {navItems.map((item, i) => (
-              <Link
-                key={`${item.to}-${i}`}
-                to={item.to}
-                activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
-                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
-              >
-                {item.label}
+          <div className="hidden items-center gap-3 md:flex">
+            <nav className="flex items-center gap-1">
+              {navItems.map((item, i) => (
+                <Link
+                  key={`${item.to}-${i}`}
+                  to={item.to}
+                  activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+                  className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <Button asChild variant="outline" size="sm" className="border-gold text-primary hover:bg-gold/10">
+              <Link to="/gemologist">
+                <Headset className="h-3.5 w-3.5" /> Talk to a Gemologist
               </Link>
-            ))}
-          </nav>
+            </Button>
+          </div>
         </div>
         <nav className="flex gap-1 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
           {navItems.map((item, i) => (
@@ -80,8 +82,13 @@ export function SiteLayout() {
       </main>
 
       <footer className="border-t border-border/60 bg-surface/40">
-        <div className="mx-auto max-w-7xl px-6 py-6 text-center text-xs text-muted-foreground">
-          Built by Shubh Dhar for Rare Carat · Concept demo · April 2026
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-muted-foreground sm:flex-row">
+          <span>Built by Shubh Dhar for Rare Carat · Concept demo · April 2026</span>
+          <nav className="flex items-center gap-4">
+            <Link to="/current-state" className="hover:text-primary">Current State</Link>
+            <Link to="/opportunities" className="hover:text-primary">Opportunities</Link>
+            <Link to="/copilot" className="hover:text-primary">Try Copilot</Link>
+          </nav>
         </div>
       </footer>
 
