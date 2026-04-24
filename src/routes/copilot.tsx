@@ -207,33 +207,76 @@ function classifyMessage(text: string): ReplyKey {
   return "default";
 }
 
-function applyProfileForReply(
-  key: ReplyKey,
+function updateProfileFromUserText(
+  text: string,
   profile: ProfileRow[],
 ): { next: ProfileRow[]; updated: boolean } {
+  const t = text.toLowerCase();
   const next = profile.map((r) => ({ ...r }));
+  let updated = false;
   const bump = (label: string, value: string, conf: number) => {
     const row = next.find((r) => r.label === label);
-    if (!row) return false;
-    if (row.confidence >= conf && row.value === value) return false;
-    row.value = value;
-    row.confidence = Math.max(row.confidence, conf);
-    return true;
+    if (!row) return;
+    if (row.value !== value || row.confidence < conf) {
+      row.value = value;
+      row.confidence = Math.max(row.confidence, conf);
+      updated = true;
+    }
   };
-  switch (key) {
-    case "cut":
-      return { next, updated: bump("Quality Tier", "Excellent Cut", 80) };
-    case "metal":
-      return { next, updated: bump("Metal", "Yellow Gold", 60) };
-    case "size":
-      return { next, updated: bump("Proportions", "Petite / Small Fingers", 100) };
-    case "lab":
-      return { next, updated: bump("Lab vs Natural", "Lab-grown", 80) };
-    case "vintage":
-      return { next, updated: bump("Style", "Vintage-Modern-Artsy", 100) };
-    default:
-      return { next, updated: false };
+
+  // Budget detection
+  const budgetMatch = t.match(/\$?\s*(\d{1,2})\s*[k]\b/) || t.match(/\$\s*(\d{3,6})/);
+  if (budgetMatch) {
+    const raw = budgetMatch[0].replace(/\s/g, "");
+    bump("Budget", `Around ${raw}`, 95);
+  } else if (/\bbudget\b|\bunder\b|\bafford/.test(t)) {
+    bump("Budget", "Discussed", 70);
   }
+
+  // Carat / size
+  const caratMatch = t.match(/(\d+(?:\.\d+)?)\s*(ct|carat)/);
+  if (caratMatch) {
+    bump("Quality Tier", `~${caratMatch[1]}ct target`, 85);
+  }
+  if (/\b(petite|small finger|tiny|slim)\b/.test(t)) {
+    bump("Proportions", "Petite / Small Fingers", 100);
+  }
+  if (/\b(big|large|statement|bold|huge)\b/.test(t)) {
+    bump("Proportions", "Statement / Larger", 80);
+  }
+
+  // Style
+  if (/\bvintage\b/.test(t)) bump("Style", "Vintage-leaning", 90);
+  if (/\bmodern\b|\bminimal\b/.test(t)) bump("Style", "Modern", 85);
+  if (/\bartsy\b|\bunique\b/.test(t)) bump("Style", "Artsy / Unique", 85);
+
+  // Metal
+  if (/\byellow gold\b/.test(t)) bump("Metal", "Yellow Gold", 90);
+  else if (/\brose gold\b/.test(t)) bump("Metal", "Rose Gold", 90);
+  else if (/\bplatinum\b/.test(t)) bump("Metal", "Platinum", 90);
+  else if (/\bwhite gold\b/.test(t)) bump("Metal", "White Gold", 90);
+
+  // Setting
+  if (/\bhalo\b/.test(t)) bump("Setting", "Halo", 85);
+  else if (/\bsolitaire\b/.test(t)) bump("Setting", "Solitaire", 85);
+  else if (/\bthree[- ]stone\b/.test(t)) bump("Setting", "Three-Stone", 85);
+
+  // Lab vs natural
+  if (/\blab[- ]grown\b|\blab\b/.test(t)) bump("Lab vs Natural", "Lab-grown", 85);
+  if (/\bnatural\b|\bmined\b/.test(t)) bump("Lab vs Natural", "Natural", 85);
+
+  return { next, updated };
+}
+
+function findMentionedRings(text: string): Ring[] {
+  const found: Ring[] = [];
+  for (const ring of rings) {
+    // Match the first word of the ring name (Mila, Beverly, Madison, etc.)
+    const firstWord = ring.name.split(" ")[0];
+    const re = new RegExp(`\\b${firstWord}\\b`, "i");
+    if (re.test(text)) found.push(ring);
+  }
+  return found;
 }
 
 type Message =
@@ -257,9 +300,8 @@ function CopilotPage() {
 
   const THINKING_STEPS = [
     { text: "Reading your brief...", duration: 500 },
-    { text: "Checking 1,000,000+ diamonds...", duration: 800 },
+    { text: "Checking inventory...", duration: 800 },
     { text: "Matching to your profile...", duration: 600 },
-    { text: "Generating recommendations...", duration: 400 },
   ];
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
