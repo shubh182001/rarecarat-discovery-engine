@@ -35,24 +35,29 @@ export function SiteLayout() {
             <span className="font-serif text-lg font-semibold tracking-tight text-primary">
               Rare Carat
             </span>
-            {isAnalysis && (
-              <span className="hidden text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground sm:inline">
-                · Discoverability Engine
-              </span>
-            )}
+            <span className="hidden text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground sm:inline">
+              · Discoverability Engine
+            </span>
           </Link>
-          <nav className="hidden items-center gap-1 md:flex">
-            {navItems.map((item, i) => (
-              <Link
-                key={`${item.to}-${i}`}
-                to={item.to}
-                activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
-                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
-              >
-                {item.label}
+          <div className="hidden items-center gap-3 md:flex">
+            <nav className="flex items-center gap-1">
+              {navItems.map((item, i) => (
+                <Link
+                  key={`${item.to}-${i}`}
+                  to={item.to}
+                  activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+                  className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <Button asChild variant="outline" size="sm" className="border-gold text-primary hover:bg-gold/10">
+              <Link to="/gemologist">
+                <Headset className="h-3.5 w-3.5" /> Talk to a Gemologist
               </Link>
-            ))}
-          </nav>
+            </Button>
+          </div>
         </div>
         <nav className="flex gap-1 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
           {navItems.map((item, i) => (
