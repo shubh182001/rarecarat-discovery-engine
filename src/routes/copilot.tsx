@@ -566,7 +566,7 @@ function CopilotPage() {
                           className="group min-w-[280px] flex-shrink-0 animate-fade-in rounded-xl border border-border bg-background p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-[0_8px_30px_-8px_color-mix(in_oklab,var(--gold)_40%,transparent)] md:min-w-0"
                           style={{ animationDelay: `${150 + i * 100}ms`, animationFillMode: "both" }}
                         >
-                          <div className="mb-3 aspect-square overflow-hidden rounded-lg bg-surface">
+                          <div className="relative mb-3 aspect-square overflow-hidden rounded-lg bg-surface">
                             <img
                               src={getRingImage(ring.name)}
                               alt={ring.name}
@@ -575,6 +575,9 @@ function CopilotPage() {
                               height={768}
                               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
+                            <span className="absolute left-2 top-2 rounded-full bg-background/95 px-2.5 py-1 text-[11px] font-semibold text-primary backdrop-blur shadow-sm">
+                              {ringMatchPct(ring.name)}% match
+                            </span>
                           </div>
                           <h3 className="font-serif text-base font-semibold text-primary">
                             {ring.name}
