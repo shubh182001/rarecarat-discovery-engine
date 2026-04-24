@@ -8,6 +8,7 @@ import {
   Route as RouteIcon,
   ArrowRight,
   Sparkles,
+  Users,
   X,
   type LucideIcon,
 } from "lucide-react";
