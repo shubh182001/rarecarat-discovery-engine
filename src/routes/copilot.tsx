@@ -577,6 +577,36 @@ function CopilotPage() {
                 <Send className="h-4 w-4" />
               </Button>
             </form>
+
+            {/* Agent log (optional, collapsible) */}
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={() => setLogOpen((o) => !o)}
+                className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-primary"
+                aria-expanded={logOpen}
+              >
+                <Terminal className="h-3 w-3" />
+                Agent log
+                <ChevronDown
+                  className={`h-3 w-3 transition-transform ${logOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {logOpen && (
+                <div className="mt-2 max-h-48 overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-950 p-3 font-mono text-[11px] leading-relaxed text-amber-400/90 shadow-inner">
+                  {logEntries.length === 0 ? (
+                    <p className="text-zinc-500">// waiting for query…</p>
+                  ) : (
+                    logEntries.map((entry, i) => (
+                      <div key={i} className="animate-fade-in">
+                        <span className="text-zinc-500">[{entry.time}]</span>{" "}
+                        <span>{entry.text}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
