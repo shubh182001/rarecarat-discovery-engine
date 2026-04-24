@@ -46,6 +46,7 @@ export const Route = createFileRoute("/current-state")({
 type Tile = {
   icon: LucideIcon;
   stat: string;
+  label?: string;
   title: string;
   description: string;
   quote: string;
@@ -110,6 +111,7 @@ const gaps: Tile[] = [
   {
     icon: Video,
     stat: "40x Zoom, Standardized",
+    label: "Trust gap",
     title: "Hard to know what you're actually buying",
     description:
       "Shopping for a $5,000 stone from a photo alone creates real doubt. Video quality across the site varies by supplier.",
@@ -121,6 +123,7 @@ const gaps: Tile[] = [
   {
     icon: Package,
     stat: "Free Replica in 48 Hours",
+    label: "Pre-purchase anxiety",
     title: "No way to see the ring before committing",
     description:
       "Customers wait 2-3 weeks for delivery with no way to try the ring before it arrives. That's a long time to second-guess a $5,000 decision.",
@@ -133,6 +136,7 @@ const gaps: Tile[] = [
   {
     icon: Sparkles,
     stat: "46% Shop Together",
+    label: "Shopping behavior",
     title: "The site is built for one person, not two",
     description:
       "Nearly half of couples now shop for rings together. The site has no way to accommodate two people making one decision.",
@@ -145,6 +149,7 @@ const gaps: Tile[] = [
   {
     icon: BookOpen,
     stat: "Decades of Milestones",
+    label: "Post-purchase relationship",
     title: "Customer loyalty ends at the transaction",
     description:
       "After purchase, there's no milestone engine, no anniversary triggers, no reason for a happy customer to come back. The relationship stops at checkout.",
@@ -157,6 +162,7 @@ const gaps: Tile[] = [
   {
     icon: Smartphone,
     stat: "78% Shop Across Sessions",
+    label: "Personalization",
     title: "Every visitor starts from zero",
     description:
       "There's no persistent profile. Return visitors see the same generic experience as first-timers, even after expressing clear preferences in a previous chat.",
@@ -165,6 +171,7 @@ const gaps: Tile[] = [
     citation: "The Knot Jewelry & Engagement Study, 2024",
     sourceUrl: "https://www.theknot.com/content/engagement-ring-shopping-tips",
   },
+
 ];
 
 /**
@@ -454,9 +461,15 @@ function TileCard({
           <Icon className="h-4 w-4" />
         </div>
 
-        <p className="mt-4 font-serif text-2xl font-bold leading-tight text-primary tabular-nums">
-          {animatedStat}
-        </p>
+        {tile.label ? (
+          <p className="mt-4 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+            {tile.label}
+          </p>
+        ) : (
+          <p className="mt-4 font-serif text-2xl font-bold leading-tight text-primary tabular-nums">
+            {animatedStat}
+          </p>
+        )}
         <h3 className="mt-2 font-serif text-base font-semibold leading-snug text-primary">
           {tile.title}
         </h3>
