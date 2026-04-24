@@ -4,6 +4,7 @@ import { Heart, Send, Sparkles, X, ChevronDown, ChevronUp, MessageCircle } from 
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { applyChatMessage } from "@/lib/profileStore";
+import { useProfileStore } from "@/hooks/useProfileStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import milaImg from "@/assets/rings/mila.jpeg";
