@@ -285,7 +285,7 @@ function HomePage() {
               isFav={favorites.has(p.id)}
               onFav={() => toggleFav(p.id)}
               hovered={hoverId === p.id}
-              onHover={(h) => setHoverId(h ? p.id : (cur) => (cur === p.id ? null : cur) as any)}
+              onHover={(h) => setHoverId(h ? p.id : null)}
             />
           ))}
         </div>
