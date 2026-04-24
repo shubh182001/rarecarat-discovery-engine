@@ -116,7 +116,7 @@ const gaps: Tile[] = [
     description:
       "Shopping for a $5,000 stone from a photo alone creates real doubt. Video quality across the site varies by supplier.",
     quote:
-      "James Allen standardized 360° HD video for every diamond years ago. When video quality is inconsistent, trust takes the hit — and trust is the whole game at this price point.",
+      "Rare Carat's video quality varies by supplier — a direct observation from professional diamond buyers. When a customer is spending $5,000 on something they can't touch, inconsistent visuals create doubt at the worst possible moment.",
     citation: "Lab Diamonds Review, 2025",
     sourceUrl: "https://labdiamondsreview.com/reviews/rare-carat-reviews/",
   },
@@ -128,10 +128,9 @@ const gaps: Tile[] = [
     description:
       "Customers wait 2-3 weeks for delivery with no way to try the ring before it arrives. That's a long time to second-guess a $5,000 decision.",
     quote:
-      "With Clarity solves this with free home try-on replicas. One in three buyers reports anxiety about how a ring will look in person — a replica removes that entirely before the real purchase.",
-    citation: "Liori Diamonds Budget Guide, 2026",
-    sourceUrl:
-      "https://lioridiamonds.com/blogs/news/engagement-ring-budget-guide-what-real-couples-actually-spend-in-2026",
+      "68% of luxury shoppers abandon purchases because they can't see product details adequately. A 2-3 week build time with no preview creates real anxiety. With Clarity solved this with free home replicas. Rare Carat has no equivalent.",
+    citation: "Immerss Jewelry E-Commerce Trends, 2025",
+    sourceUrl: "https://www.immerss.live/content/jewelry-ecommerce-trends-2025/",
   },
   {
     icon: Sparkles,
@@ -141,7 +140,7 @@ const gaps: Tile[] = [
     description:
       "Nearly half of couples now shop for rings together. The site has no way to accommodate two people making one decision.",
     quote:
-      "46% of couples jointly shop for engagement rings according to Jewelers Mutual's 2024 study. There's no shared wishlist, no couples mode, no his-and-hers experience. That's half the market shopping in a system designed for someone else.",
+      "46% of couples now jointly shop for engagement rings. The site has no shared wishlist, no couples mode, no his-and-hers experience. That's nearly half the market shopping in a system designed for someone else.",
     citation: "Jewelers Mutual Engagement Ring Study, 2024",
     sourceUrl:
       "https://www.jewelersmutual.com/resources/individuals/rings/engagement-ring-study-2024",
@@ -154,10 +153,9 @@ const gaps: Tile[] = [
     description:
       "After purchase, there's no milestone engine, no anniversary triggers, no reason for a happy customer to come back. The relationship stops at checkout.",
     quote:
-      "The average couple buys an engagement ring, then a wedding band, then anniversary pieces over decades. Rare Carat captures the first purchase but has no lifecycle system to capture the rest. Brilliant Earth's content and community flywheel is quietly building that relationship instead.",
-    citation: "Natural Diamond Council Trends Report, 2025",
-    sourceUrl:
-      "https://www.naturaldiamonds.com/engagement-rings/diamond-trends-2025/",
+      "The average couple buys an engagement ring, then a wedding band, then anniversary pieces over decades. Research shows post-purchase follow-up and relationship continuity are key loyalty drivers in jewelry — yet Rare Carat has no milestone engine, no anniversary triggers, no structured reason for a happy customer to return.",
+    citation: "Jewel360 Jewelry Retail Trends, 2026",
+    sourceUrl: "https://jewel360.com/blog/trends-in-jewelry-retail",
   },
   {
     icon: Smartphone,
@@ -167,9 +165,9 @@ const gaps: Tile[] = [
     description:
       "There's no persistent profile. Return visitors see the same generic experience as first-timers, even after expressing clear preferences in a previous chat.",
     quote:
-      "78% of couples are now involved in ring selection together according to The Knot's 2024 study, meaning multiple sessions and multiple devices are the norm. A site with no memory of who you are forces buyers to start over every time — and every restart is a conversion risk.",
-    citation: "The Knot Jewelry & Engagement Study, 2024",
-    sourceUrl: "https://www.theknot.com/content/engagement-ring-shopping-tips",
+      "84% of shoppers say personalization matters when deciding where to buy. Return visitors to Rare Carat see the same generic experience as first-timers — no memory of previous chats, preferences, or searches. Every restart is a conversion risk.",
+    citation: "ResultFirst Jewelry E-Commerce Trends, 2025",
+    sourceUrl: "https://www.resultfirst.com/blog/ecommerce-seo/jewelry-ecommerce-trends/",
   },
 
 ];
