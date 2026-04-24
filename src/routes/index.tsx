@@ -239,6 +239,11 @@ function HomePage() {
 
   return (
     <div className="relative">
+      <div className="mx-auto max-w-7xl px-6 pt-3">
+        <Link to="/current-state" className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors">
+          ← Back to analysis
+        </Link>
+      </div>
       {/* HERO */}
       <section className="border-b border-border/60 bg-gradient-to-b from-surface/60 to-background">
         <div className="mx-auto max-w-6xl px-6 py-16 text-center md:py-24">
