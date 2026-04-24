@@ -5,7 +5,21 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import ringImage from "@/assets/ring-placeholder.jpg";
+import milaImg from "@/assets/rings/mila.jpeg";
+import beverlyImg from "@/assets/rings/beverly.webp";
+import madisonImg from "@/assets/rings/madison.webp";
+import haydenImg from "@/assets/rings/hayden.webp";
+import carmelImg from "@/assets/rings/carmel.webp";
+import couplesImg from "@/assets/rings/couples.jpg";
+
+const ringImages: Record<string, string> = {
+  mila: milaImg,
+  beverly: beverlyImg,
+  madison: madisonImg,
+  hayden: haydenImg,
+  carmel: carmelImg,
+  couples: couplesImg,
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -427,10 +441,10 @@ function ProductCard({
       >
         <div className="relative aspect-square overflow-hidden bg-surface">
           <img
-            src={ringImage}
+            src={ringImages[p.id] ?? milaImg}
             alt={p.name}
             loading="lazy"
-            className={`h-full w-full object-cover transition-transform duration-300 ease-in-out ${
+            className={`h-full w-full object-contain transition-transform duration-300 ease-in-out ${
               hovered ? "scale-110 animate-float-bob" : "scale-100"
             }`}
           />
