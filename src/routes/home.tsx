@@ -4,6 +4,7 @@ import { Heart, Send, Sparkles, X, ChevronDown, ChevronUp, MessageCircle } from 
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { applyChatMessage } from "@/lib/profileStore";
+import { useProfileStore } from "@/hooks/useProfileStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import milaImg from "@/assets/rings/mila.jpeg";
@@ -136,6 +137,8 @@ const initialMsgs: Msg[] = [
 ];
 
 function HomePage() {
+  const { matches } = useProfileStore();
+  const matchById = new Map(matches.map((m) => [m.ring.id, m.matchPercent]));
   const [query, setQuery] = useState("");
   const [filtered, setFiltered] = useState<Product[]>(products);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
@@ -303,7 +306,7 @@ function HomePage() {
           {filtered.map((p, i) => (
             <ProductCard
               key={p.id}
-              product={p}
+              product={{ ...p, match: matchById.get(p.id) ?? p.match }}
               isFav={favorites.has(p.id)}
               onFav={() => toggleFav(p.id)}
               hovered={hoverId === p.id}
