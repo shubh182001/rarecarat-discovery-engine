@@ -7,28 +7,6 @@ import { Input } from "@/components/ui/input";
 import { VoicePlayButton } from "@/components/VoicePlayButton";
 import { supabase } from "@/integrations/supabase/client";
 import ringImage from "@/assets/ring-placeholder.jpg";
-import milaImg from "@/assets/rings/mila.jpeg";
-import beverlyImg from "@/assets/rings/beverly.webp";
-import madisonImg from "@/assets/rings/madison.webp";
-import haydenImg from "@/assets/rings/hayden.webp";
-import carmelImg from "@/assets/rings/carmel.webp";
-import couplesImg from "@/assets/rings/couples.jpg";
-
-const ringImageByName: Record<string, string> = {
-  mila: milaImg,
-  beverly: beverlyImg,
-  madison: madisonImg,
-  hayden: haydenImg,
-  carmel: carmelImg,
-  helena: couplesImg,
-  aria: madisonImg,
-  celeste: beverlyImg,
-};
-
-function imageForRing(name: string): string {
-  const key = name.toLowerCase().split(/\s+/)[0];
-  return ringImageByName[key] ?? ringImage;
-}
 
 const VINTAGE_QUERY =
   "I want something vintage-looking but modern, under $3k, my girlfriend has small fingers and an artsy style.";
@@ -554,7 +532,7 @@ function CopilotPage() {
                         >
                           <div className="mb-3 aspect-square overflow-hidden rounded-lg bg-surface">
                             <img
-                              src={imageForRing(ring.name)}
+                              src={ringImage}
                               alt={ring.name}
                               loading="lazy"
                               width={768}
@@ -609,16 +587,7 @@ function CopilotPage() {
             )}
 
             <div className="flex flex-wrap gap-2 animate-fade-in">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="rounded-full"
-                disabled={isReplying}
-                onClick={() => {
-                  setInput("Refine: show me a smaller size");
-                }}
-              >
+              <Button variant="outline" size="sm" className="rounded-full">
                 Refine: smaller size
               </Button>
               <Button
