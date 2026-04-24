@@ -1,9 +1,7 @@
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { PhaseIndicator } from "@/components/PhaseIndicator";
 import { PageTransition } from "@/components/PageTransition";
-
 import { NavSearch } from "@/components/NavSearch";
-
 import { Button } from "@/components/ui/button";
 import { Headset } from "lucide-react";
 
