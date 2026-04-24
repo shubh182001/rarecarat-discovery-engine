@@ -20,6 +20,7 @@ export function SiteLayout() {
   const { pathname } = useLocation();
   const isAnalysis = analysisPaths.has(pathname);
   const navItems = mainNav;
+  const [homeItem, ...remainingNavItems] = navItems;
   const logoTo = "/" as const;
 
   return (
@@ -41,7 +42,15 @@ export function SiteLayout() {
           </Link>
           <div className="hidden items-center gap-3 md:flex">
             <nav className="flex items-center gap-1">
-              {navItems.map((item, i) => (
+              <Link
+                to={homeItem.to}
+                activeOptions={{ exact: true }}
+                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
+              >
+                {homeItem.label}
+              </Link>
+              <NavSearch />
+              {remainingNavItems.map((item, i) => (
                 <Link
                   key={`${item.to}-${i}`}
                   to={item.to}
@@ -51,7 +60,6 @@ export function SiteLayout() {
                   {item.label}
                 </Link>
               ))}
-              <NavSearch />
             </nav>
             <Button asChild variant="outline" size="sm" className="border-gold text-primary hover:bg-gold/10">
               <Link to="/gemologist">
@@ -61,7 +69,17 @@ export function SiteLayout() {
           </div>
         </div>
         <nav className="flex gap-1 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
-          {navItems.map((item, i) => (
+          <Link
+            to={homeItem.to}
+            activeOptions={{ exact: true }}
+            className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
+          >
+            {homeItem.label}
+          </Link>
+          <div className="flex items-center">
+            <NavSearch />
+          </div>
+          {remainingNavItems.map((item, i) => (
             <Link
               key={`m-${item.to}-${i}`}
               to={item.to}
