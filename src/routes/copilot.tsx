@@ -609,7 +609,16 @@ function CopilotPage() {
             )}
 
             <div className="flex flex-wrap gap-2 animate-fade-in">
-              <Button variant="outline" size="sm" className="rounded-full">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-full"
+                disabled={isReplying}
+                onClick={() => {
+                  setInput("Refine: show me a smaller size");
+                }}
+              >
                 Refine: smaller size
               </Button>
               <Button
