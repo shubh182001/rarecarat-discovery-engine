@@ -55,6 +55,7 @@ type Opportunity = {
   description: string[];
   quote: string;
   citation: string;
+  sourceUrl?: string;
   phasing: Phase[];
   impact: string[];
   cta?: { label: string; to: "/copilot" };
