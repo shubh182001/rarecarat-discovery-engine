@@ -91,8 +91,6 @@ export function SiteLayout() {
           </nav>
         </div>
       </footer>
-
-      <AboutDemoButton />
     </div>
   );
 }
