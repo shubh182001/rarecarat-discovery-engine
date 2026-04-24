@@ -554,7 +554,7 @@ function CopilotPage() {
                         >
                           <div className="mb-3 aspect-square overflow-hidden rounded-lg bg-surface">
                             <img
-                              src={ringImage}
+                              src={imageForRing(ring.name)}
                               alt={ring.name}
                               loading="lazy"
                               width={768}
