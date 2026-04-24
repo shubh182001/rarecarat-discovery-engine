@@ -206,12 +206,29 @@ const initialMessages: Message[] = [
   { id: "a2", role: "ai", text: THEA_FOLLOWUP, audioSrc: "/thea_response.mp3" },
 ];
 
+const THINKING_STEPS: { text: string; duration: number }[] = [
+  { text: "Reading your brief...", duration: 500 },
+  { text: "Checking 1,000,000+ diamonds...", duration: 800 },
+  { text: "Matching to your profile...", duration: 600 },
+  { text: "Generating recommendations...", duration: 400 },
+];
+
+type LogEntry = { time: string; text: string };
+
+function ts() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
+}
+
 function CopilotPage() {
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [profile, setProfile] = useState<ProfileRow[]>(initialProfile);
   const [isReplying, setIsReplying] = useState(false);
+  const [thinkingStep, setThinkingStep] = useState(0);
+  const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
+  const [logOpen, setLogOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
