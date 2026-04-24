@@ -1,7 +1,7 @@
 import { createRootRoute, HeadContent, Link, Scripts } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { AppShell } from "@/components/AppShell";
+import { SiteLayout } from "@/components/SiteLayout";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -63,7 +63,7 @@ export const Route = createRootRoute({
     ],
   }),
   shellComponent: RootShell,
-  component: AppShell,
+  component: SiteLayout,
   notFoundComponent: NotFoundComponent,
 });
 

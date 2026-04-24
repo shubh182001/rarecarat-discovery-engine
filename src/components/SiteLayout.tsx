@@ -19,27 +19,24 @@ const analysisPaths = new Set(["/current-state", "/opportunities"]);
 export function SiteLayout() {
   const { pathname } = useLocation();
   const isAnalysis = analysisPaths.has(pathname);
-  const navItems = mainNav;
-  const [homeItem, ...remainingNavItems] = navItems;
-  const logoTo = "/" as const;
+  const [homeItem, ...remainingNavItems] = mainNav;
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to={logoTo} className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-gold">
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
                 <path d="M12 2 4 9l8 13 8-13z" />
               </svg>
             </span>
-            <span className="font-serif text-lg font-semibold tracking-tight text-primary">
-              Rare Carat
-            </span>
+            <span className="font-serif text-lg font-semibold tracking-tight text-primary">Rare Carat</span>
             <span className="hidden text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground sm:inline">
               · Discoverability Engine
             </span>
           </Link>
+
           <div className="hidden items-center gap-3 md:flex">
             <nav className="flex items-center gap-1">
               <Link
@@ -61,6 +58,7 @@ export function SiteLayout() {
                 </Link>
               ))}
             </nav>
+
             <Button asChild variant="outline" size="sm" className="border-gold text-primary hover:bg-gold/10">
               <Link to="/gemologist">
                 <Headset className="h-3.5 w-3.5" /> Talk to a Gemologist
@@ -68,6 +66,7 @@ export function SiteLayout() {
             </Button>
           </div>
         </div>
+
         <nav className="flex gap-1 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
           <Link
             to={homeItem.to}
