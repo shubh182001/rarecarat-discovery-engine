@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { PhaseIndicator } from "@/components/PhaseIndicator";
 import { PageTransition } from "@/components/PageTransition";
-import { AboutDemoButton } from "@/components/AboutDemoButton";
+
 import { NavSearch } from "@/components/NavSearch";
 
 import { Button } from "@/components/ui/button";
@@ -90,8 +90,6 @@ export function SiteLayout() {
           <span>Built by Shubh Dhar for Rare Carat · Concept demo · April 2026</span>
         </div>
       </footer>
-
-      <AboutDemoButton />
     </div>
   );
 }
