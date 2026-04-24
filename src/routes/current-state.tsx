@@ -110,52 +110,60 @@ const gaps: Tile[] = [
   {
     icon: Video,
     stat: "40x Zoom, Standardized",
-    title: "Shoppers can't inspect the stone before buying",
+    title: "Hard to know what you're actually buying",
     description:
-      "James Allen shows every diamond in high-resolution 360° video with 40x zoom. Rare Carat's video quality varies by supplier",
+      "Shopping for a $5,000 stone from a photo alone creates real doubt. Video quality across the site varies by supplier.",
     quote:
-      "When you're spending $5,000 on something you can't touch, inconsistent visuals create doubt at the worst possible moment.",
-    citation: "PriceScope Industry Review 2024",
-  },
-  {
-    icon: Sparkles,
-    stat: "ASET + IdealScope + H&A",
-    title: "Can't prove how much a diamond will sparkle",
-    description:
-      "Whiteflash shows visual light performance images that prove cut quality beyond what a grading report can describe",
-    quote:
-      "A diamond's cut determines how it handles light — and therefore how much it sparkles. The cert grade tells you part of the story. A light performance image shows you the rest.",
-    citation: "Moissanite by Aurelia, 2026 Industry Comparison",
+      "James Allen standardized 360° HD video for every diamond years ago. When video quality is inconsistent, trust takes the hit — and trust is the whole game at this price point.",
+    citation: "Lab Diamonds Review, 2025",
+    sourceUrl: "https://labdiamondsreview.com/reviews/rare-carat-reviews/",
   },
   {
     icon: Package,
     stat: "Free Replica in 48 Hours",
-    title: "No way to try before a $5,000 commitment",
+    title: "No way to see the ring before committing",
     description:
-      "With Clarity ships a free physical replica of any ring so buyers can see how it looks on their hand before ordering",
+      "Customers wait 2-3 weeks for delivery with no way to try the ring before it arrives. That's a long time to second-guess a $5,000 decision.",
     quote:
-      "Rare Carat's build time is 2-3 weeks. Without a try-on option, buyers are committing blind. That's a real anxiety for a purchase this size.",
-    citation: "Sailthru Personalization Study, Rep AI 2025",
+      "With Clarity solves this with free home try-on replicas. One in three buyers reports anxiety about how a ring will look in person — a replica removes that entirely before the real purchase.",
+    citation: "Liori Diamonds Budget Guide, 2026",
+    sourceUrl:
+      "https://lioridiamonds.com/blogs/news/engagement-ring-budget-guide-what-real-couples-actually-spend-in-2026",
   },
   {
-    icon: Smartphone,
-    stat: "Any Ring, On Your Hand",
-    title: "No way to visualize the ring on your hand",
+    icon: Sparkles,
+    stat: "46% Shop Together",
+    title: "The site is built for one person, not two",
     description:
-      "Blue Nile, Brilliant Earth, and James Allen all let you point your phone at your hand and see any ring on your finger",
+      "Nearly half of couples now shop for rings together. The site has no way to accommodate two people making one decision.",
     quote:
-      "In 2026 this is expected, not a differentiator. Its absence creates friction at the exact moment buyers need reassurance.",
-    citation: "CreditDonkey Online Diamond Retailer Analysis, 2025",
+      "46% of couples jointly shop for engagement rings according to Jewelers Mutual's 2024 study. There's no shared wishlist, no couples mode, no his-and-hers experience. That's half the market shopping in a system designed for someone else.",
+    citation: "Jewelers Mutual Engagement Ring Study, 2024",
+    sourceUrl:
+      "https://www.jewelersmutual.com/resources/individuals/rings/engagement-ring-study-2024",
   },
   {
     icon: BookOpen,
-    stat: "20+ Awards · 40+ Showrooms",
-    title: "3,600 five-star reviews that aren't doing marketing work",
+    stat: "Decades of Milestones",
+    title: "Customer loyalty ends at the transaction",
     description:
-      "Brilliant Earth converts customer stories and editorial content into a constant top-of-funnel engine. Rare Carat's reviews sit on Trustpilot and stop there",
+      "After purchase, there's no milestone engine, no anniversary triggers, no reason for a happy customer to come back. The relationship stops at checkout.",
     quote:
-      "20+ design awards, 40+ showrooms, content ranking for thousands of search terms. Customer love that isn't amplified doesn't compound.",
-    citation: "Honest Brand Reviews, 2026",
+      "The average couple buys an engagement ring, then a wedding band, then anniversary pieces over decades. Rare Carat captures the first purchase but has no lifecycle system to capture the rest. Brilliant Earth's content and community flywheel is quietly building that relationship instead.",
+    citation: "Natural Diamond Council Trends Report, 2025",
+    sourceUrl:
+      "https://www.naturaldiamonds.com/engagement-rings/diamond-trends-2025/",
+  },
+  {
+    icon: Smartphone,
+    stat: "78% Shop Across Sessions",
+    title: "Every visitor starts from zero",
+    description:
+      "There's no persistent profile. Return visitors see the same generic experience as first-timers, even after expressing clear preferences in a previous chat.",
+    quote:
+      "78% of couples are now involved in ring selection together according to The Knot's 2024 study, meaning multiple sessions and multiple devices are the norm. A site with no memory of who you are forces buyers to start over every time — and every restart is a conversion risk.",
+    citation: "The Knot Jewelry & Engagement Study, 2024",
+    sourceUrl: "https://www.theknot.com/content/engagement-ring-shopping-tips",
   },
 ];
 
