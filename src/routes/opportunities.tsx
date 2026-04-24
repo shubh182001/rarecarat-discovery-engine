@@ -263,6 +263,34 @@ const opportunities: Opportunity[] = [
       "+15% net new customers via referral",
     ],
   },
+  {
+    id: "couples",
+    number: "06",
+    icon: Users,
+    accent: "blue",
+    headline: "Build for two people making one decision",
+    oneLine:
+      "Nearly half of couples now shop for rings together. The site treats every visitor as a solo buyer. A couples mode with shared profiles, matched sets, and bundle pricing would serve this market properly.",
+    tags: ["Discovery", "Retention"],
+    description: [
+      "46% of couples jointly shop for engagement rings according to Jewelers Mutual's 2024 study. No major online diamond retailer has built a proper two-person shopping experience.",
+      "A couples Copilot mode takes two style inputs, builds two profiles simultaneously, and surfaces matched sets with a combined price. Average order value goes from one ring to two rings plus matching bands.",
+    ],
+    quote:
+      "46% of couples jointly shop for engagement rings, yet no major online diamond retailer has built a proper two-person shopping experience.",
+    citation: "Jewelers Mutual Engagement Ring Study, 2024",
+    sourceUrl: "https://www.jewelersmutual.com/resources/individuals/rings/engagement-ring-study-2024",
+    phasing: [
+      { label: "MVP", duration: "6 weeks" },
+      { label: "Phase 2", duration: "3 months" },
+      { label: "Phase 3", duration: "8 months" },
+    ],
+    impact: [
+      "+90% AOV from matched sets",
+      "+35% session length with two-person mode",
+      "New category: bundle pricing for ring + bands",
+    ],
+  },
 ];
 
 /** Animate the first numeric token of a string from 0 to its value */
