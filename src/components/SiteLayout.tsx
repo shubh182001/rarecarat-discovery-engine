@@ -16,6 +16,12 @@ const mainNav = [
 
 const analysisPaths = new Set(["/current-state", "/opportunities"]);
 
+const footerLinks = [
+  { to: "/current-state", label: "Current State" },
+  { to: "/opportunities", label: "Opportunities" },
+  { to: "/copilot", label: "Try Copilot" },
+] as const;
+
 export function SiteLayout() {
   const { pathname } = useLocation();
   const isAnalysis = analysisPaths.has(pathname);
@@ -85,9 +91,11 @@ export function SiteLayout() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-muted-foreground sm:flex-row">
           <span>Built by Shubh Dhar for Rare Carat · Concept demo · April 2026</span>
           <nav className="flex items-center gap-4">
-            <Link to="/current-state" className="hover:text-primary">Current State</Link>
-            <Link to="/opportunities" className="hover:text-primary">Opportunities</Link>
-            <Link to="/copilot" className="hover:text-primary">Try Copilot</Link>
+            {footerLinks.map((item) => (
+              <Link key={item.to} to={item.to} className="hover:text-primary">
+                {item.label}
+              </Link>
+            ))}
           </nav>
         </div>
       </footer>
