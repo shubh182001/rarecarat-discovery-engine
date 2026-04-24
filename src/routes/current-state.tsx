@@ -50,6 +50,7 @@ type Tile = {
   description: string;
   quote: string;
   citation: string;
+  sourceUrl?: string;
 };
 
 const strengths: Tile[] = [
