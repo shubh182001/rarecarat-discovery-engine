@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Headset } from "lucide-react";
 
 const mainNav = [
-  { to: "/", label: "Home" },
+  { to: "/home", label: "Home" },
   { to: "/couples", label: "Couples" },
   { to: "/copilot", label: "Try Copilot" },
   { to: "/current-state", label: "Current State" },
@@ -25,7 +25,7 @@ export function SiteLayout() {
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/home" className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-gold">
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
                 <path d="M12 2 4 9l8 13 8-13z" />
@@ -44,7 +44,7 @@ export function SiteLayout() {
                   <span key={item.to} className="flex items-center gap-1">
                     <Link
                       to={item.to}
-                      activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+                      activeOptions={{ exact: item.to === "/home" || item.to === "/current-state" }}
                       className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
                     >
                       {item.label}
@@ -69,7 +69,7 @@ export function SiteLayout() {
               <Link
                 key={`m-${item.to}`}
                 to={item.to}
-                activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+                activeOptions={{ exact: item.to === "/home" || item.to === "/current-state" }}
                 className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
               >
                 {item.label}

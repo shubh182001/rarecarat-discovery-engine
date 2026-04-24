@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as GemologistRouteImport } from './routes/gemologist'
 import { Route as CurrentStateRouteImport } from './routes/current-state'
 import { Route as CouplesRouteImport } from './routes/couples'
@@ -26,6 +27,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const OpportunitiesRoute = OpportunitiesRouteImport.update({
   id: '/opportunities',
   path: '/opportunities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GemologistRoute = GemologistRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/couples': typeof CouplesRoute
   '/current-state': typeof CurrentStateRoute
   '/gemologist': typeof GemologistRoute
+  '/home': typeof HomeRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
   '/api/tts': typeof ApiTtsRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/couples': typeof CouplesRoute
   '/current-state': typeof CurrentStateRoute
   '/gemologist': typeof GemologistRoute
+  '/home': typeof HomeRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
   '/api/tts': typeof ApiTtsRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/couples': typeof CouplesRoute
   '/current-state': typeof CurrentStateRoute
   '/gemologist': typeof GemologistRoute
+  '/home': typeof HomeRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
   '/api/tts': typeof ApiTtsRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/couples'
     | '/current-state'
     | '/gemologist'
+    | '/home'
     | '/opportunities'
     | '/profile'
     | '/api/tts'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/couples'
     | '/current-state'
     | '/gemologist'
+    | '/home'
     | '/opportunities'
     | '/profile'
     | '/api/tts'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/couples'
     | '/current-state'
     | '/gemologist'
+    | '/home'
     | '/opportunities'
     | '/profile'
     | '/api/tts'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   CouplesRoute: typeof CouplesRoute
   CurrentStateRoute: typeof CurrentStateRoute
   GemologistRoute: typeof GemologistRoute
+  HomeRoute: typeof HomeRoute
   OpportunitiesRoute: typeof OpportunitiesRoute
   ProfileRoute: typeof ProfileRoute
   ApiTtsRoute: typeof ApiTtsRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/opportunities'
       fullPath: '/opportunities'
       preLoaderRoute: typeof OpportunitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gemologist': {
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   CouplesRoute: CouplesRoute,
   CurrentStateRoute: CurrentStateRoute,
   GemologistRoute: GemologistRoute,
+  HomeRoute: HomeRoute,
   OpportunitiesRoute: OpportunitiesRoute,
   ProfileRoute: ProfileRoute,
   ApiTtsRoute: ApiTtsRoute,
