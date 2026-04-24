@@ -37,24 +37,7 @@ export function SiteLayout() {
             </span>
           </Link>
 
-          {isAnalysis ? (
-            <nav className="flex items-center gap-1">
-              <Link
-                to="/current-state"
-                activeOptions={{ exact: true }}
-                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
-              >
-                Current State
-              </Link>
-              <Link
-                to="/opportunities"
-                activeOptions={{ exact: true }}
-                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
-              >
-                Opportunities
-              </Link>
-            </nav>
-          ) : (
+          {isAnalysis ? null : (
             <div className="hidden items-center gap-3 md:flex">
               <nav className="flex items-center gap-1">
                 {mainNav.map((item, idx) => (
