@@ -235,6 +235,7 @@ function CopilotPage() {
   useEffect(() => {
     return () => {
       if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+      thinkingTimersRef.current.forEach(clearTimeout);
       try {
         recognitionRef.current?.stop();
       } catch {}
