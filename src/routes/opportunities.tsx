@@ -410,20 +410,16 @@ function OpportunitiesPage() {
 
       {/* Tile grid */}
       <div
-        className="grid gap-5 lg:grid-cols-6"
+        className="grid gap-5 lg:grid-cols-2"
         style={{ perspective: "1200px" }}
       >
-        {filtered.map((o, i) => {
-          const span =
-            !activeFilter && i === 0
-              ? "lg:col-span-3 lg:row-span-2"
-              : "lg:col-span-3";
+        {filtered.map((o) => {
           return (
             <OpportunityTile
               key={o.id}
               opportunity={o}
-              spanClass={span}
-              feature={!activeFilter && i === 0}
+              spanClass=""
+              feature={false}
               onOpen={() => setOpen(o)}
             />
           );
