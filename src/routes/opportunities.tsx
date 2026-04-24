@@ -429,6 +429,27 @@ function OpportunitiesPage() {
         </Link>
       </section>
 
+      {/* Zone transition: Analysis → Product Demo */}
+      <section
+        className="-mx-4 mt-20 px-6 py-20 text-center md:-mx-6 md:px-12 md:py-28"
+        style={{ background: "#0A1F44" }}
+      >
+        <h2 className="mx-auto max-w-3xl font-serif text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+          See what this looks like as a product.
+        </h2>
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-gold md:text-lg">
+          A working demo of the Discoverability Engine — homepage, Copilot,
+          couples experience, and gemologist view.
+        </p>
+        <Link
+          to="/"
+          className="mt-10 inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 text-base font-semibold text-gold-foreground shadow-xl transition-all hover:scale-105 hover:bg-gold/90 md:text-lg"
+        >
+          Experience the Demo
+          <ArrowRight className="h-5 w-5" />
+        </Link>
+      </section>
+
       <OpportunityModal open={open} onClose={() => setOpen(null)} />
     </div>
   );
