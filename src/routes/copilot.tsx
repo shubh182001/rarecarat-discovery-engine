@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Sparkles, Send, ArrowRight, Network, Headset, Mic } from "lucide-react";
+import { Sparkles, Send, ArrowRight, Network, Headset, Mic, ChevronDown, Terminal } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -206,12 +206,29 @@ const initialMessages: Message[] = [
   { id: "a2", role: "ai", text: THEA_FOLLOWUP, audioSrc: "/thea_response.mp3" },
 ];
 
+const THINKING_STEPS: { text: string; duration: number }[] = [
+  { text: "Reading your brief...", duration: 500 },
+  { text: "Checking 1,000,000+ diamonds...", duration: 800 },
+  { text: "Matching to your profile...", duration: 600 },
+  { text: "Generating recommendations...", duration: 400 },
+];
+
+type LogEntry = { time: string; text: string };
+
+function ts() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
+}
+
 function CopilotPage() {
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [profile, setProfile] = useState<ProfileRow[]>(initialProfile);
   const [isReplying, setIsReplying] = useState(false);
+  const [thinkingStep, setThinkingStep] = useState(0);
+  const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
+  const [logOpen, setLogOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -347,18 +364,40 @@ function CopilotPage() {
     setMessages((m) => [...m, userMsg]);
     setInput("");
     setIsReplying(true);
+    setThinkingStep(0);
 
     const key = classifyMessage(text);
     const { next, updated } = applyProfileForReply(key, profile);
-    if (updated) {
-      setProfile(next);
-      toast.success("Profile updated", { description: "New preference signals detected." });
-    } else {
-      toast("Profile updated");
-    }
 
-    const reply = REPLIES[key];
+    const pushLog = (entry: string) =>
+      setLogEntries((l) => [...l, { time: ts(), text: entry }]);
+
+    pushLog(`Received query: "${text}"`);
+    pushLog(`Parsing intent: classifier=${key}`);
+
+    // Sequential thinking steps
+    let elapsed = 0;
+    THINKING_STEPS.forEach((step, i) => {
+      setTimeout(() => {
+        setThinkingStep(i);
+        if (i === 1) pushLog("Running match algorithm across 847,293 listings...");
+        if (i === 2) pushLog("Applied filters: lab-grown, oval/round, E-F color, VS2+");
+        if (i === 3) pushLog("Ranked 5 results by weighted match score");
+      }, elapsed);
+      elapsed += step.duration;
+    });
+
     setTimeout(() => {
+      if (updated) {
+        setProfile(next);
+        pushLog("Updating preference graph: new signals detected");
+        toast.success("Profile updated", { description: "New preference signals detected." });
+      } else {
+        toast("Profile updated");
+      }
+
+      const reply = REPLIES[key];
+      pushLog("Response ready");
       setMessages((m) => [
         ...m,
         {
@@ -370,7 +409,8 @@ function CopilotPage() {
         },
       ]);
       setIsReplying(false);
-    }, 1500);
+      setThinkingStep(0);
+    }, elapsed);
   };
 
   return (
@@ -476,11 +516,13 @@ function CopilotPage() {
 
             {isReplying && (
               <div className="flex justify-start animate-fade-in">
-                <div className="rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-muted-foreground shadow-sm">
-                  <span className="inline-flex gap-1">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold [animation-delay:150ms]" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold [animation-delay:300ms]" />
+                <div className="flex items-center gap-2.5 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-primary shadow-sm">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-gold" />
+                  </span>
+                  <span key={thinkingStep} className="animate-fade-in font-medium">
+                    {THINKING_STEPS[thinkingStep]?.text ?? "Thinking..."}
                   </span>
                 </div>
               </div>
@@ -535,6 +577,36 @@ function CopilotPage() {
                 <Send className="h-4 w-4" />
               </Button>
             </form>
+
+            {/* Agent log (optional, collapsible) */}
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={() => setLogOpen((o) => !o)}
+                className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-primary"
+                aria-expanded={logOpen}
+              >
+                <Terminal className="h-3 w-3" />
+                Agent log
+                <ChevronDown
+                  className={`h-3 w-3 transition-transform ${logOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {logOpen && (
+                <div className="mt-2 max-h-48 overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-950 p-3 font-mono text-[11px] leading-relaxed text-amber-400/90 shadow-inner">
+                  {logEntries.length === 0 ? (
+                    <p className="text-zinc-500">// waiting for query…</p>
+                  ) : (
+                    logEntries.map((entry, i) => (
+                      <div key={i} className="animate-fade-in">
+                        <span className="text-zinc-500">[{entry.time}]</span>{" "}
+                        <span>{entry.text}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
