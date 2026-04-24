@@ -16,11 +16,11 @@ import couplesStatementImg from "@/assets/rings/couples-statement.webp";
 export const Route = createFileRoute("/couples")({
   head: () => ({
     meta: [
-      { title: "Couples · Rare Carat — Shop rings as a set" },
+      { title: "Couples · Rare Carat · Shop rings as a set" },
       {
         name: "description",
         content:
-          "Tell the Copilot about both of you. Get matched ring sets with combined pricing — always cheaper than buying separately.",
+          "Tell the Copilot about both of you. Get matched ring sets with combined pricing, always cheaper than buying separately.",
       },
       { property: "og:title", content: "Couples · Rare Carat" },
       {
@@ -157,7 +157,7 @@ function CouplesCopilot() {
             Not seeing your style? Describe both of you.
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-base text-muted-foreground">
-            Two inputs. One matched set. The Copilot finds rings that look intentional together — and prices them as a bundle.
+            Two inputs. One matched set. The Copilot finds rings that look intentional together, and prices them as a bundle.
           </p>
         </div>
 
@@ -216,7 +216,7 @@ function CouplesCopilot() {
             <div className="mt-5 flex flex-col items-center gap-1 rounded-2xl border border-gold/40 bg-gold/10 px-6 py-4 text-center">
               <span className="text-xs uppercase tracking-wider text-muted-foreground">Combined price</span>
               <span className="font-serif text-3xl font-semibold text-primary">{fmt(combined)}</span>
-              <span className="text-xs text-[oklch(0.5_0.13_84)]">Bundled — saves ~$180 vs. buying separately</span>
+              <span className="text-xs text-[oklch(0.5_0.13_84)]">Bundled, saves ~$180 vs. buying separately</span>
             </div>
 
             {/* Dual profile panel */}
@@ -271,7 +271,7 @@ function CouplesPage() {
             Make it easy.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            Tell the Copilot about both of you. Get matched sets with a combined price — always cheaper than buying separately.
+            Tell the Copilot about both of you. Get matched sets with a combined price, always cheaper than buying separately.
           </p>
           <p className="mt-4 text-xs font-medium uppercase tracking-[0.18em] text-[oklch(0.5_0.13_84)]">
             Average couple saves $340 buying as a set on Rare Carat
@@ -316,12 +316,12 @@ function CouplesPage() {
               {
                 icon: Package,
                 title: "Always cheaper together",
-                body: "Bundle pricing saves $150–$400 vs. buying the same two rings individually.",
+                body: "Bundle pricing saves $150 to $400 vs. buying the same two rings individually.",
               },
               {
                 icon: Truck,
                 title: "Ships together",
-                body: "One order, one delivery, one unboxing moment — no waiting on a second package.",
+                body: "One order, one delivery, one unboxing moment, with no waiting on a second package.",
               },
               {
                 icon: Gem,

@@ -126,7 +126,7 @@ const gaps: Tile[] = [
     description:
       "Shopping for a $5,000 stone from a photo alone creates real doubt. Video quality across the site varies by supplier.",
     quote:
-      "Rare Carat's video quality varies by supplier — a direct observation from professional diamond buyers. When a customer is spending $5,000 on something they can't touch, inconsistent visuals create doubt at the worst possible moment.",
+      "Rare Carat's video quality varies by supplier, a direct observation from professional diamond buyers. When a customer is spending $5,000 on something they can't touch, inconsistent visuals create doubt at the worst possible moment.",
     citation: "Lab Diamonds Review, 2025",
     sourceUrl: "https://labdiamondsreview.com/reviews/rare-carat-reviews/",
   },
@@ -163,7 +163,7 @@ const gaps: Tile[] = [
     description:
       "After purchase, there's no milestone engine, no anniversary triggers, no reason for a happy customer to come back. The relationship stops at checkout.",
     quote:
-      "The average couple buys an engagement ring, then a wedding band, then anniversary pieces over decades. Research shows post-purchase follow-up and relationship continuity are key loyalty drivers in jewelry — yet Rare Carat has no milestone engine, no anniversary triggers, no structured reason for a happy customer to return.",
+      "The average couple buys an engagement ring, then a wedding band, then anniversary pieces over decades. Research shows post-purchase follow-up and relationship continuity are key loyalty drivers in jewelry. Rare Carat has no milestone engine, no anniversary triggers, no structured reason for a happy customer to return.",
     citation: "Jewel360 Jewelry Retail Trends, 2026",
     sourceUrl: "https://jewel360.com/blog/trends-in-jewelry-retail",
   },
@@ -175,7 +175,7 @@ const gaps: Tile[] = [
     description:
       "There's no persistent profile. Return visitors see the same generic experience as first-timers, even after expressing clear preferences in a previous chat.",
     quote:
-      "84% of shoppers say personalization matters when deciding where to buy. Return visitors to Rare Carat see the same generic experience as first-timers — no memory of previous chats, preferences, or searches. Every restart is a conversion risk.",
+      "84% of shoppers say personalization matters when deciding where to buy. Return visitors to Rare Carat see the same generic experience as first-timers, with no memory of previous chats, preferences, or searches. Every restart is a conversion risk.",
     citation: "ResultFirst Jewelry E-Commerce Trends, 2025",
     sourceUrl: "https://www.resultfirst.com/blog/ecommerce-seo/jewelry-ecommerce-trends/",
   },

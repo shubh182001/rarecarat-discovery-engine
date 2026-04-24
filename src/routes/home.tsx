@@ -34,7 +34,7 @@ export const Route = createFileRoute("/home")({
       {
         property: "og:description",
         content:
-          "An AI-native diamond browsing experience. Tell the Copilot what you want; watch the collection respond.",
+          "An AI-native diamond browsing experience. Tell the Copilot what you want, and watch the collection respond.",
       },
     ],
   }),
@@ -130,7 +130,7 @@ const initialMsgs: Msg[] = [
   {
     id: "i1",
     role: "ai",
-    text: "Hi, I'm Clara. Tell me what you're looking for — a vibe, a budget, a partner's style — and I'll narrow the collection in real time.",
+    text: "Hi, I'm Clara. Tell me what you're looking for. A vibe, a budget, a partner's style. I'll narrow the collection in real time.",
   },
 ];
 
@@ -487,7 +487,7 @@ function ProductCard({
         </div>
       </div>
 
-      {/* Price breakdown tooltip — flips to left side for rightmost column to avoid overflow */}
+      {/* Price breakdown tooltip, flips to left side for rightmost column to avoid overflow */}
       <div
         className={`pointer-events-none absolute top-4 z-20 hidden w-72 rounded-xl border border-gold/40 bg-primary p-4 text-primary-foreground shadow-xl transition-all duration-200 lg:block ${
           index % 3 === 2
