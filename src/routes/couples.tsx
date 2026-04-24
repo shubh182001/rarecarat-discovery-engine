@@ -9,6 +9,9 @@ import carmelImg from "@/assets/rings/carmel.webp";
 import madisonImg from "@/assets/rings/madison.webp";
 import beverlyImg from "@/assets/rings/beverly.webp";
 import haydenImg from "@/assets/rings/hayden.webp";
+import couplesModernImg from "@/assets/rings/couples-modern.webp";
+import couplesVintageImg from "@/assets/rings/couples-vintage.avif";
+import couplesStatementImg from "@/assets/rings/couples-statement.webp";
 
 export const Route = createFileRoute("/couples")({
   head: () => ({
@@ -33,6 +36,7 @@ export const Route = createFileRoute("/couples")({
 type CoupleSet = {
   id: string;
   title: string;
+  image: string;
   her: { name: string; price: number; image: string };
   his: { name: string; price: number; image: string };
   combined: number;
@@ -44,6 +48,7 @@ const sets: CoupleSet[] = [
   {
     id: "modern-minimal",
     title: "The Modern Minimal",
+    image: couplesModernImg,
     her: { name: "Mila Vintage-Inspired Solitaire", price: 2050, image: milaImg },
     his: { name: "Low Dome Polished Band 6mm Yellow Gold", price: 760, image: ringPlaceholder },
     combined: 2650,
@@ -53,6 +58,7 @@ const sets: CoupleSet[] = [
   {
     id: "vintage-romance",
     title: "The Vintage Romance",
+    image: couplesVintageImg,
     her: { name: "Carmel Vintage Inspired Cushion", price: 2760, image: carmelImg },
     his: { name: "Classic Milgrain Edge Band", price: 680, image: ringPlaceholder },
     combined: 3290,
@@ -62,6 +68,7 @@ const sets: CoupleSet[] = [
   {
     id: "statement-pair",
     title: "The Statement Pair",
+    image: couplesStatementImg,
     her: { name: "Madison Three-Stone Pear", price: 2390, image: madisonImg },
     his: { name: "Diamond Channel Set Band", price: 890, image: ringPlaceholder },
     combined: 3130,
@@ -75,19 +82,12 @@ const fmt = (n: number) => `$${n.toLocaleString()}`;
 function SetCard({ set }: { set: CoupleSet }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative grid grid-cols-2 gap-px bg-border/60">
-        <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-surface/60 p-4">
-          <span className="absolute left-2 top-2 rounded-full bg-background/85 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur">
-            Her
-          </span>
-          <img src={set.her.image} alt={set.her.name} className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105" />
-        </div>
-        <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-surface/60 p-4">
-          <span className="absolute left-2 top-2 rounded-full bg-background/85 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur">
-            His
-          </span>
-          <img src={set.his.image} alt={set.his.name} className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105" />
-        </div>
+      <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-surface/60 p-6">
+        <img
+          src={set.image}
+          alt={set.title}
+          className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+        />
         <span className="absolute right-3 top-3 rounded-full bg-gold px-2.5 py-1 text-[11px] font-semibold text-primary shadow">
           Saves {fmt(set.saves)}
         </span>
