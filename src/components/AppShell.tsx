@@ -16,7 +16,7 @@ const mainNav = [
 
 const analysisPaths = new Set(["/current-state", "/opportunities"]);
 
-export function SiteLayout() {
+export function AppShell() {
   const { pathname } = useLocation();
   const isAnalysis = analysisPaths.has(pathname);
   const [homeItem, ...remainingNavItems] = mainNav;
