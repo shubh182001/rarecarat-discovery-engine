@@ -367,7 +367,22 @@ function CopilotPage() {
     }
 
     const reply = REPLIES[key];
-    setTimeout(() => {
+
+    // Clear any existing thinking timers
+    thinkingTimersRef.current.forEach(clearTimeout);
+    thinkingTimersRef.current = [];
+
+    setThinkingStep(0);
+    let cumulative = 0;
+    THINKING_STEPS.forEach((step, idx) => {
+      cumulative += step.duration;
+      if (idx < THINKING_STEPS.length - 1) {
+        const t = setTimeout(() => setThinkingStep(idx + 1), cumulative);
+        thinkingTimersRef.current.push(t);
+      }
+    });
+    const total = THINKING_STEPS.reduce((s, x) => s + x.duration, 0);
+    const finalTimer = setTimeout(() => {
       setMessages((m) => [
         ...m,
         {
@@ -379,7 +394,9 @@ function CopilotPage() {
         },
       ]);
       setIsReplying(false);
-    }, 1500);
+      setThinkingStep(0);
+    }, total);
+    thinkingTimersRef.current.push(finalTimer);
   };
 
   return (
