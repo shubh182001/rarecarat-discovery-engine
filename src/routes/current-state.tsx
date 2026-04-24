@@ -46,6 +46,7 @@ export const Route = createFileRoute("/current-state")({
 type Tile = {
   icon: LucideIcon;
   stat: string;
+  label?: string;
   title: string;
   description: string;
   quote: string;
