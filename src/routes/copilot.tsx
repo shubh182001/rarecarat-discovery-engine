@@ -212,6 +212,15 @@ function CopilotPage() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [profile, setProfile] = useState<ProfileRow[]>(initialProfile);
   const [isReplying, setIsReplying] = useState(false);
+  const [thinkingStep, setThinkingStep] = useState(0);
+  const thinkingTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const THINKING_STEPS = [
+    { text: "Reading your brief...", duration: 500 },
+    { text: "Checking 1,000,000+ diamonds...", duration: 800 },
+    { text: "Matching to your profile...", duration: 600 },
+    { text: "Generating recommendations...", duration: 400 },
+  ];
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
