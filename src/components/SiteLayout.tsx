@@ -2,19 +2,16 @@ import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { PhaseIndicator } from "@/components/PhaseIndicator";
 import { PageTransition } from "@/components/PageTransition";
 import { AboutDemoButton } from "@/components/AboutDemoButton";
+import { Button } from "@/components/ui/button";
+import { Headset } from "lucide-react";
 
-const analysisNav = [
-  { to: "/current-state", label: "Current State" },
-  { to: "/opportunities", label: "Opportunities" },
-] as const;
-
-const productNav = [
+const mainNav = [
   { to: "/", label: "Home" },
   { to: "/copilot", label: "Browse" },
   { to: "/couples", label: "Couples" },
   { to: "/copilot", label: "Try Copilot" },
-  { to: "/profile", label: "Profile" },
-  { to: "/gemologist", label: "Gemologist View" },
+  { to: "/current-state", label: "Current State" },
+  { to: "/opportunities", label: "Opportunities" },
 ] as const;
 
 const analysisPaths = new Set(["/current-state", "/opportunities"]);
@@ -22,8 +19,8 @@ const analysisPaths = new Set(["/current-state", "/opportunities"]);
 export function SiteLayout() {
   const { pathname } = useLocation();
   const isAnalysis = analysisPaths.has(pathname);
-  const navItems = isAnalysis ? analysisNav : productNav;
-  const logoTo = isAnalysis ? "/current-state" : "/";
+  const navItems = mainNav;
+  const logoTo = "/" as const;
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
