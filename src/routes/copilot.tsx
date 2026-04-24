@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { VoicePlayButton } from "@/components/VoicePlayButton";
 import { supabase } from "@/integrations/supabase/client";
 import { applyChatMessage } from "@/lib/profileStore";
+import { useProfileStore } from "@/hooks/useProfileStore";
 import ringImage from "@/assets/ring-placeholder.jpg";
 import milaImg from "@/assets/rings/mila.jpeg";
 import beverlyImg from "@/assets/rings/beverly.webp";
