@@ -275,6 +275,12 @@ const initialMessages: Message[] = [
 ];
 
 function CopilotPage() {
+  const { matches } = useProfileStore();
+  const matchById = new Map(matches.map((m) => [m.ring.id, m.matchPercent]));
+  const ringMatchPct = (ringName: string): number => {
+    const id = ringName.split(" ")[0].toLowerCase();
+    return matchById.get(id) ?? 0;
+  };
   const { q } = Route.useSearch();
   const [input, setInput] = useState(q ?? "");
   const [listening, setListening] = useState(false);
