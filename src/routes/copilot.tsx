@@ -392,31 +392,27 @@ function CopilotPage() {
     }
   };
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     const text = input.trim();
     if (!text || isReplying) return;
 
     const userMsg: Message = { id: `u-${Date.now()}`, role: "user", text };
-    setMessages((m) => [...m, userMsg]);
+    const nextMessages = [...messages, userMsg];
+    setMessages(nextMessages);
     setInput("");
     setIsReplying(true);
 
-    const key = classifyMessage(text);
-    const { next, updated } = applyProfileForReply(key, profile);
+    // Update profile from user message keywords
+    const { next: nextProfile, updated } = updateProfileFromUserText(text, profile);
     if (updated) {
-      setProfile(next);
+      setProfile(nextProfile);
       toast.success("Profile updated", { description: "New preference signals detected." });
-    } else {
-      toast("Profile updated");
     }
 
-    const reply = REPLIES[key];
-
-    // Clear any existing thinking timers
+    // Start thinking step animation
     thinkingTimersRef.current.forEach(clearTimeout);
     thinkingTimersRef.current = [];
-
     setThinkingStep(0);
     let cumulative = 0;
     THINKING_STEPS.forEach((step, idx) => {
@@ -426,22 +422,50 @@ function CopilotPage() {
         thinkingTimersRef.current.push(t);
       }
     });
-    const total = THINKING_STEPS.reduce((s, x) => s + x.duration, 0);
-    const finalTimer = setTimeout(() => {
+
+    // Build conversation history for the LLM (only role + content)
+    const history = nextMessages
+      .filter((m) => m.role === "user" || m.role === "ai")
+      .map((m) => ({
+        role: m.role === "ai" ? "assistant" : "user",
+        content: m.text,
+      }));
+
+    try {
+      const { data, error } = await supabase.functions.invoke("clara-chat", {
+        body: { messages: history },
+      });
+
+      thinkingTimersRef.current.forEach(clearTimeout);
+      thinkingTimersRef.current = [];
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      const replyText: string = data?.text ?? "";
+      const mentioned = findMentionedRings(replyText);
+
       setMessages((m) => [
         ...m,
         {
           id: `a-${Date.now()}`,
           role: "ai",
-          text: reply.text,
+          text: replyText || "Sorry, I couldn't generate a response. Try again?",
           audioSrc: "/thea_response.mp3",
-          rings: reply.rings,
+          rings: mentioned.length > 0 ? mentioned : undefined,
         },
       ]);
+    } catch (err: any) {
+      thinkingTimersRef.current.forEach(clearTimeout);
+      thinkingTimersRef.current = [];
+      console.error("clara-chat error:", err);
+      toast.error("Chat error", {
+        description: err?.message ?? "Something went wrong reaching Clara.",
+      });
+    } finally {
       setIsReplying(false);
       setThinkingStep(0);
-    }, total);
-    thinkingTimersRef.current.push(finalTimer);
+    }
   };
 
   return (
