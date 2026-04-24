@@ -37,6 +37,9 @@ const GENERIC_REPLY =
   "Great question, let me think about that. In the full version, I'd refine your picks based on this. For this demo, here's what I'd surface next…";
 
 export const Route = createFileRoute("/copilot")({
+  validateSearch: (search: Record<string, unknown>): { q?: string } => ({
+    q: typeof search.q === "string" ? search.q : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Try the Copilot · Rare Carat Discoverability Engine" },
@@ -270,13 +273,18 @@ const initialMessages: Message[] = [
 ];
 
 function CopilotPage() {
-  const [input, setInput] = useState("");
+  const { q } = Route.useSearch();
+  const [input, setInput] = useState(q ?? "");
   const [listening, setListening] = useState(false);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [profile, setProfile] = useState<ProfileRow[]>(initialProfile);
   const [isReplying, setIsReplying] = useState(false);
   const [thinkingStep, setThinkingStep] = useState(0);
   const thinkingTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    if (q) setInput(q);
+  }, [q]);
 
   const THINKING_STEPS = [
     { text: "Reading your brief...", duration: 500 },
