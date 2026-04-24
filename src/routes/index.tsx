@@ -418,12 +418,14 @@ function ProductCard({
   onFav,
   hovered,
   onHover,
+  index,
 }: {
   product: Product;
   isFav: boolean;
   onFav: () => void;
   hovered: boolean;
   onHover: (h: boolean) => void;
+  index: number;
 }) {
   const fmt = (n: number) => `$${n.toLocaleString()}`;
   const savings = p.market - p.total;
