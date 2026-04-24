@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Heart, Send, Sparkles, X, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { applyChatMessage } from "@/lib/profileStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import milaImg from "@/assets/rings/mila.jpeg";
@@ -187,6 +188,8 @@ function HomePage() {
     setChatInput("");
     setIsReplying(true);
     runQuery(text);
+    // Sync shared profile (read by /profile)
+    applyChatMessage(text);
 
     const steps = [
       { t: "Reading your brief...", d: 500 },

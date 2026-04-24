@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VoicePlayButton } from "@/components/VoicePlayButton";
 import { supabase } from "@/integrations/supabase/client";
+import { applyChatMessage } from "@/lib/profileStore";
 import ringImage from "@/assets/ring-placeholder.jpg";
 import milaImg from "@/assets/rings/mila.jpeg";
 import beverlyImg from "@/assets/rings/beverly.webp";
@@ -435,6 +436,8 @@ function CopilotPage() {
       setProfile(nextProfile);
       toast.success("Profile updated", { description: "New preference signals detected." });
     }
+    // Sync the shared profile store (read by /profile and the home sidebar)
+    applyChatMessage(text);
 
     // Start thinking step animation
     thinkingTimersRef.current.forEach(clearTimeout);
