@@ -73,17 +73,19 @@ const RADAR_AXES = [
   "Style",
   "Budget Fit",
   "Proportions",
-  "Quality Tier",
-  "Setting Style",
+  "Metal",
+  "Lab vs Natural",
+  "Uniqueness",
 ] as const;
 
 // Static historical snapshots for the radar (current is live from store).
 const radarHistory: Record<(typeof RADAR_AXES)[number], { prev1: number; prev2: number; prev3: number }> = {
   Style: { prev1: 60, prev2: 40, prev3: 20 },
-  "Budget Fit": { prev1: 90, prev2: 50, prev3: 25 },
+  "Budget Fit": { prev1: 80, prev2: 50, prev3: 25 },
   Proportions: { prev1: 70, prev2: 35, prev3: 15 },
-  "Quality Tier": { prev1: 55, prev2: 40, prev3: 20 },
-  "Setting Style": { prev1: 25, prev2: 15, prev3: 10 },
+  Metal: { prev1: 45, prev2: 30, prev3: 20 },
+  "Lab vs Natural": { prev1: 55, prev2: 40, prev3: 25 },
+  Uniqueness: { prev1: 60, prev2: 35, prev3: 15 },
 };
 
 function activityIcon(text: string) {
