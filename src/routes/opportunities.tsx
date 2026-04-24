@@ -435,7 +435,7 @@ function OpportunitiesPage() {
           couples experience, and gemologist view.
         </p>
         <Link
-          to="/current-state"
+          to="/home"
           className="mt-10 inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 text-base font-semibold text-gold-foreground shadow-xl transition-all hover:scale-105 hover:bg-gold/90 md:text-lg"
         >
           Experience the Demo

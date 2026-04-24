@@ -33,7 +33,7 @@ const INDEX: SearchItem[] = [
   { id: "r-celeste", category: "Rings", label: "Celeste Halo Round", ringQuery: "Celeste Halo Round" },
 
   // Pages
-  { id: "p-home", category: "Pages", label: "Home", to: "/" },
+  { id: "p-home", category: "Pages", label: "Home", to: "/home" },
   { id: "p-copilot", category: "Pages", label: "Try Copilot", to: "/copilot" },
   { id: "p-couples", category: "Pages", label: "Couples", to: "/couples" },
   { id: "p-current", category: "Pages", label: "Current State", to: "/current-state" },
@@ -42,7 +42,7 @@ const INDEX: SearchItem[] = [
   { id: "p-gem", category: "Pages", label: "Gemologist View", to: "/gemologist" },
 
   // Features
-  { id: "f-price", category: "Features", label: "Price breakdown", hint: "Browse homepage", to: "/" },
+  { id: "f-price", category: "Features", label: "Price breakdown", hint: "Browse homepage", to: "/home" },
   { id: "f-profile", category: "Features", label: "Diamond profile", hint: "Try Copilot", to: "/copilot" },
   { id: "f-voice", category: "Features", label: "Voice input", hint: "Try Copilot", to: "/copilot" },
   { id: "f-couples", category: "Features", label: "Couples mode", hint: "Couples", to: "/couples" },

@@ -16,6 +16,7 @@ import { Route as GemologistRouteImport } from './routes/gemologist'
 import { Route as CurrentStateRouteImport } from './routes/current-state'
 import { Route as CouplesRouteImport } from './routes/couples'
 import { Route as CopilotRouteImport } from './routes/copilot'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiTtsRouteImport } from './routes/api.tts'
 
 const ProfileRoute = ProfileRouteImport.update({
@@ -53,6 +54,11 @@ const CopilotRoute = CopilotRouteImport.update({
   path: '/copilot',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTtsRoute = ApiTtsRouteImport.update({
   id: '/api/tts',
   path: '/api/tts',
@@ -60,6 +66,7 @@ const ApiTtsRoute = ApiTtsRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/copilot': typeof CopilotRoute
   '/couples': typeof CouplesRoute
   '/current-state': typeof CurrentStateRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/api/tts': typeof ApiTtsRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/copilot': typeof CopilotRoute
   '/couples': typeof CouplesRoute
   '/current-state': typeof CurrentStateRoute
@@ -81,6 +89,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/copilot': typeof CopilotRoute
   '/couples': typeof CouplesRoute
   '/current-state': typeof CurrentStateRoute
@@ -93,6 +102,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/copilot'
     | '/couples'
     | '/current-state'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/api/tts'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/copilot'
     | '/couples'
     | '/current-state'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/api/tts'
   id:
     | '__root__'
+    | '/'
     | '/copilot'
     | '/couples'
     | '/current-state'
@@ -124,6 +136,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   CopilotRoute: typeof CopilotRoute
   CouplesRoute: typeof CouplesRoute
   CurrentStateRoute: typeof CurrentStateRoute
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CopilotRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/tts': {
       id: '/api/tts'
       path: '/api/tts'
@@ -196,6 +216,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   CopilotRoute: CopilotRoute,
   CouplesRoute: CouplesRoute,
   CurrentStateRoute: CurrentStateRoute,
