@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VoicePlayButton } from "@/components/VoicePlayButton";
+import { supabase } from "@/integrations/supabase/client";
 import ringImage from "@/assets/ring-placeholder.jpg";
 
 const VINTAGE_QUERY =
