@@ -292,7 +292,7 @@ function HomePage() {
         </div>
 
         <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3" style={{ perspective: "1200px" }}>
-          {filtered.map((p) => (
+          {filtered.map((p, i) => (
             <ProductCard
               key={p.id}
               product={p}
@@ -300,6 +300,7 @@ function HomePage() {
               onFav={() => toggleFav(p.id)}
               hovered={hoverId === p.id}
               onHover={(h) => setHoverId(h ? p.id : null)}
+              index={i}
             />
           ))}
         </div>
