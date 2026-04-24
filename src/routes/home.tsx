@@ -306,7 +306,7 @@ function HomePage() {
           {filtered.map((p, i) => (
             <ProductCard
               key={p.id}
-              product={p}
+              product={{ ...p, match: matchById.get(p.id) ?? p.match }}
               isFav={favorites.has(p.id)}
               onFav={() => toggleFav(p.id)}
               hovered={hoverId === p.id}
