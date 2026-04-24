@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { PhaseIndicator } from "@/components/PhaseIndicator";
 import { PageTransition } from "@/components/PageTransition";
 import { AboutDemoButton } from "@/components/AboutDemoButton";
+import { NavSearch } from "@/components/NavSearch";
 
 import { Button } from "@/components/ui/button";
 import { Headset } from "lucide-react";
@@ -56,15 +57,17 @@ export function SiteLayout() {
           ) : (
             <div className="hidden items-center gap-3 md:flex">
               <nav className="flex items-center gap-1">
-                {mainNav.map((item) => (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
-                    className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
-                  >
-                    {item.label}
-                  </Link>
+                {mainNav.map((item, idx) => (
+                  <span key={item.to} className="flex items-center gap-1">
+                    <Link
+                      to={item.to}
+                      activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
+                      className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
+                    >
+                      {item.label}
+                    </Link>
+                    {idx === 0 && <NavSearch />}
+                  </span>
                 ))}
               </nav>
 
