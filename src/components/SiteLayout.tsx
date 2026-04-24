@@ -11,6 +11,7 @@ const mainNav = [
   { to: "/home", label: "Home" },
   { to: "/couples", label: "Couples" },
   { to: "/copilot", label: "Try Copilot" },
+  { to: "/profile", label: "Profile" },
 ] as const;
 
 const analysisPaths = new Set(["/current-state", "/opportunities"]);
