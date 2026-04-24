@@ -21,6 +21,8 @@ import {
   Sparkles,
   Mic,
 } from "lucide-react";
+import { useProfileStore } from "@/hooks/useProfileStore";
+import { setPreference, formatRelativeTime } from "@/lib/profileStore";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -44,50 +46,6 @@ export const Route = createFileRoute("/profile")({
   component: ProfilePage,
 });
 
-const radarData = [
-  { axis: "Style", current: 85, prev1: 60, prev2: 40, prev3: 20 },
-  { axis: "Budget Fit", current: 100, prev1: 90, prev2: 50, prev3: 25 },
-  { axis: "Proportions", current: 90, prev1: 70, prev2: 35, prev3: 15 },
-  { axis: "Quality Tier", current: 70, prev1: 55, prev2: 40, prev3: 20 },
-  { axis: "Setting Style", current: 30, prev1: 25, prev2: 15, prev3: 10 },
-];
-
-const initialPreferences = [
-  { label: "Style", value: "Vintage-Modern-Artsy" },
-  { label: "Budget", value: "$2,000, $3,000" },
-  { label: "Proportions", value: "Petite / Small Fingers" },
-  { label: "Quality Tier", value: "Balanced (VS2+, F+ color)" },
-  { label: "Setting Style", value: "Open to suggestions" },
-  { label: "Metal", value: "Open to suggestions" },
-  { label: "Shape Preference", value: "Oval, Round" },
-  { label: "Lab vs Natural", value: "Either, leans Lab for budget" },
-];
-
-const activity = [
-  {
-    when: "2 mins ago",
-    text: "Style preference updated to 'vintage-modern-artsy' from Copilot chat",
-    icon: MessageSquare,
-  },
-  {
-    when: "2 mins ago",
-    text: "Budget set to under $3,000 from Copilot chat",
-    icon: MessageSquare,
-  },
-  {
-    when: "2 mins ago",
-    text: "Proportions set to 'petite' from Copilot chat",
-    icon: MessageSquare,
-  },
-  { when: "Yesterday", text: "Liked 3 halo settings in browse", icon: Heart },
-  { when: "Yesterday", text: "Saved 'Mila Vintage' to wishlist", icon: Heart },
-  {
-    when: "3 days ago",
-    text: "Paste-a-diamond check on GIA 2187654321",
-    icon: Search,
-  },
-];
-
 const personalizations = [
   {
     title: "Homepage",
@@ -110,6 +68,30 @@ const personalizations = [
     text: "Conversations via voice (on-site, in-ad, or smart speaker) extract preferences just like text. Your profile grows across every channel.",
   },
 ];
+
+const RADAR_AXES = [
+  "Style",
+  "Budget Fit",
+  "Proportions",
+  "Quality Tier",
+  "Setting Style",
+] as const;
+
+// Static historical snapshots for the radar (current is live from store).
+const radarHistory: Record<(typeof RADAR_AXES)[number], { prev1: number; prev2: number; prev3: number }> = {
+  Style: { prev1: 60, prev2: 40, prev3: 20 },
+  "Budget Fit": { prev1: 90, prev2: 50, prev3: 25 },
+  Proportions: { prev1: 70, prev2: 35, prev3: 15 },
+  "Quality Tier": { prev1: 55, prev2: 40, prev3: 20 },
+  "Setting Style": { prev1: 25, prev2: 15, prev3: 10 },
+};
+
+function activityIcon(text: string) {
+  const t = text.toLowerCase();
+  if (t.includes("liked") || t.includes("wishlist")) return Heart;
+  if (t.includes("paste") || t.includes("gia") || t.includes("search")) return Search;
+  return MessageSquare;
+}
 
 function LegendDot({ className, label }: { className: string; label: string }) {
   return (
