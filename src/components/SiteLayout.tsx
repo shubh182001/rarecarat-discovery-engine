@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { PhaseIndicator } from "@/components/PhaseIndicator";
 import { PageTransition } from "@/components/PageTransition";
-import { AboutDemoButton } from "@/components/AboutDemoButton";
+
 import { Button } from "@/components/ui/button";
 import { Headset } from "lucide-react";
 
@@ -91,8 +91,6 @@ export function SiteLayout() {
           </nav>
         </div>
       </footer>
-
-      <AboutDemoButton />
     </div>
   );
 }
