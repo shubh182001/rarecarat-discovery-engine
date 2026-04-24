@@ -292,7 +292,7 @@ function HomePage() {
         </div>
 
         <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3" style={{ perspective: "1200px" }}>
-          {filtered.map((p) => (
+          {filtered.map((p, i) => (
             <ProductCard
               key={p.id}
               product={p}
@@ -300,6 +300,7 @@ function HomePage() {
               onFav={() => toggleFav(p.id)}
               hovered={hoverId === p.id}
               onHover={(h) => setHoverId(h ? p.id : null)}
+              index={i}
             />
           ))}
         </div>
@@ -417,12 +418,14 @@ function ProductCard({
   onFav,
   hovered,
   onHover,
+  index,
 }: {
   product: Product;
   isFav: boolean;
   onFav: () => void;
   hovered: boolean;
   onHover: (h: boolean) => void;
+  index: number;
 }) {
   const fmt = (n: number) => `$${n.toLocaleString()}`;
   const savings = p.market - p.total;
@@ -479,10 +482,12 @@ function ProductCard({
         </div>
       </div>
 
-      {/* Price breakdown tooltip */}
+      {/* Price breakdown tooltip — flips to left side for rightmost column to avoid overflow */}
       <div
-        className={`pointer-events-none absolute left-full top-4 z-20 ml-3 hidden w-72 rounded-xl border border-gold/40 bg-primary p-4 text-primary-foreground shadow-xl transition-all duration-200 lg:block ${
-          hovered ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-0"
+        className={`pointer-events-none absolute top-4 z-20 hidden w-72 rounded-xl border border-gold/40 bg-primary p-4 text-primary-foreground shadow-xl transition-all duration-200 lg:block ${
+          index % 3 === 2
+            ? `right-full mr-3 ${hovered ? "translate-x-0 opacity-100" : "translate-x-2 opacity-0"}`
+            : `left-full ml-3 ${hovered ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-0"}`
         }`}
       >
         <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold">
