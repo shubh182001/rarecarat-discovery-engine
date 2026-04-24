@@ -420,13 +420,6 @@ function OpportunitiesPage() {
           Every other system gets smarter as the profile grows. This is the
           Discoverability Engine.
         </p>
-        <Link
-          to="/copilot"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-gold-foreground shadow-md transition-all hover:scale-105 hover:bg-gold/90 md:text-base"
-        >
-          See the Copilot in action
-          <ArrowRight className="h-4 w-4" />
-        </Link>
       </section>
 
       {/* Zone transition: Analysis → Product Demo */}
