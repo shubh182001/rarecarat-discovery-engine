@@ -461,9 +461,15 @@ function TileCard({
           <Icon className="h-4 w-4" />
         </div>
 
-        <p className="mt-4 font-serif text-2xl font-bold leading-tight text-primary tabular-nums">
-          {animatedStat}
-        </p>
+        {tile.label ? (
+          <p className="mt-4 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+            {tile.label}
+          </p>
+        ) : (
+          <p className="mt-4 font-serif text-2xl font-bold leading-tight text-primary tabular-nums">
+            {animatedStat}
+          </p>
+        )}
         <h3 className="mt-2 font-serif text-base font-semibold leading-snug text-primary">
           {tile.title}
         </h3>
