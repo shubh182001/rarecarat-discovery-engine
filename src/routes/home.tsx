@@ -137,6 +137,8 @@ const initialMsgs: Msg[] = [
 ];
 
 function HomePage() {
+  const { matches } = useProfileStore();
+  const matchById = new Map(matches.map((m) => [m.ring.id, m.matchPercent]));
   const [query, setQuery] = useState("");
   const [filtered, setFiltered] = useState<Product[]>(products);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
