@@ -42,7 +42,7 @@ export function SiteLayout() {
                   <span key={item.to} className="flex items-center gap-1">
                     <Link
                       to={item.to}
-                      activeOptions={{ exact: item.to === "/home" || item.to === "/current-state" }}
+                      activeOptions={{ exact: item.to === "/home" }}
                       className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
                     >
                       {item.label}
@@ -67,7 +67,7 @@ export function SiteLayout() {
               <Link
                 key={`m-${item.to}`}
                 to={item.to}
-                activeOptions={{ exact: item.to === "/home" || item.to === "/current-state" }}
+                activeOptions={{ exact: item.to === "/home" }}
                 className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
               >
                 {item.label}
