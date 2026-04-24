@@ -39,18 +39,17 @@ export function SiteLayout() {
           {isAnalysis ? null : (
             <div className="hidden items-center gap-3 md:flex">
               <nav className="flex items-center gap-1">
-                {mainNav.map((item, idx) => (
-                  <span key={item.to} className="flex items-center gap-1">
-                    <Link
-                      to={item.to}
-                      activeOptions={{ exact: item.to === "/home" }}
-                      className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
-                    >
-                      {item.label}
-                    </Link>
-                    {idx === 0 && <NavSearch />}
-                  </span>
+                {mainNav.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    activeOptions={{ exact: item.to === "/home" }}
+                    className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
+                  >
+                    {item.label}
+                  </Link>
                 ))}
+                <NavSearch />
               </nav>
 
               <Button asChild variant="outline" size="sm" className="border-gold text-primary hover:bg-gold/10">
@@ -87,13 +86,8 @@ export function SiteLayout() {
       </main>
 
       <footer className="border-t border-border/60 bg-surface/40">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-muted-foreground sm:flex-row">
+        <div className="mx-auto flex max-w-7xl items-center justify-center px-6 py-6 text-xs text-muted-foreground">
           <span>Built by Shubh Dhar for Rare Carat · Concept demo · April 2026</span>
-          <nav className="flex items-center gap-4">
-            <Link to="/current-state" className="hover:text-primary">Current State</Link>
-            <Link to="/opportunities" className="hover:text-primary">Opportunities</Link>
-            <Link to="/copilot" className="hover:text-primary">Try Copilot</Link>
-          </nav>
         </div>
       </footer>
 
