@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VoicePlayButton } from "@/components/VoicePlayButton";
+import { supabase } from "@/integrations/supabase/client";
 import ringImage from "@/assets/ring-placeholder.jpg";
 
 const VINTAGE_QUERY =
@@ -112,6 +113,45 @@ const rings: Ring[] = [
     reasoning:
       "Most overtly vintage. Slightly pushes budget but delivers strongest style match.",
   },
+  {
+    name: "Helena Grand Solitaire",
+    specs: "3.02ct · G · VS1 · Round Lab",
+    price: "$8,900",
+    chips: [
+      { label: "Style", value: 85, color: "bg-emerald-500" },
+      { label: "Budget", value: 60, color: "bg-amber-500" },
+      { label: "Proportions", value: 95, color: "bg-emerald-500" },
+      { label: "Uniqueness", value: 82, color: "bg-emerald-500" },
+    ],
+    reasoning:
+      "Statement solitaire with maximum presence. Premium budget pick when size matters most.",
+  },
+  {
+    name: "Aria Three-Stone Oval",
+    specs: "2.8ct tw · F · VS2 · Oval Lab",
+    price: "$6,400",
+    chips: [
+      { label: "Style", value: 88, color: "bg-emerald-500" },
+      { label: "Budget", value: 65, color: "bg-amber-500" },
+      { label: "Proportions", value: 92, color: "bg-emerald-500" },
+      { label: "Uniqueness", value: 90, color: "bg-emerald-500" },
+    ],
+    reasoning:
+      "Bold modern three-stone with substantial presence. Side stones amplify the center oval.",
+  },
+  {
+    name: "Celeste Halo Round",
+    specs: "3.1ct tw · H · SI1 · Round Lab",
+    price: "$5,200",
+    chips: [
+      { label: "Style", value: 84, color: "bg-emerald-500" },
+      { label: "Budget", value: 70, color: "bg-amber-500" },
+      { label: "Proportions", value: 90, color: "bg-emerald-500" },
+      { label: "Uniqueness", value: 78, color: "bg-amber-500" },
+    ],
+    reasoning:
+      "Halo setting maximizes apparent size and sparkle. Best value per visual carat in this tier.",
+  },
 ];
 
 
@@ -128,72 +168,77 @@ const initialProfile: ProfileRow[] = [
   { label: "Lab vs Natural", value: "Open", confidence: 0 },
 ];
 
-type ReplyKey = "cut" | "metal" | "size" | "lab" | "vintage" | "default";
 
-const REPLIES: Record<ReplyKey, { text: string; rings: Ring[] }> = {
-  cut: {
-    text: "Great question on cut quality. Of the 5 picks, the Mila and Hayden have the highest cut grades, both are Excellent rated. Cut affects how the diamond handles light more than any other factor. The Madison three-stone has a slightly softer cut grade because pear shapes show variation. Want me to filter to only Excellent-cut diamonds?",
-    rings: [rings[0], rings[3]],
-  },
-  metal: {
-    text: "Good thought on metal. All these are shown in white gold but each can be configured in 14k or 18k yellow gold, rose gold, or platinum. Yellow gold is having a moment with vintage-modern styles. Want me to re-render the Mila in yellow gold so you can see the difference?",
-    rings: [rings[0], rings[4]],
-  },
-  size: {
-    text: "Good instinct. Given small fingers, we could go down to 0.85ct without losing presence. The Hayden in 0.85ct lab oval would still read substantial because of the proportions. Here are 2 sub-1ct picks I'd consider:",
-    rings: [rings[3], rings[1]],
-  },
-  lab: {
-    text: "Lab vs natural is one of the biggest decisions in this category. Of these 5, four are lab-grown and one (Carmel) is natural. Lab gives you more carat for the same budget; natural retains slightly better long-term resale value. For a $3k budget, lab is usually the sharper choice. Here are the most popular lab picks:",
-    rings: [rings[0], rings[3]],
-  },
-  vintage: {
-    text: "If you want to push more vintage, the Carmel cushion-cut is the most overtly traditional. The Mila gets you partway there with milgrain detail. Want me to surface a few more vintage-leaning options?",
-    rings: [rings[4], rings[0]],
-  },
-  default: {
-    text: GENERIC_REPLY,
-    rings: [rings[0], rings[3]],
-  },
-};
-
-function classifyMessage(text: string): ReplyKey {
-  const t = text.toLowerCase();
-  if (/\b(cut|cutting|sparkle)\b/.test(t)) return "cut";
-  if (/\b(yellow|gold|rose|metal)\b/.test(t)) return "metal";
-  if (/\b(smaller|tiny|petite|size)\b/.test(t)) return "size";
-  if (/\b(lab|natural|real)\b/.test(t)) return "lab";
-  if (/\b(vintage|old)\b/.test(t)) return "vintage";
-  return "default";
-}
-
-function applyProfileForReply(
-  key: ReplyKey,
+function updateProfileFromUserText(
+  text: string,
   profile: ProfileRow[],
 ): { next: ProfileRow[]; updated: boolean } {
+  const t = text.toLowerCase();
   const next = profile.map((r) => ({ ...r }));
+  let updated = false;
   const bump = (label: string, value: string, conf: number) => {
     const row = next.find((r) => r.label === label);
-    if (!row) return false;
-    if (row.confidence >= conf && row.value === value) return false;
-    row.value = value;
-    row.confidence = Math.max(row.confidence, conf);
-    return true;
+    if (!row) return;
+    if (row.value !== value || row.confidence < conf) {
+      row.value = value;
+      row.confidence = Math.max(row.confidence, conf);
+      updated = true;
+    }
   };
-  switch (key) {
-    case "cut":
-      return { next, updated: bump("Quality Tier", "Excellent Cut", 80) };
-    case "metal":
-      return { next, updated: bump("Metal", "Yellow Gold", 60) };
-    case "size":
-      return { next, updated: bump("Proportions", "Petite / Small Fingers", 100) };
-    case "lab":
-      return { next, updated: bump("Lab vs Natural", "Lab-grown", 80) };
-    case "vintage":
-      return { next, updated: bump("Style", "Vintage-Modern-Artsy", 100) };
-    default:
-      return { next, updated: false };
+
+  // Budget detection
+  const budgetMatch = t.match(/\$?\s*(\d{1,2})\s*[k]\b/) || t.match(/\$\s*(\d{3,6})/);
+  if (budgetMatch) {
+    const raw = budgetMatch[0].replace(/\s/g, "");
+    bump("Budget", `Around ${raw}`, 95);
+  } else if (/\bbudget\b|\bunder\b|\bafford/.test(t)) {
+    bump("Budget", "Discussed", 70);
   }
+
+  // Carat / size
+  const caratMatch = t.match(/(\d+(?:\.\d+)?)\s*(ct|carat)/);
+  if (caratMatch) {
+    bump("Quality Tier", `~${caratMatch[1]}ct target`, 85);
+  }
+  if (/\b(petite|small finger|tiny|slim)\b/.test(t)) {
+    bump("Proportions", "Petite / Small Fingers", 100);
+  }
+  if (/\b(big|large|statement|bold|huge)\b/.test(t)) {
+    bump("Proportions", "Statement / Larger", 80);
+  }
+
+  // Style
+  if (/\bvintage\b/.test(t)) bump("Style", "Vintage-leaning", 90);
+  if (/\bmodern\b|\bminimal\b/.test(t)) bump("Style", "Modern", 85);
+  if (/\bartsy\b|\bunique\b/.test(t)) bump("Style", "Artsy / Unique", 85);
+
+  // Metal
+  if (/\byellow gold\b/.test(t)) bump("Metal", "Yellow Gold", 90);
+  else if (/\brose gold\b/.test(t)) bump("Metal", "Rose Gold", 90);
+  else if (/\bplatinum\b/.test(t)) bump("Metal", "Platinum", 90);
+  else if (/\bwhite gold\b/.test(t)) bump("Metal", "White Gold", 90);
+
+  // Setting
+  if (/\bhalo\b/.test(t)) bump("Setting", "Halo", 85);
+  else if (/\bsolitaire\b/.test(t)) bump("Setting", "Solitaire", 85);
+  else if (/\bthree[- ]stone\b/.test(t)) bump("Setting", "Three-Stone", 85);
+
+  // Lab vs natural
+  if (/\blab[- ]grown\b|\blab\b/.test(t)) bump("Lab vs Natural", "Lab-grown", 85);
+  if (/\bnatural\b|\bmined\b/.test(t)) bump("Lab vs Natural", "Natural", 85);
+
+  return { next, updated };
+}
+
+function findMentionedRings(text: string): Ring[] {
+  const found: Ring[] = [];
+  for (const ring of rings) {
+    // Match the first word of the ring name (Mila, Beverly, Madison, etc.)
+    const firstWord = ring.name.split(" ")[0];
+    const re = new RegExp(`\\b${firstWord}\\b`, "i");
+    if (re.test(text)) found.push(ring);
+  }
+  return found;
 }
 
 type Message =
@@ -217,9 +262,8 @@ function CopilotPage() {
 
   const THINKING_STEPS = [
     { text: "Reading your brief...", duration: 500 },
-    { text: "Checking 1,000,000+ diamonds...", duration: 800 },
+    { text: "Checking inventory...", duration: 800 },
     { text: "Matching to your profile...", duration: 600 },
-    { text: "Generating recommendations...", duration: 400 },
   ];
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -348,31 +392,27 @@ function CopilotPage() {
     }
   };
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     const text = input.trim();
     if (!text || isReplying) return;
 
     const userMsg: Message = { id: `u-${Date.now()}`, role: "user", text };
-    setMessages((m) => [...m, userMsg]);
+    const nextMessages = [...messages, userMsg];
+    setMessages(nextMessages);
     setInput("");
     setIsReplying(true);
 
-    const key = classifyMessage(text);
-    const { next, updated } = applyProfileForReply(key, profile);
+    // Update profile from user message keywords
+    const { next: nextProfile, updated } = updateProfileFromUserText(text, profile);
     if (updated) {
-      setProfile(next);
+      setProfile(nextProfile);
       toast.success("Profile updated", { description: "New preference signals detected." });
-    } else {
-      toast("Profile updated");
     }
 
-    const reply = REPLIES[key];
-
-    // Clear any existing thinking timers
+    // Start thinking step animation
     thinkingTimersRef.current.forEach(clearTimeout);
     thinkingTimersRef.current = [];
-
     setThinkingStep(0);
     let cumulative = 0;
     THINKING_STEPS.forEach((step, idx) => {
@@ -382,22 +422,50 @@ function CopilotPage() {
         thinkingTimersRef.current.push(t);
       }
     });
-    const total = THINKING_STEPS.reduce((s, x) => s + x.duration, 0);
-    const finalTimer = setTimeout(() => {
+
+    // Build conversation history for the LLM (only role + content)
+    const history = nextMessages
+      .filter((m) => m.role === "user" || m.role === "ai")
+      .map((m) => ({
+        role: m.role === "ai" ? "assistant" : "user",
+        content: m.text,
+      }));
+
+    try {
+      const { data, error } = await supabase.functions.invoke("clara-chat", {
+        body: { messages: history },
+      });
+
+      thinkingTimersRef.current.forEach(clearTimeout);
+      thinkingTimersRef.current = [];
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      const replyText: string = data?.text ?? "";
+      const mentioned = findMentionedRings(replyText);
+
       setMessages((m) => [
         ...m,
         {
           id: `a-${Date.now()}`,
           role: "ai",
-          text: reply.text,
+          text: replyText || "Sorry, I couldn't generate a response. Try again?",
           audioSrc: "/thea_response.mp3",
-          rings: reply.rings,
+          rings: mentioned.length > 0 ? mentioned : undefined,
         },
       ]);
+    } catch (err: any) {
+      thinkingTimersRef.current.forEach(clearTimeout);
+      thinkingTimersRef.current = [];
+      console.error("clara-chat error:", err);
+      toast.error("Chat error", {
+        description: err?.message ?? "Something went wrong reaching Clara.",
+      });
+    } finally {
       setIsReplying(false);
       setThinkingStep(0);
-    }, total);
-    thinkingTimersRef.current.push(finalTimer);
+    }
   };
 
   return (
