@@ -168,44 +168,6 @@ const initialProfile: ProfileRow[] = [
   { label: "Lab vs Natural", value: "Open", confidence: 0 },
 ];
 
-type ReplyKey = "cut" | "metal" | "size" | "lab" | "vintage" | "default";
-
-const REPLIES: Record<ReplyKey, { text: string; rings: Ring[] }> = {
-  cut: {
-    text: "Great question on cut quality. Of the 5 picks, the Mila and Hayden have the highest cut grades, both are Excellent rated. Cut affects how the diamond handles light more than any other factor. The Madison three-stone has a slightly softer cut grade because pear shapes show variation. Want me to filter to only Excellent-cut diamonds?",
-    rings: [rings[0], rings[3]],
-  },
-  metal: {
-    text: "Good thought on metal. All these are shown in white gold but each can be configured in 14k or 18k yellow gold, rose gold, or platinum. Yellow gold is having a moment with vintage-modern styles. Want me to re-render the Mila in yellow gold so you can see the difference?",
-    rings: [rings[0], rings[4]],
-  },
-  size: {
-    text: "Good instinct. Given small fingers, we could go down to 0.85ct without losing presence. The Hayden in 0.85ct lab oval would still read substantial because of the proportions. Here are 2 sub-1ct picks I'd consider:",
-    rings: [rings[3], rings[1]],
-  },
-  lab: {
-    text: "Lab vs natural is one of the biggest decisions in this category. Of these 5, four are lab-grown and one (Carmel) is natural. Lab gives you more carat for the same budget; natural retains slightly better long-term resale value. For a $3k budget, lab is usually the sharper choice. Here are the most popular lab picks:",
-    rings: [rings[0], rings[3]],
-  },
-  vintage: {
-    text: "If you want to push more vintage, the Carmel cushion-cut is the most overtly traditional. The Mila gets you partway there with milgrain detail. Want me to surface a few more vintage-leaning options?",
-    rings: [rings[4], rings[0]],
-  },
-  default: {
-    text: GENERIC_REPLY,
-    rings: [rings[0], rings[3]],
-  },
-};
-
-function classifyMessage(text: string): ReplyKey {
-  const t = text.toLowerCase();
-  if (/\b(cut|cutting|sparkle)\b/.test(t)) return "cut";
-  if (/\b(yellow|gold|rose|metal)\b/.test(t)) return "metal";
-  if (/\b(smaller|tiny|petite|size)\b/.test(t)) return "size";
-  if (/\b(lab|natural|real)\b/.test(t)) return "lab";
-  if (/\b(vintage|old)\b/.test(t)) return "vintage";
-  return "default";
-}
 
 function updateProfileFromUserText(
   text: string,
