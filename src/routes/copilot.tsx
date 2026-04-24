@@ -503,11 +503,16 @@ function CopilotPage() {
 
             {isReplying && (
               <div className="flex justify-start animate-fade-in">
-                <div className="rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-muted-foreground shadow-sm">
-                  <span className="inline-flex gap-1">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold [animation-delay:150ms]" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold [animation-delay:300ms]" />
+                <div className="flex items-center gap-2.5 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-primary shadow-sm">
+                  <span className="relative flex h-3 w-3 flex-shrink-0">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-60" />
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-gold" />
+                  </span>
+                  <span
+                    key={thinkingStep}
+                    className="animate-fade-in font-medium tracking-tight"
+                  >
+                    {THINKING_STEPS[thinkingStep]?.text}
                   </span>
                 </div>
               </div>
