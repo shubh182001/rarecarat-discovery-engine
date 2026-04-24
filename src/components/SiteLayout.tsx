@@ -82,8 +82,13 @@ export function SiteLayout() {
       </main>
 
       <footer className="border-t border-border/60 bg-surface/40">
-        <div className="mx-auto max-w-7xl px-6 py-6 text-center text-xs text-muted-foreground">
-          Built by Shubh Dhar for Rare Carat · Concept demo · April 2026
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-muted-foreground sm:flex-row">
+          <span>Built by Shubh Dhar for Rare Carat · Concept demo · April 2026</span>
+          <nav className="flex items-center gap-4">
+            <Link to="/current-state" className="hover:text-primary">Current State</Link>
+            <Link to="/opportunities" className="hover:text-primary">Opportunities</Link>
+            <Link to="/copilot" className="hover:text-primary">Try Copilot</Link>
+          </nav>
         </div>
       </footer>
 
