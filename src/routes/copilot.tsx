@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Sparkles, Send, ArrowRight, Network, Headset, Mic } from "lucide-react";
+import { Sparkles, Send, ArrowRight, Network, Headset, Mic, ChevronDown, Terminal } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
