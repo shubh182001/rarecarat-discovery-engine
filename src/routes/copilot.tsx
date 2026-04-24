@@ -212,6 +212,15 @@ function CopilotPage() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [profile, setProfile] = useState<ProfileRow[]>(initialProfile);
   const [isReplying, setIsReplying] = useState(false);
+  const [thinkingStep, setThinkingStep] = useState(0);
+  const thinkingTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const THINKING_STEPS = [
+    { text: "Reading your brief...", duration: 500 },
+    { text: "Checking 1,000,000+ diamonds...", duration: 800 },
+    { text: "Matching to your profile...", duration: 600 },
+    { text: "Generating recommendations...", duration: 400 },
+  ];
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -226,6 +235,7 @@ function CopilotPage() {
   useEffect(() => {
     return () => {
       if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+      thinkingTimersRef.current.forEach(clearTimeout);
       try {
         recognitionRef.current?.stop();
       } catch {}
@@ -358,7 +368,22 @@ function CopilotPage() {
     }
 
     const reply = REPLIES[key];
-    setTimeout(() => {
+
+    // Clear any existing thinking timers
+    thinkingTimersRef.current.forEach(clearTimeout);
+    thinkingTimersRef.current = [];
+
+    setThinkingStep(0);
+    let cumulative = 0;
+    THINKING_STEPS.forEach((step, idx) => {
+      cumulative += step.duration;
+      if (idx < THINKING_STEPS.length - 1) {
+        const t = setTimeout(() => setThinkingStep(idx + 1), cumulative);
+        thinkingTimersRef.current.push(t);
+      }
+    });
+    const total = THINKING_STEPS.reduce((s, x) => s + x.duration, 0);
+    const finalTimer = setTimeout(() => {
       setMessages((m) => [
         ...m,
         {
@@ -370,7 +395,9 @@ function CopilotPage() {
         },
       ]);
       setIsReplying(false);
-    }, 1500);
+      setThinkingStep(0);
+    }, total);
+    thinkingTimersRef.current.push(finalTimer);
   };
 
   return (
@@ -476,11 +503,16 @@ function CopilotPage() {
 
             {isReplying && (
               <div className="flex justify-start animate-fade-in">
-                <div className="rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-muted-foreground shadow-sm">
-                  <span className="inline-flex gap-1">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold [animation-delay:150ms]" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold [animation-delay:300ms]" />
+                <div className="flex items-center gap-2.5 rounded-2xl rounded-tl-sm bg-muted px-4 py-3 text-sm text-primary shadow-sm">
+                  <span className="relative flex h-3 w-3 flex-shrink-0">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-60" />
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-gold" />
+                  </span>
+                  <span
+                    key={thinkingStep}
+                    className="animate-fade-in font-medium tracking-tight"
+                  >
+                    {THINKING_STEPS[thinkingStep]?.text}
                   </span>
                 </div>
               </div>
