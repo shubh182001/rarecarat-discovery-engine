@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { PhaseIndicator } from "@/components/PhaseIndicator";
 import { PageTransition } from "@/components/PageTransition";
 import { AboutDemoButton } from "@/components/AboutDemoButton";
-import { NavSearch } from "@/components/NavSearch";
+
 import { Button } from "@/components/ui/button";
 import { Headset } from "lucide-react";
 
@@ -19,7 +19,6 @@ const analysisPaths = new Set(["/current-state", "/opportunities"]);
 export function SiteLayout() {
   const { pathname } = useLocation();
   const isAnalysis = analysisPaths.has(pathname);
-  const [homeItem, ...remainingNavItems] = mainNav;
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
@@ -39,19 +38,11 @@ export function SiteLayout() {
 
           <div className="hidden items-center gap-3 md:flex">
             <nav className="flex items-center gap-1">
-              <Link
-                to={homeItem.to}
-                activeOptions={{ exact: true }}
-                className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
-              >
-                {homeItem.label}
-              </Link>
-              <NavSearch />
-              {remainingNavItems.map((item, i) => (
+              {mainNav.map((item) => (
                 <Link
-                  key={`${item.to}-${i}`}
+                  key={item.to}
                   to={item.to}
-                  activeOptions={{ exact: item.to === "/current-state" }}
+                  activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
                   className="relative rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground data-[status=active]:shadow-sm"
                 >
                   {item.label}
@@ -68,21 +59,11 @@ export function SiteLayout() {
         </div>
 
         <nav className="flex gap-1 overflow-x-auto border-t border-border/60 px-4 py-2 md:hidden">
-          <Link
-            to={homeItem.to}
-            activeOptions={{ exact: true }}
-            className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
-          >
-            {homeItem.label}
-          </Link>
-          <div className="flex items-center">
-            <NavSearch />
-          </div>
-          {remainingNavItems.map((item, i) => (
+          {mainNav.map((item) => (
             <Link
-              key={`m-${item.to}-${i}`}
+              key={`m-${item.to}`}
               to={item.to}
-              activeOptions={{ exact: item.to === "/current-state" }}
+              activeOptions={{ exact: item.to === "/" || item.to === "/current-state" }}
               className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
             >
               {item.label}
