@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Heart, Send, Sparkles, X, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { askClara } from "@/lib/claraFallback";
 import { applyChatMessage } from "@/lib/profileStore";
 import { useProfileStore } from "@/hooks/useProfileStore";
 import { Button } from "@/components/ui/button";
@@ -213,29 +213,16 @@ function HomePage() {
     });
 
     const history = next.map((m) => ({
-      role: m.role === "ai" ? "assistant" : "user",
+      role: (m.role === "ai" ? "assistant" : "user") as "user" | "assistant",
       content: m.text,
     }));
 
-    try {
-      const { data, error } = await supabase.functions.invoke("clara-chat", {
-        body: { messages: history },
-      });
-      thinkingTimers.current.forEach(clearTimeout);
-      thinkingTimers.current = [];
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      const reply: string = data?.text ?? "Let me think on that.";
-      setMessages((m) => [...m, { id: `a-${Date.now()}`, role: "ai", text: reply }]);
-    } catch (err: any) {
-      thinkingTimers.current.forEach(clearTimeout);
-      thinkingTimers.current = [];
-      console.error(err);
-      toast.error("Couldn't reach Clara", { description: err?.message });
-    } finally {
-      setThinking(null);
-      setIsReplying(false);
-    }
+    const result = await askClara(history);
+    thinkingTimers.current.forEach(clearTimeout);
+    thinkingTimers.current = [];
+    setMessages((m) => [...m, { id: `a-${Date.now()}`, role: "ai", text: result.text }]);
+    setThinking(null);
+    setIsReplying(false);
   };
 
   const handleSubmit = (e: React.FormEvent) => {

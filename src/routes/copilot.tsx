@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VoicePlayButton } from "@/components/VoicePlayButton";
-import { supabase } from "@/integrations/supabase/client";
+import { askClara } from "@/lib/claraFallback";
 import { applyChatMessage } from "@/lib/profileStore";
 import { useProfileStore } from "@/hooks/useProfileStore";
 import ringImage from "@/assets/ring-placeholder.jpg";
@@ -463,45 +463,40 @@ function CopilotPage() {
     const history = nextMessages
       .filter((m) => m.role === "user" || m.role === "ai")
       .map((m) => ({
-        role: m.role === "ai" ? "assistant" : "user",
+        role: (m.role === "ai" ? "assistant" : "user") as "user" | "assistant",
         content: m.text,
       }));
 
-    try {
-      const { data, error } = await supabase.functions.invoke("clara-chat", {
-        body: { messages: history },
-      });
+    const result = await askClara(history);
 
-      thinkingTimersRef.current.forEach(clearTimeout);
-      thinkingTimersRef.current = [];
+    thinkingTimersRef.current.forEach(clearTimeout);
+    thinkingTimersRef.current = [];
 
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-
-      const replyText: string = data?.text ?? "";
-      const mentioned = findMentionedRings(replyText);
-
-      setMessages((m) => [
-        ...m,
-        {
-          id: `a-${Date.now()}`,
-          role: "ai",
-          text: replyText || "Sorry, I couldn't generate a response. Try again?",
-          audioSrc: "/thea_response.mp3",
-          rings: mentioned.length > 0 ? mentioned : undefined,
-        },
-      ]);
-    } catch (err: any) {
-      thinkingTimersRef.current.forEach(clearTimeout);
-      thinkingTimersRef.current = [];
-      console.error("clara-chat error:", err);
-      toast.error("Chat error", {
-        description: err?.message ?? "Something went wrong reaching Clara.",
-      });
-    } finally {
-      setIsReplying(false);
-      setThinkingStep(0);
+    let displayRings: Ring[] | undefined;
+    if (result.fallback && result.rings.length > 0) {
+      // Map RingMatch ids back to local Ring objects by first-word match
+      const byKey = new Map(rings.map((r) => [r.name.split(" ")[0].toLowerCase(), r]));
+      displayRings = result.rings
+        .map((m) => byKey.get(m.ring.id))
+        .filter((r): r is Ring => Boolean(r));
+    } else {
+      const mentioned = findMentionedRings(result.text);
+      displayRings = mentioned.length > 0 ? mentioned : undefined;
     }
+
+    setMessages((m) => [
+      ...m,
+      {
+        id: `a-${Date.now()}`,
+        role: "ai",
+        text: result.text,
+        audioSrc: "/thea_response.mp3",
+        rings: displayRings,
+      },
+    ]);
+
+    setIsReplying(false);
+    setThinkingStep(0);
   };
 
   return (
