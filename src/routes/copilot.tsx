@@ -463,7 +463,7 @@ function CopilotPage() {
     const history = nextMessages
       .filter((m) => m.role === "user" || m.role === "ai")
       .map((m) => ({
-        role: m.role === "ai" ? "assistant" : "user",
+        role: (m.role === "ai" ? "assistant" : "user") as "user" | "assistant",
         content: m.text,
       }));
 
